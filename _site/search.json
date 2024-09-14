@@ -1,0 +1,16 @@
+[
+  {
+    "objectID": "syllabus.html",
+    "href": "syllabus.html",
+    "title": "Syllabus",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "CSSS 508: Intro to R for Social Scientists",
+    "section": "",
+    "text": "Instructor:\nJess Kunke\n\n\nLecture:\n?var:lecture\n\n\nLocation:\n?var:location\n\n\nOffice Hours:\nWednesdays 11am-1pm on Zoom  (link on ?var:canvas)"
+  }
+]

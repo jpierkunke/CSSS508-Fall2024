@@ -1,11 +1,22 @@
 ---
-title: "test-website"
+title: "CSSS 508: Intro to R for Social Scientists"
+subtitle: "Autumn 2024"
+image: images/csss-logo.png
+sidebar: false
+about:
+  template: trestles
+  image-shape: rectangle
+  image-width: 10cm
 ---
 
-This is a Quarto website.
+#### Instructor:
+Jess Kunke
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+#### Lecture:
+{{< var lecture >}}
 
-```{r}
-1 + 1
-```
+#### Location: 
+{{< var location >}}
+
+#### Office Hours:
+Wednesdays 11am-1pm on Zoom <br> (link on {{< var canvas >}})
