@@ -7,16 +7,22 @@ about:
   template: trestles
   image-shape: rectangle
   image-width: 10cm
+toc: false
 ---
 
-#### Instructor:
-Jess Kunke
+## Welcome!
 
-#### Lecture:
-{{< var lecture >}}
+### Instructor:
+[Jess Kunke](https://jpierkunke.github.io/) (she/they)
 
-#### Location: 
-{{< var location >}}
+### Lecture: 
+Tuesdays 4:30-6:20pm
 
-#### Office Hours:
-Wednesdays 11am-1pm on Zoom <br> (link on {{< var canvas >}})
+[Thomson Hall](https://www.washington.edu/maps/#!/THO), Room 125
+
+### Office hours:
+Wednesdays TBD
+
+For further course details, please see the syllabus.
+
+
