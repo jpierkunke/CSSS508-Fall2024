@@ -10,6 +10,8 @@ website:
       - syllabus.qmd
       - file: Lectures/lectures.qmd
         text: "Lectures"
+      - file: Homework/homework.qmd
+        text: "Homework"
 
 format:
   html:
