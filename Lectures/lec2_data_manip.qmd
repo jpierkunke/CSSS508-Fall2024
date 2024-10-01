@@ -1,0 +1,385 @@
+---
+title: "Day 2: Data manipulation and visualization"
+subtitle: "CSSS Math Camp 2024"
+author: "Jess Kunke, with previous material from Jess Godwin"
+date: "Tue 10 Sep 2024"
+# format:
+#   revealjs:
+#     smaller: true
+#     scrollable: true
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number_sections: false
+    embed-resources: true
+execute: 
+  eval: false
+---
+
+## Today's dataset
+
+Today we'll be using a subset of the [gapminder dataset](https://www.gapminder.org/data/) including life expectancy at birth (in years), GDP per capita (in US dollars, inflation-adjusted), and population by country.  You can load this into R directly from the **gapminder** package, but to practice reading data from a file, we will read it from the file "gapminder.csv".
+
+## Packages
+
+We will be using the **tidyverse** package today, which we installed yesterday.  Which of the following commands will we need?  Both? One? Neither?  Why?
+
+```{r}
+# note: install.packages REQUIRES quotes around the package name
+install.packages("tidyverse")
+# for library you can use quotes or not, doesn't matter
+library(tidyverse)
+```
+
+::: {.callout-caution collapse="true"}
+## Expand this to check your answer...
+
+Remember that you pretty much only ever need to install a package with `install.packages()` once on a given device[^1], while you'll need to load it using the `library()` function at the start of each R session that you want to use that package.
+
+[^1]: You'll also usually need to reinstall the packages you use with `install.packages()` if you update R.
+
+Today we'll be using the **tidyverse** package. If you **haven't installed tidyverse**, you'll need to first install it on your computer using the `install.packages()` function, then load it into your current R session using the `library()` function:
+
+```{r}
+# note: install.packages REQUIRES quotes around the package name
+install.packages("tidyverse")
+# for library you can use quotes or not, doesn't matter
+library(tidyverse)
+```
+
+If you **have already installed tidyverse** on your computer, then you just need the `library()` function:
+
+```{r}
+library(tidyverse)
+```
+
+If you actually never closed your RStudio session from yesterday (which also means your computer must still be running), then you don't even need to run the `library()` function.
+:::
+
+
+
+## Reading in data from a file
+
+In theory, you can just read the code in with one line:
+
+```{r}
+gapminder <- read_csv("gapminder.csv")
+```
+
+Did that work for you?  It may or may not.  To know why, we need to talk a bit about how files are organized on your computer, and where R looks for things when you tell it to read in a file. This can be a bit painful and confusing at first, but once you know a bit about it, you can choose some systems that work for you.
+
+A **file path** is the path to a folder (directory) or file on your computer. File paths are specified in reference to a **root** directory or a **home** directory. So for example, on my computer, the file path "~/Documents/CSSS-math-camp-2024/gapminder.csv" means that in my home directory (signified by "~"), there should be a "Documents" folder, and in there should be a "CSSS-math-camp-2024" folder, and in there should be a file called "gapminder.csv". This path may or may not exist; it's an address, and a file may or may not actually live there, and one of those folders might not actually be in the folder it's supposed to be in, etc.
+
+File paths can be absolute or relative.  An **absolute** file path is defined with reference to the root directory. For example, "/Users/jessicakunke/Documents/CSSS-math-camp-2024/gapminder.csv" is an absolute file path. On a Windows machine, the root directory is usually "C:\\", and the slashes in the path are all backward slashes "\\" instead of forward slashes "/". On Mac and Linux machines, the root directory is usually "/".
+
+:::{.callout-warning collapse="true"}
+## An important note for Windows users
+
+**tl;dr:** use a double backslash instead of a single backslash throughout your Windows file paths.
+
+The deets:
+
+Unfortunately, R and other languages use backslashes as an "escape character". What does that mean? Consider how character values have to be surrounded by double quotes to indicate it's a character value instead of a variable/object/function name. Then what do you do if your character string includes double quotes? You "escape" the quotes with a backslash: 
+
+```{r}
+# these two lines won't work if you uncomment them
+# print("He said "whooooaaa"")
+# cat("He said "whooooaaa"")
+
+# but these work; note the different output of print and cat
+print('He said \"whooooaaa\"')
+cat('He said \"whooooaaa\"')
+```
+
+As a result, if you want to include a backslash as a character, you need to escape it with another backslash:
+
+```{r}
+# these two lines won't work if you uncomment them
+#   specifically, they expect you to type more (they think the commands aren't 
+#   complete) because the \" is interpreted as part of the character string and
+#   it's expecting another " to end the character string
+# print("C:\User\Desktop\")
+# cat("C:\User\Desktop\")
+
+# but these work
+print("C:\\User\\Desktop\\")
+cat("C:\\User\\Desktop\\")
+```
+:::
+
+A **relative** file path is defined with reference to an arbitrary location. For example, "data/gapminder.csv" means, look in your current directory for a folder called "data", and in there, look for a file called "gapminder.csv".
+
+Reading in the data with `gapminder <- read_csv("gapminder.csv")` will work if RStudio knows to look in the directory that contains our dataset. You can use the command `getwd()` (for "get working directory") to see where RStudio is currently looking for your files. Any relative file paths you use are relative to this working directory. So when you say the file you want is "gapminder.csv", you're looking for that file in this directory.
+
+You can organize your R projects using absolute paths, but this is not what I recommend if you are sharing your code or collaborating with others.
+
+::: {.callout-caution collapse="true"}
+## Expand for tips on using absolute file paths
+
+- Check out `setwd()` and `getwd()`
+- In the RStudio Files pane, navigate to the data set you want, click the gear, select "Copy folder path to clipboard", then paste that file path wherever you want the file path (e.g. inside `read_csv()`).
+:::
+
+
+A fairly painless and straightforward way to handle these file path challenges is to create an R Project. This R project will be associated with a folder where you put most or all of the code and data needed for the project. When you open the project in RStudio, it will tell RStudio to use that folder as "home base". Then you specify all your file paths relative to that folder.
+
+Let's try this approach. Create an R Project (File > New Project) and select either New Directory or Existing Directory.
+
+Once your new project opens, let's see where the current working directory is (it should be the folder that you made the project in):
+
+```{r}
+# get working directory (getwd)
+getwd()
+```
+
+Make sure that gapminder.csv is in this directory, then try loading the file again as before:
+
+```{r}
+gapminder <- read_csv("gapminder.csv")
+```
+
+Ta-da!
+
+Notice this command is kind of noisy, printing out a bunch of stuff we don't need.  As the message says, we can make it "quieter" by setting another argument of the `read_csv()` function:
+
+```{r}
+gapminder <- read_csv("gapminder.csv", show_col_types = FALSE)
+```
+
+
+
+### Commenting your code
+
+Many languages have a **comment character** that allows you to "comment out" parts of your code so that R will not run them. In R, that comment character is the hashtag `#`.
+
+Why would I ever want to do that?
+
+- You can (and should! please!) use this to write comments to yourself and others who read your code, to explain what you're doing or why
+
+    - Notice that one of the code chunks above has a line like that: "get working directory (getwd)"
+    
+- You can use this to temporarily not run certain lines, like if you're troubleshooting code and you want to run the whole script start to finish but you want to skip some parts without deleting them
+
+Let's test this out.  What value does `x` have after this code chunk?  Why?
+
+```{r}
+x = 9
+x = x + 2
+x = x - 5
+```
+
+What about after this code chunk, which is the same except the middle line is commented out? Why?
+
+Note: to toggle back and forth between commented and uncommented, you can use the keyboard shortcuts `shift-control-C` or `shift-command-C`.
+
+```{r}
+x = 9
+# x = x + 2
+x = x - 5
+```
+
+
+
+
+
+
+## Data exploration
+
+We already learned several things yesterday that we can use to explore this dataset.  Let's practice (and also learn some new things):
+
+1. How many observations and variables are in this dataset?
+2. What range of years are represented in the dataset?  At what intervals or what frequency (annual, biannual, ...)?
+3. How many countries and how many continents are in this dataset?
+4. How many observations do we have on each continent?
+
+```{r}
+str(gapminder)
+head(gapminder)
+dim(gapminder)
+ncol(gapminder)
+names(gapminder)
+
+# what range of years?
+range(gapminder$year)
+# how many unique years?
+n_distinct(gapminder$year)
+# what unique years?
+unique(gapminder$year)
+# what frequency?
+diff(gapminder$year) # hmm... not what we want...
+diff(unique(gapminder$year))
+
+# how many countries? continents?
+n_distinct(gapminder$country)
+# how many obs on each continent?
+table(gapminder$continent)
+```
+
+Let's look at this dataset as a (sort-of) matrix for a moment:
+
+```{r}
+# how long is the country column? is it equal to the number of countries in the dataset?
+length(gapminder$country)
+# actually it's the same as asking how many rows are in the dataset
+nrow(gapminder)
+
+# check out the first row
+gapminder[1,]
+
+# check out the first column
+gapminder[,1]
+
+# pick out the fourth row of the third column, two different ways
+gapminder[4,3]
+gapminder[4,"year"]
+```
+
+Let's figure something out together using what we learned yesterday about logicals and indexing: how many African countries are represented in this dataset? Which ones?
+
+::: {.callout-tip title="Your Turn"}
+1. Replace the `x` and `y` placeholders to get the per-capita GDP for the 34th observation (your final code should not have any `x` or `y`):
+
+```{r}
+gapminder[x, y]
+```
+
+2. How many countries in Oceania are in this dataset? Which ones?
+
+3. How many data points do we have for each country? Is it fairly balanced?
+:::
+
+
+
+
+
+## Data manipulation
+
+Now let's see how to work with data using the **tidyverse**! We've actually already sneakily used two **tidyverse** functions-- `read_csv()` and `n_distinct()`-- but now we'll really get into using **tidyverse** for manipulating data.
+
+Behind the **tidyverse** (and its name) is the idea of **tidy data**:
+
+::: {#fig-tidy layout-nrow=2}
+
+![Tidy data](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/85520b8f-4629-4763-8a2a-9ceff27458bf_rw_1920.jpg?h=21007b20ac00cf37318dca645c215453){#fig-tidy}
+
+![Tidy vs. messy data](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/6e297111-efb7-4555-93d2-085071d1853c_rw_1920.jpg?h=f1951b118eaddaaab8a572422bc16566){#fig-tidy-messy}
+
+Illustrations from the Openscapes blog "Tidy Data for reproducibility, efficiency, and collaboration" by Julia Lowndes and Allison Horst
+:::
+
+<!-- ![Tidy data]() -->
+
+<!-- ![Tidy versus messy data](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/6e297111-efb7-4555-93d2-085071d1853c_rw_1920.jpg?h=f1951b118eaddaaab8a572422bc16566) -->
+
+
+
+###	Filtering and selecting
+
+Filtering allows us to subset the dataset to just the rows that meet some condition:
+
+```{r}
+filter(gapminder, continent == Oceania) # why doesn't this work? fix this line of code
+filter(gapminder, continent == "Oceania" & year == 2007)
+filter(gapminder, year>1980 & year<2000 & country == "Eritrea") 
+
+# what's the difference between this and the previous line? and why doesn't this print anything?
+eritrea = filter(gapminder, year>1980 & year<2000 & country == "Eritrea")
+
+# check out the documentation on filter to see its arguments
+?filter
+```
+
+Selecting allows us to pick or look at just certain columns:
+
+```{r}
+select(gapminder, pop)
+select(gapminder, lifeExp:gdpPercap) # range of variables (columns)
+select(gapminder, country, year) # specific variables/columns
+```
+
+We filter rows, and we select columns.
+
+### Adding/changing columns (variables)
+
+Let's add a column that indicates whether the data is from Afghanistan or not:
+
+```{r}
+mutate(gapminder, isAfghan = (country == "Afghanistan"))
+# how do we change the above line of code so that it stores the result somewhere?
+```
+
+We can also use `mutate()` to modify an existing column. For instance, we can make the year integer format:
+
+```{r}
+gap_int = mutate(gapminder, year = as.integer(year))
+str(gap_int)
+```
+
+### Combining steps
+
+Here is some **pseudocode** to show the general flow for how we can combine steps.  This means this pseudocode won't run as is, but it gives us a general sense for how to put things together.
+
+```{r}
+# approach 1:
+new_data = step1(gapminder)
+new_data = step2(new_data)
+new_data = step3(new_data)
+
+# approach 2:
+new_data = step3(step2(step1(gapminder)))
+```
+
+Let's try this with a concrete example, with actual code we can run.  For instance, let's go back to a question we answered earlier without tidyverse: how many African countries are represented in this dataset, and which ones?
+
+```{r}
+# approach 1:
+num_african_countries = filter(gapminder, continent == "Africa")
+num_african_countries = select(num_african_countries, country)
+num_african_countries = n_distinct(num_african_countries)
+
+# approach 2:
+num_african_countries = n_distinct(select(filter(gapminder, continent == "Africa"), country))
+```
+
+
+::: {.callout-tip title="Your Turn"}
+Write code that will do all of the following with the gapminder data:
+
+1. Subset the data to just the countries in Asia with at least 10 million people, then
+2. Pick just the first four columns.
+:::
+
+
+What is annoying so far about combining these steps? In other words, what do you find annoying about Approaches 1 and 2?
+
+
+
+### Combining steps with pipes
+
+Pipes will make this better; they are a way of feeding one command into another.  First let's see how a pipe works with a single step. Use `shift-control-M` or `shift-command-M` to make the pipe symbol `%>%`.
+
+```{r}
+# without pipe
+filter(gapminder, continent == "Oceania")
+
+# with a pipe
+gapminder %>% filter(continent == "Oceania")
+```
+
+Now let's see how this works with a sequence of commands by rewriting our example above about the number of African countries:
+
+```{r}
+num_african_countries = gapminder %>%
+  # subset to countries in Africa
+  filter(continent == "Africa") %>%
+  # keep just the country column
+  select(country) %>%
+  # count how many unique values there are
+  n_distinct()
+```
+
+
+
+
+

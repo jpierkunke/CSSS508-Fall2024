@@ -1,0 +1,912 @@
+---
+title: "Lecture 1: Getting started with R, RStudio, and Quarto"
+subtitle: "CSSS 508"
+author: "Jess Kunke, drawing from materials by Jess Godwin and Vic Sass"
+date: "Tue 1 Oct 2024"
+# format:
+#   revealjs:
+#     smaller: true
+#     scrollable: true
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number_sections: false
+    embed-resources: true
+execute:
+  # eval: false
+  echo: true
+  message: false
+  warning: false
+---
+
+# Introductions
+
+Let's introduce ourselves!
+
+- Name, pronouns
+- Program, year
+- Any experience with programming or R? (None required!)
+- How do you feel about the course or what are your goals in taking this class?
+- What is one thing you like about fall?
+
+# CSSS 508 intro and logistics
+
+- We'll go over the syllabus together
+
+
+# What are R, RStudio, and Quarto?
+
+**R** is a programming language.
+
+**RStudio** is an application for writing code, analyzing data and building packages with R. People often call this...
+
+-   a **graphical user interface** or GUI
+-   an **integrated development environment** or IDE
+
+RStudio makes it easier to use R by providing a visual point-and-click interface for tasks like the following:
+
+-   Organize your code, output, and plots
+-   View data and objects
+-   Manage version control through `git` repositories
+
+It also has the following nice features: 
+
+-   Auto-complete code and highlight syntax like other text editors such as Atom
+-   Integrate R code into documents with **Quarto**
+-   Handle other languages like C++, Python, SQL, HTML, and shell scripting
+
+We will also learn some [**Quarto**](https://quarto.org/docs/guide/), which is a tool we can use within RStudio (and other applications actually) to make reports, manuscripts, slides, books, websites, and more. Quarto generalizes R Markdown (if you've used or heard of that before) into a coherent system that natively supports other programming languages like Python and Julia.
+
+![](images/rmarkdown-quarto.png){fig-align="center"}
+
+Quarto allows us to...
+
+-   Document analyses by combining text, code, and output
+    -   No copying and pasting into Word
+    -   Easy for collaborators to understand
+    -   Show as little or as much code as you want
+-   Produce many different document types as output
+    -   PDF documents
+    -   HTML webpages and reports
+    -   Word and PowerPoint documents\
+    -   Presentations (like these slides)
+    -   Books
+    -   Theses/Dissertations 😉🎓
+    -   Websites (like the one for this course!)
+-   Works with LaTeX and HTML for math and more formatting control
+
+::: {.callout-note title="Fun facts"}
+-   R has been around since 1993
+-   RStudio has been around since 2009
+-   RStudio was the name of both the application and the company that developed it, until the company renamed itself [Posit](https://posit.co/about/) in 2021 to signal that it was moving toward developing language-agnostic tools such as Quarto that can interface with Python, Julia, and other languages
+:::
+
+# Why bother with R?
+
+::: {.callout-tip title="Discussion"}
+How is R related to or different from other languages and software such as Stata, Excel, Python, C?
+:::
+
+1.  Multifunctionality: as a computing language, R can do so many things!
+    
+    -   Data access from a file (you can even read in metadata from the filename!)
+
+    -   Data access directly from the internet (e.g. [tidycensus](https://walker-data.com/tidycensus/articles/basic-usage.html))
+
+    -   Data manipulation
+
+    -   Statistical analysis
+
+    -   Publication-quality data visualizations and tables
+
+    -   Interactive tables, visualizations, widgets, applications
+
+    -   GIS
+
+        -   R is a GIS itself
+        -   It can also connect to ArcGIS, QGIS, and GRASS GIS
+
+    -   Works for many data types and formats (including spatial data, network data, spreadsheets, surveys, and SQL data bases), and there's a community out there developing R tools to work with these data types
+
+<!-- --- -->
+
+2.  Automation, reproducibility, and quality control
+
+    -   Instead of manually going through your data to flag or correct problematic data, reformat text, recode variables, and do other processing/quality control, you can automate it!
+
+    -   Record the set of instructions for your analysis from start to finish in a script or notebook, and store and use it like a recipe
+    
+    -   If you want to make a change, you can just make that one change to your script and rerun the code rather than having to repeat individual steps over and over
+
+    -   If you're troubleshooting or still developing your procedures, you can step through the instructions
+
+    -   Someone else can look at your script and see exactly what you did[^1]
+
+    -   Future You can look at your script to remind yourself exactly what you did
+
+    -   Someone else/future you can run your script to exactly reproduce what you did
+
+    -   Write functions for tasks you'll run over and over again, even across different projects
+
+    -   For-loops and other types of control flow allow you to incorporate iteration and conditional instructions
+
+[^1]: Comment and organize your code well!
+
+<!-- . . . -->
+
+4.  Open source
+
+    -   R is free and open source, and developed and maintained by a large user community (well maintained and new packages come out a lot)
+
+<!-- . . . -->
+
+5.  Common
+
+    -   Coursework, research, and statistical code often use R
+
+# Orienting yourself in RStudio
+
+RStudio has four main panes that allow you to organize your code and have a better user experience developing and using R code. We'll revisit the different purposes of, and relationships among, these four panes over the course of the week. Notice that many of the panes have multiple tabs (e.g. Console vs Terminal) that you can toggle between.
+
+![](images/rstudio-panes-labeled.jpeg){fig-align="center"}
+
+-   **Source pane**
+
+    -   Edit scripts and other files that allow you to save your code
+    -   View objects that appear when you click on them in the Environment pane
+    -   (If you use Quarto/R Markdown, your output and plots may appear here)
+
+-   **Console/Terminal/Background Jobs pane**
+
+    -   When you run code, even from a script, the code and its text/printed output appears here in the Console
+    -   You can also run code from the Console itself
+    -   If you use Quarto or R Markdown, when you knit your file, the Background Jobs tab here will show the results of knitting and any errors that might occur
+    -   You can run shell/bash commands like `cd`, `ls` or `pwd` in the Terminal tab just as you would in the Terminal application on your computer
+
+-   **Environment/History pane**
+
+    -   Import data
+    -   See what objects you've created (such as variables, data sets, model results) that are currently "stored in your environment"
+    -   Look at your command history and rerun previous commands
+    -   If you develop R packages or use version control like git, the Build and Git tabs will appear here
+
+-   **Output/Files/Plots/Help pane**
+
+    -   Navigate files and folders in the Files tab
+    -   Copy folder paths to paste into your code using the gear symbol under the Files tab
+    -   When you make plots, they generally appear in the Plots tab
+    -   Read help documentation for packages and functions in the Help tab
+    -   See your rendered Quarto/R Markdown document in the Viewer tab
+
+The meaning of these different terms and tasks will become clearer as we practice them.
+
+If you open RStudio by opening the application directly instead of opening an R file, then you will not have the Source pane open and likely the Console pane will take up the entire left half of your window:
+
+![](figures/RstudioPanels_nofilesopen.png)
+
+If instead you open RStudio by clicking on an R file, this screenshot shows the likely order in which the four panes appear on your screen, though you can change the order under Preferences. Here I have two files open: RLab1 and a file whose name starts with exploratory-data-analysis-lesson. When the filename is red with an asterisk, as you see below for the file RLab1, the file has changes that have not been saved yet.
+
+![](figures/RstudioPanels_filesopen.png)
+
+You can rearrange your panes at any time by going to Preferences \> Pane Layout. You can also resize/adjust the panes by clicking and dragging their boundaries.
+
+
+
+
+# Getting started with running code
+
+There are several ways to run R code in RStudio.  With any of these methods, the console will show the lines you ran, with each one followed by any printed output from that line.
+
+Let's start typing and running some code in the Console. To do this, click in the Console pane and you should see your **cursor**[^2] blinking next to a greater-than symbol `>` which we call the command line prompt. Then type what you want to run, and hit the Enter/Return key. For example, we can type `3+2` and hit Enter/Return. 
+
+![](figures/Console.png)
+
+Then type another line, like `sqrt(100)`, and hit Enter/Return.
+
+The `[1]` in the output indicates the numeric **index** of the first element on that line. For instance, try typing and running `sqrt(1:100)`.
+
+## Incomplete code
+
+The console is ready to receive your code when it shows the little carrot command prompt `>`. If you mess up (e.g. leave off a parenthesis), R might instead show a `+` sign prompting you to finish the command:
+
+```{r Coding 1}
+#| eval: false
+3*(11-2
++
+```
+
+If this happens, finish the command or hit `Esc` to get out of this.
+
+## Arithmetic in R
+
+We can do basic mathematical computations using `+`, `-`, `*` (multiplication), `/` (division), and `()` (grouping). Try the following lines, one line at a time. I recommend typing them yourselves instead of copying and pasting.
+
+```{r}
+#| eval: false
+2+3
+6*7/2
+# The number pi is hard coded into R
+pi*1
+# Why should the following two lines give you different results? What is the order of operations in each one?
+6*3/2-3
+6*3/(2-3) # create this line by using the up arrow to copy the previous command and edit it
+2^(3+2)
+# What will dividing by zero give you?
+1/0
+0/0
+```
+
+A few notes:
+
+- There are some special values in R, like NaN and Inf.
+- Operations follow the usual order of operations (PEMDAS).
+- Notice that the lines starting with the hashtag or pound key `#` are ignored by R: they appear in the Console but R knows this is not code but something for the human to read. We call these **comments** and we'll cover this more later. Other languages have different comment characters that function like `#` does in R.
+
+## Functions
+
+`sqrt()` is an example of a **function** in R.  **Arguments** are the *inputs* to a function. In this case, the only argument to `sqrt()` is `x` which can be a number or a vector of numbers.
+
+The basic template of a function is
+
+`function_name(argument1, argument2 = value2, argument3 = value3...)`
+
+::: {.callout-note}
+Functions can have a wide range of arguments and some are *required* for the function to run, while others remain optional. You can see from each functions' help page which are not required because they will have an `=` with some default value pre-selected. If there is no `=` it is up to the user to define that value and it's therefore a required specification.
+
+R is case-sensitive, so if the function is called `sqrt`, then typing `SQRT(100)` and `Sqrt(100)` will give you an error or use some other function if there's one defined under that name!
+:::
+
+Let's try out some other functions:
+
+```{r}
+#| eval: false
+sqrt(9)
+log(exp(1)^2)
+log(1000)
+exp(2)
+sin(2*pi)
+```
+
+Note that `log()` computes the natural logarithm (base $e$) by default. See `?log` to compute a logarithm with a different base; how would you compute $\log_{10}(1000)$ and what should the correct answer be? Verify it by running your command into the R console.
+
+If you know the name of a function and want to learn more about how to use it, you can access the help documentation by typing `?sqrt` in the Console and look at the Help panel on the bottom right.
+
+```{r Help}
+#| eval: false
+?sqrt
+```
+
+Help files provide documentation on how to use functions and what functions produce. They generally consist of the following sections:
+
+-   **Description** - *What does it do?*
+-   **Usage** - *How do you write it?*
+-   **Arguments** - *What arguments does it take, which are required, and what are the defaults?*
+-   **Details** - *A more in-depth description*
+-   **Value** - *What does the function return?*
+-   **See Also** - *Related R functions*
+-   **Examples** - *Example (& reproducible) code*
+
+If you're trying to look up the help page for a function and can't remember its name, you can search by a keyword and you will get a list of help pages containing said keyword.
+
+```{r Search help}
+#| eval: false
+??exponential
+```
+
+You can also Google "r" and a description of what you're trying to do.
+
+
+
+# Objects
+
+So far, we have been calculating things in R without storing them anywhere. For data analysis and statistics, we need to be able to store and manipulate information instead of just computing things.
+
+We also haven't been storing our calculations, our code, anywhere. If we want to edit them, we need to retype them. And right now we can scroll back through our command history to remind ourselves what we did and in what order, but what about tomorrow or next month? How can we store them to rerun or edit later?
+
+Numbers, data, formulas, and other statistical information can be stored as \textbf{objects}. In RStudio, the objects you make and some information about them can be seen in the Environment pane.
+
+For example, if you type the following line into the console,
+
+```{r}
+height = 65
+```
+
+you will notice that the blank command line reappears without any output having been printed. All R did was store the number 4 under the name `x`; we call this "assigning the value 4 to the variable $x$", so you may hear people refer to `=` as an **assignment operator**. You can also see under the Environment pane that you now have a variable `x` that is equal to 4.
+
+**Operators** like `<-` are functions that look like symbols but typically sit between their arguments (e.g. numbers or objects) instead of having them inside `()` like in `sqrt(x)`. We do math with operators, e.g., `x + y`. So `+` is the addition operator!
+
+R has two assignment operators, `<-` and `=`:
+
+```{r}
+#| eval: true
+height <- 65
+```
+
+::: {.callout-warning title="Heads up"}
+-   What's the difference between `<-` and `=`, and which should we use when?
+    -   If you plan to use pre-2001 R code or you want to be 100% backwards compatible just in case, use `<-`
+    -   Otherwise it's a matter of preference
+    -   If you use `<-`, put a space on either side to improve readability and to avoid confusion with a less-than comparison
+:::
+
+Objects can be numbers, strings, matrices, or even more complicated `R` objects. Examples of `R` object types:
+
+-   integer, numeric, string
+-   vector, matrix, list
+-   data.frame
+-   factor
+-   lm object (linear model object, e.g. regression)
+-   formula
+
+
+
+
+## Calling Objects
+
+You can display or "call" an object simply by using its name.
+
+```{r Objects 2}
+height
+```
+
+## Naming Objects
+
+Object names are case-sensitive and should be meaningful.
+
+Object names must begin with a letter and can contain letters, numbers, `.`, and `_`.
+
+Try to be consistent in naming objects. RStudio auto-complete means **descriptive names are better than short, vague ones**! *Good names save confusion later!*
+
+-   *snake_case*, where you separate lowercase words with `_` is a common and practical naming convention that I strongly recommend.
+
+```{r}
+#| eval: false
+snake_case_is_easy_to_read
+CamelCaseIsAlsoAnOptionButSortOfHardToReadQuickly
+some.people.use.periods # not recommended because of how R sometimes uses periods
+```
+
+## Using Objects
+
+An object's **name** represents the information stored in that **object**, so you can treat the object's name as if it were the values stored inside. Just like math variables, the name is a placeholder for what is stored in it.
+
+```{r Objects 3}
+height + 10
+height + height
+sqrt(height)
+```
+
+
+## Object types
+
+A **vector** is one of many data types available in `R`. Specifically, it is a series of **elements**, such as numbers, strings, or booleans (i.e. `TRUE`, `FALSE`).
+
+You can create a vector using the function `c()` which stands for "**c**ombine" or "**c**oncatenate".
+
+```{r Vectors 1}
+height <- c(60, 65, 52, 71)
+height
+```
+
+If you name an object the same name as an existing object, *it will overwrite it*.
+
+You can provide a vector as an argument for many functions as we saw before:
+
+```{r Vectors 2}
+sqrt(height)
+```
+
+There are other, more complex data types in R which we will discuss later in the quarter! These include **matrices**, **arrays**, **lists**, and **dataframes**.
+
+Most data sets you will work with will be read into `R` and stored as a **dataframe**, so this course will mainly focus on manipulating and visualizing these objects.
+
+
+
+
+# Working with data
+
+What are we waiting for? Let's dive into some data!
+
+## Exploring a dataset
+
+We can load the built-in data `swiss`, which loads as a dataframe, a type of object mentioned earlier. Then, we can look at it in a couple different ways.
+
+`data(swiss)` loads this dataframe into the **Global Environment**.
+
+`View(swiss)` pops up a **Viewer** tab in the source pane ("interactive" use only, don't put in Quarto document!).
+
+`summary()` displays summary information. Note that R is **object-oriented**, and the one function `summary()` provides different information for different types of objects.
+
+
+```{r}
+#| eval: false
+data(swiss) # loads the data set; where does it appear?
+View(swiss)
+str(swiss)  # tells you about the STRucture of the data set
+head(swiss) # what does this do?
+summary(swiss) # what does this tell you?
+?swiss      # brings up a help/description page to tell you more about the data set; often has citations
+data()        # this tells you about all the data sets available in your current environment
+```
+
+::: {.callout-tip title="Your Turn"}
+Try the above commands, see what they do, and try to answer the following questions about the data:
+
+-   Where is the data from?
+-   How many variables are in this data set, and what are they?
+-   How many rows are in this data set, and what do they represent? Do you have a row for every respondent to a survey? Every state of the US?
+-   What format is each variable in?
+-   How do you take a look at the first few rows? Last few rows?
+-   What questions do you still have about the data?
+:::
+
+
+
+## Basic plots in base R
+
+`hist()` generates a histogram of a vector. Note that you can access a vector that is a column of a dataframe using `$`, the **extract operator**.
+
+```{r}
+#| fig-width: 5
+#| fig-height: 5.25
+hist(swiss$Education) # Histogram
+```
+
+We can try and make this histogram more informative and appealing by specifying more arguments:
+
+```{r}
+hist(swiss$Education,
+  breaks = 10, # affects the number of bins
+  xlab = "Percent of draftees with education beyond primary school", # x-axis label
+  main = "Histogram of education level") # Title
+```
+
+We can experiment with [colors](https://r-charts.com/colors/) and [shapes](https://r-charts.com/base-r/pch-symbols/).
+
+We can make scatterplots to show the relationship between two variables.
+
+```{r}
+plot(Education ~ Agriculture,
+  data = swiss,
+  xlab = "Percent of males involved in agriculture as occupation",
+  ylab = "Percent draftees with education beyond primary school",
+  main = "Agriculture and education",
+  pch = 16) # Point shape
+abline(h = mean(cars$dist), col = "firebrick") # add horizontal line (y-value)
+abline(v = mean(cars$speed), col = "cornflowerblue") # add vertical line (x-value)
+```
+
+::: {.callout-note}
+
+`Education ~ Agriculture` is a formula of the type `y ~ x`. The first element (`Education`) gets plotted on the y-axis and the second (`Agriculture`) goes on the x-axis. Regression formulae follow this convention as well!
+:::
+
+We can check out `pairs()`, a pairwise scatterplot function. This function is good for a quick look at small datasets with numerical/continuous data.
+
+```{r}
+pairs(swiss, 
+      pch = 8, 
+      col = "violet",
+      main = "Pairwise comparisons of Swiss variables")
+```
+
+
+## Tables with the `gt` Package
+
+Let's make a table that's more polished than the code-y output `R` automatically gives us. To do this, we'll want to install our first **package** called `gt`. In the **console**, run: `install.packages("gt")`.
+
+::: {.callout-caution icon="false"}
+## Different Syntax
+
+Notice that unlike the `library()` command, *the name of a package to be installed must be in quotes*? This is because the name here is a search term (text, not an object!) while for `library()` it is an actual R object. Either single or double quotes is fine as long as the starting and ending quotes match.
+:::
+
+Let's make some cleaner tables:
+
+::: panel-tabset
+### Code
+
+```{r}
+#| eval: false
+#| code-line-numbers: "|1|"
+library(gt) # loads gt, do once in your session
+gt(as.data.frame.matrix(summary(swiss))) 
+```
+
+::: fragment
+::: {.callout-tip icon="false"}
+## Nesting Functions
+
+Note that we put the `summary(swiss)` function call inside the `as.data.frame.matrix()` call which all went into the `gt()` function. This is called *nesting functions* and is very common. I'll introduce a method next week to avoid confusion from nesting too many functions inside each other.
+:::
+:::
+
+::: fragment
+::: {.callout-note icon="false"}
+## What's `as.data.frame.matrix()` Doing?
+
+`gt()` takes as its first argument a `data.frame`-type object, while `summary()` produces a `table`-type object. Therefore, `as.data.frame.matrix()` was additionally needed to turn the `table` into a `data.frame`.
+:::
+:::
+
+### Table
+
+```{r}
+#| echo: false
+library(gt) # loads gt, do once in your session
+swiss |> 
+  summary() |> 
+  as.data.frame.matrix() |> 
+  gt() |> 
+  tab_options(table.align = "center", 
+              table.font.size = pct(75)) 
+```
+:::
+
+We can check out `gt`'s Version of `head()` and `tail()`:
+
+::: panel-tabset
+### `head()`
+
+```{r}
+head(swiss)
+```
+
+### `gt_preview()` alternative
+
+```{r}
+#| eval: false
+gt_preview(swiss, 
+           top_n = 3, # default is 5
+           bottom_n = 3) # default is 1 
+```
+
+```{r}
+#| echo: false
+swiss |> 
+  gt_preview(top_n = 3, bottom_n = 3) |> 
+  tab_options(table.align = "center", table.font.size = pct(70))
+```
+:::
+
+::: fragment
+::: {.callout-note icon="false"}
+## 👋 Bye Bye `as.data.frame.matrix()`
+
+We no longer need `as.data.frame.matrix()` since we're no longer using `summary()`. Both `head()` and `gt_preview()` take a `data.frame`-type object as their first argument which is the same data type as `swiss`.
+:::
+:::
+
+
+
+
+
+
+
+# Packages and environment
+
+Simply by downloading `R` you have access to what is referred to as Base `R`. That is, the built-in functions and datasets that `R` comes equipped with, right out of the box. Examples that we've already seen include `<-`, `sqrt()`, `+`, `Sys.time()`, and `summary()` but there are obviously many many more. You can see a whole list of what Base `R` contains by running `library(help = "base")` in the console.
+
+What makes `R` so powerful though is its extensive library of **packages**, bundles of code and data. Due to its open-source nature, anyone (even you!) can write a package that others can use. Packages contain pre-made functions and/or data that can be used to extend Base `R`'s capabilities. A handful packages come with R when you download and install it, but most of them you install afterwards when you want them. It's easy and quick to install or update packages when you need them.
+
+Click on the Packages tab in the Files pane. You'll see some list of names in blue with checkboxes next to them; this is the list of packages that you have installed on your computer.
+
+A key point: once you install a package, there is an additional step you need to do before using it. This is a good example to help us understand the concept of the R "environment" or "session".
+
+-   Installing a package makes the programs in that package available on your computer. It's like buying a baking ingredient and putting it on your shelf at home.
+
+-   Before you can use it, you have to take it off the shelf and put it on the counter or wherever you're going to bake, whatever your workspace is. Similarly, you have to load/attach the package to your current R environment before you can use it.
+
+-   If you don't need an ingredient or it's in your way, you can put it back on the shelf. Similarly, you can unload/detach a package at any time.
+
+-   When you're done baking, you put everything away. Similarly, when you quit R, all your packages are unloaded or detached, so when you open R again next time, you'll need to load/attach the ones you need before you start working with them.
+
+-   Just like you can take out all your ingredients at once or one at a time as needed, you can do the same with packages. When you save your code as a script, we generally recommend loading them all at the start so that it's easy to tell by just looking at the top of the script which packages are required for the code you're writing/using. When you're using R interactively, though, you can add and detach packages throughout the session.
+
+When you look at the Packages tab, the packages that have a checkmark next to them are the ones loaded in your current R session for you to use right now, and the unchecked ones are installed but not currently loaded.
+
+The first time you use a package, you'll need to install it:
+
+```{r}
+#| eval: false
+# this function requires quotes around the package name!
+install.packages("tidyverse")
+```
+
+Then whenever you want to use it, you can load/attach it:
+
+```{r}
+#| eval: false
+# for this one, you can use quotes or not
+library(tidyverse)
+```
+
+::: {.callout-note title="Tips"}
+-   Notice that when you start typing, R suggests different options and you can use the up and down arrows to select the right one and hit enter to autocomplete it; this can save a lot of typing.
+
+-   This is also a handy way to test whether you already have a package: run the `library()` command, and if it completes successfully then you already have it installed, and otherwise it will let you the package wasn't found.
+:::
+
+We'll use this **tidyverse** package a lot. In fact, [**tidyverse** is actually a set or suite of packages](https://www.tidyverse.org/packages/) that have been grouped together so that you can do just one install command and one library command when you want to use them.
+
+# R scripts
+
+Typing commands directly into the console is nice sometimes, especially for developing code or testing things out. If you quit, though, the commands you typed and the results you obtained disappear and will not be there when you reopen RStudio later. To save them, you can store the commands in a file. The simplest kind of file is called a **script**.
+
+Open a new script (File > New File > R Script, or Shift+Command+N). This will appear in the Source pane of your RStudio window.
+
+Type the line `sqrt(100)`. With your **cursor**[^2] anywhere on that line of code, type Command-Return (Mac) or Control-Return (PC), or click "Run".
+
+Notice that your cursor moves to the next line, so you can step through line by line and run code sequentially if you have multiple lines of code.  For instance, copy and paste the following lines of code into your script, place your cursor on the first line, and step through the code running it line by line:
+
+```{r}
+#| eval: false
+sqrt(400)
+3+2
+3*(11-2)/4
+```
+
+To run a set of lines from a script or document without stepping through them line by line, click and drag to highlight them in the **editor** window, then do one of the following:
+
+- Click     ![](images/rtudio_run.png){.absolute top="105" right="430"} *Run* at the top right corner of the window
+- Type Command-Return (Mac) or Control-Return (PC)
+
+[^2]: This thing is the cursor: [\|]{.blink_me}
+
+::: {.callout-important}
+When copying and pasting code from Console, make sure to delete command prompts `>` and other characters (such as `+`) and comment out or delete output.
+:::
+
+
+
+
+
+
+# Commenting your code
+
+It is good practice to annotate your scripts by including comments that describe what your code does. To do this, you can include lines that start with `#`; these lines will be treated as comments and they are not run as code. For example, above I made a comment to explain that the second line lets us see what the `id` object looks like.
+
+You can also use the comment character `#` to "comment out" code. For example, what value does `x` have after this code chunk?
+
+```{r}
+#| eval: false
+x = 9
+x = x + 2
+x = x - 5
+```
+
+What about after this code chunk, which is the same except the middle line is commented out?
+
+```{r}
+#| eval: false
+x = 9
+# x = x + 2
+x = x - 5
+```
+
+
+# When is code run?
+
+Note that code in your script file is not run until you run it. Therefore, it is also not necessarily run in the order that it is in your script; it is run in whatever order you execute it. For instance, if you quit RStudio, reopen it, and run just the last line of the script, you will receive an error.
+
+Also, if you edit code in the script, it does not update the variables you have already created in your working environment unless you rerun the code. Let's practice this with our data set example above.
+
+Related: Where does the name Environment pane come from? From the time you open RStudio to the time you close it, we say you are running a **session**. When you create variables like this, they exist in your **working environment** which means that they are defined and accessible within R. This is separate from whether they are stored somewhere on your computer for you to access after you close R. This means two things, which will be particularly relevant when we read in and manipulate data sets:
+
+1.  When you open R or RStudio, data on your computer or anywhere else is not automatically available to analyze in R; first you have to load it and store it as an R object.
+2.  Once you create an object in R, the object exists only during this session unless you save it to a file if you want to be able to access it again later without recreating it. If the object takes a long time to create, this is the best option. Otherwise, the better alternative is usually to save the code you used to create the object, and then you can recreate it easily anytime you need it.
+
+::: {.callout-note title="Your Turn"}
+As one last practice session for today, write a script with code that you learned about from today.
+
+-   Make sure each instruction appears in the order you would want to run it.
+-   Use comments to organize and explain it to yourself for tomorrow, as well as for a month or a year from now.
+-   Then trade code with another math camp participant to give each other feedback. Please share at least one thing that you like about (or learned from) the other person's code and at least one suggestion or idea you have for their code.
+:::
+
+
+
+
+
+
+
+
+# Quarto
+
+## Creating a Quarto Document
+
+Let's try making an Quarto file:
+
+1.  Choose *File \> New File \> Quarto Document...*
+2.  Make sure *HTML Output* is selected
+3.  In the *Title* box call this test document `My First Qmd` and click *Create*
+4.  Save this document somewhere (you can delete it later) (either with *File \> Save* or clicking    ![](images/rstudio_save.png){.absolute top="284" left="23"} towards the top left of the source pane).
+5.  Lastly, click    ![](images/rstudio_render.png){.absolute top="320" left="157"} Render at the top of the source pan to "knit" your document into an html file. This will produce a minimal webpage since we only have a title. We need to add more content!
+
+Note: Please don't do this now, and you won't need this for this course, but if you want to create PDF output in the future, you'll need to run the following code in your console.
+
+```{r PDFHelp}
+#| eval: false
+install.packages("quarto")
+install.packages('tinytex')
+tinytex::install_tinytex()
+```
+
+## Anatomy of a Quarto Document
+
+
+Elements of a Quarto document:
+
+1.  An (optional) YAML header (surrounded by `---`s).
+
+2.  Plain text and any associated formatting.
+
+3.  Chunks of code (surrounded by ```` ``` ```` s) and/or their output.
+
+
+## R code in a Quarto document
+
+Inside Quarto, lines of R code are called **chunks**. Code is sandwiched between sets of three backticks and `{r}`.
+
+In quarto documents, you can click within a code chunk and click the green arrow    ![](images/rstudio_run_current_chunk.png){.absolute top="355" right="135"} to run the chunk. The button beside that (   ![](images/rstudio_run_all_chunks_above.png){.absolute top="392" right="615"}) runs *all prior chunks*.
+
+You can change whether the output shows up in the quarto document or in your console by clicking the gear symbol for Settings and selecting either "Chunk Output Inline" or "Chunk Output in Console".
+
+
+### Code chunk options
+
+Chunks have options that control what happens with their code. They are specified as special comments at the top of a block. For example:
+
+```{{{r}}}
+#| label: bar-chart
+#| eval: false
+#| fig-cap: "A line plot on a polar axis"
+```
+
+Some useful and common options include:
+
+-   `echo: false` - Keeps R code from being shown in the document
+
+-   `eval: false` - Shows R code in the document without running it
+
+-   `include: false` - Hides all output but still runs code (good for `setup` chunks where you load packages!)
+
+-   `output: false` - Doesn't include the results of that code chunk in the output
+
+-   `cache: true` - Saves results of running that chunk so if it takes a while, you won't have to re-run it each time you re-render the document
+
+-   `fig.height: 5, fig.width: 5` - modify the dimensions of any plots that are generated in the chunk (units are in inches)
+
+-   `fig.cap: "Text"` - add a caption to your figure in the chunk
+
+Try adding or changing the chunk options for the chunk in `my_first_Rmd.qmd` and re-render your document to see what happens.
+
+```{r}
+#| echo: fenced
+#| eval: false
+summary(cars)
+```
+
+### In-Line R code
+
+Sometimes we want to insert a value directly into our text. We do that using code in single backticks starting off with `r`.
+
+```{r}
+#| include: false
+#| eval: true
+library(knitr)
+```
+
+```         
+Four score and seven years ago is the same as `r inline_expr("4*20 + 7", "md")` years.
+```
+
+Four score and seven years ago is the same as `r 4*20 + 7` years.
+
+
+Maybe we've saved a variable in a code chunk that we want to reference in the text:
+
+```{r}
+#| eval: true
+x <- sqrt(77)
+```
+
+```         
+The value of `x` rounded to the nearest two decimals is `r inline_expr("round(x, 2)", "md")`.
+```
+
+The value of `x` rounded to the nearest two decimals is `r round(x, 2)`.
+
+Having R dump values directly into your document protects you from silly mistakes:
+
+-   Never wonder "how did I come up with this quantity?" ever again: Just look at your formula in your .qmd file!
+
+-   Consistency! No "find/replace" mishaps; reference a variable in-line throughout your document without manually updating if the calculation changes (e.g. reporting sample sizes).
+
+-   You are more likely to make a typo in a "hard-coded" number than you are to write R code that somehow runs but gives you the wrong thing.
+
+
+## Quarto Headers
+
+The header of a .qmd file is a [YAML](https://en.wikipedia.org/wiki/YAML)[^4]code block, and everything else is part of the main document. Try adding some of these other fields to your YAML and re-render it to see what it looks like.
+
+[^4]: You can read a bit more about YAML headers in Quarto [here](https://quarto.org/docs/get-started/hello/rstudio.html#yaml-header) and [this reference page](https://quarto.org/docs/reference/formats/html.html) lists all options possible for html output.
+
+```{r}
+#| eval: false
+---
+title: "Untitled"
+author: "Victoria Sass"
+date: "March 26, 2024"
+output: html_document
+---
+```
+
+To mess with global formatting, [you can modify the header](http://rmarkdown.rstudio.com/html_document_format.html). Be careful though, **YAML is space-sensitive**; spaces and indents matter!
+
+```{r}
+#| eval: false
+output:
+  html_document:
+    theme: readable
+```
+
+In your YAML header, make the date come from R's `Sys.time()` function by changing:
+
+```         
+date: "March 26, 2024"
+```
+
+to
+
+```         
+date: "`r inline_expr("Sys.time()", "md")`"
+```
+
+
+
+## Quarto text ("markdown")
+
+For details on [text formatting](https://quarto.org/docs/authoring/markdown-basics.html#text-formatting) (e.g. bold), [outlines/bullet points](https://quarto.org/docs/authoring/markdown-basics.html#lists), [nicely formatted math](https://quarto.org/docs/authoring/markdown-basics.html#equations) and more, see the Quarto documentation.
+
+-   Getting started with Quarto
+    -   [Tutorial: Hello, Quarto](https://quarto.org/docs/get-started/hello/rstudio.html)
+    -   [Tutorial: Computations](https://quarto.org/docs/get-started/computations/rstudio.html)
+    -   [Tutorial: Authoring](https://quarto.org/docs/get-started/authoring/rstudio.html)
+-   [Ways to modify the overall document appearance](https://quarto.org/docs/output-formats/html-basics.html)
+-   [Ways to format parts of your document](https://quarto.org/docs/authoring/markdown-basics.html)
+-   [Learn about the visual editor here](https://quarto.org/docs/visual-editor/)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Extra resources
+
+-   Some of many R tutorials and resources you might find useful, in no particular order:
+
+    -   [R for Data Science](https://r4ds.hadley.nz/). Free online textbook by Hadley Wickham.
+    -   [R and Social Science](https://m-clark.github.io/docs/RSocialScience.pdf). Free online textbook by Michael Clark.
+    -   [R for Social Science](https://datacarpentry.org/r-socialsci/). Open curriculum/tutorial by the Carpentries.
+    -   [Intro to R for Social Scientists](https://jaspertjaden.github.io/course-intro2r/). Tutorial by Jasper Dag Tjaden.
+    -   [R for Non-Programmers: A Guide for Social Scientists](https://bookdown.org/daniel_dauber_io/r4np_book/). Free online textbook by Daniel Dauber.
+
+-   Working with census and American Community Survey (ACS) data in R:
+
+    -   [R, python, and other code developed by ACS users](https://github.com/Census-ACS)
+    -   [A webinar recording on using ACS data in R and python](https://www.census.gov/data/academy/webinars/2022/getting-started-with-american-community-survey-data.html)
+
+-   Handy tool for graphing functions: [Desmos calculator](https://www.desmos.com/calculator)

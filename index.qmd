@@ -13,18 +13,19 @@ toc: false
 ## Welcome!
 
 ### Instructor:
+
 [Jess Kunke](https://jpierkunke.github.io/) (she/they)
 
-### Lecture: 
+### Lecture:
+
 Tuesdays 4:30-6:20pm
 
 [Thomson Hall](https://www.washington.edu/maps/#!/THO), Room 125
 
 ### Office hours:
-Wednesdays TBD
+
+Fridays 2-4pm, hybrid (Zoom and physical location TBD)
 
 For further course details, please see the syllabus.
 
 **Thank you Vic Sass for the fantastic website design!**
-
-
