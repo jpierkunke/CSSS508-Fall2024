@@ -24,16 +24,15 @@ execute:
 
 Let's introduce ourselves!
 
-- Name, pronouns
-- Program, year
-- Any experience with programming or R? (None required!)
-- How do you feel about the course or what are your goals in taking this class?
-- What is one thing you like about fall?
+-   Name, pronouns
+-   Program, year
+-   Any experience with programming or R? (None required!)
+-   How do you feel about the course or what are your goals in taking this class?
+-   What is one thing you like about fall?
 
 # CSSS 508 intro and logistics
 
-- We'll go over the syllabus together
-
+-   We'll go over the syllabus together
 
 # What are R, RStudio, and Quarto?
 
@@ -50,7 +49,7 @@ RStudio makes it easier to use R by providing a visual point-and-click interface
 -   View data and objects
 -   Manage version control through `git` repositories
 
-It also has the following nice features: 
+It also has the following nice features:
 
 -   Auto-complete code and highlight syntax like other text editors such as Atom
 -   Integrate R code into documents with **Quarto**
@@ -89,7 +88,7 @@ How is R related to or different from other languages and software such as Stata
 :::
 
 1.  Multifunctionality: as a computing language, R can do so many things!
-    
+
     -   Data access from a file (you can even read in metadata from the filename!)
 
     -   Data access directly from the internet (e.g. [tidycensus](https://walker-data.com/tidycensus/articles/basic-usage.html))
@@ -116,7 +115,7 @@ How is R related to or different from other languages and software such as Stata
     -   Instead of manually going through your data to flag or correct problematic data, reformat text, recode variables, and do other processing/quality control, you can automate it!
 
     -   Record the set of instructions for your analysis from start to finish in a script or notebook, and store and use it like a recipe
-    
+
     -   If you want to make a change, you can just make that one change to your script and rerun the code rather than having to repeat individual steps over and over
 
     -   If you're troubleshooting or still developing your procedures, you can step through the instructions
@@ -191,14 +190,13 @@ If instead you open RStudio by clicking on an R file, this screenshot shows the 
 
 You can rearrange your panes at any time by going to Preferences \> Pane Layout. You can also resize/adjust the panes by clicking and dragging their boundaries.
 
-
-
-
 # Getting started with running code
 
-There are several ways to run R code in RStudio.  With any of these methods, the console will show the lines you ran, with each one followed by any printed output from that line.
+There are several ways to run R code in RStudio. With any of these methods, the console will show the lines you ran, with each one followed by any printed output from that line.
 
-Let's start typing and running some code in the Console. To do this, click in the Console pane and you should see your **cursor**[^2] blinking next to a greater-than symbol `>` which we call the command line prompt. Then type what you want to run, and hit the Enter/Return key. For example, we can type `3+2` and hit Enter/Return. 
+Let's start typing and running some code in the Console. To do this, click in the Console pane and you should see your **cursor**[^2] blinking next to a greater-than symbol `>` which we call the command line prompt. Then type what you want to run, and hit the Enter/Return key. For example, we can type `3+2` and hit Enter/Return.
+
+[^2]: This thing is the cursor: [\|]{.blink_me}
 
 ![](figures/Console.png)
 
@@ -239,19 +237,19 @@ pi*1
 
 A few notes:
 
-- There are some special values in R, like NaN and Inf.
-- Operations follow the usual order of operations (PEMDAS).
-- Notice that the lines starting with the hashtag or pound key `#` are ignored by R: they appear in the Console but R knows this is not code but something for the human to read. We call these **comments** and we'll cover this more later. Other languages have different comment characters that function like `#` does in R.
+-   There are some special values in R, like NaN and Inf.
+-   Operations follow the usual order of operations (PEMDAS).
+-   Notice that the lines starting with the hashtag or pound key `#` are ignored by R: they appear in the Console but R knows this is not code but something for the human to read. We call these **comments** and we'll cover this more later. Other languages have different comment characters that function like `#` does in R.
 
 ## Functions
 
-`sqrt()` is an example of a **function** in R.  **Arguments** are the *inputs* to a function. In this case, the only argument to `sqrt()` is `x` which can be a number or a vector of numbers.
+`sqrt()` is an example of a **function** in R. **Arguments** are the *inputs* to a function. In this case, the only argument to `sqrt()` is `x` which can be a number or a vector of numbers.
 
 The basic template of a function is
 
 `function_name(argument1, argument2 = value2, argument3 = value3...)`
 
-::: {.callout-note}
+::: callout-note
 Functions can have a wide range of arguments and some are *required* for the function to run, while others remain optional. You can see from each functions' help page which are not required because they will have an `=` with some default value pre-selected. If there is no `=` it is up to the user to define that value and it's therefore a required specification.
 
 R is case-sensitive, so if the function is called `sqrt`, then typing `SQRT(100)` and `Sqrt(100)` will give you an error or use some other function if there's one defined under that name!
@@ -296,8 +294,6 @@ If you're trying to look up the help page for a function and can't remember its 
 
 You can also Google "r" and a description of what you're trying to do.
 
-
-
 # Objects
 
 So far, we have been calculating things in R without storing them anywhere. For data analysis and statistics, we need to be able to store and manipulate information instead of just computing things.
@@ -339,9 +335,6 @@ Objects can be numbers, strings, matrices, or even more complicated `R` objects.
 -   lm object (linear model object, e.g. regression)
 -   formula
 
-
-
-
 ## Calling Objects
 
 You can display or "call" an object simply by using its name.
@@ -377,7 +370,6 @@ height + height
 sqrt(height)
 ```
 
-
 ## Object types
 
 A **vector** is one of many data types available in `R`. Specifically, it is a series of **elements**, such as numbers, strings, or booleans (i.e. `TRUE`, `FALSE`).
@@ -401,9 +393,6 @@ There are other, more complex data types in R which we will discuss later in the
 
 Most data sets you will work with will be read into `R` and stored as a **dataframe**, so this course will mainly focus on manipulating and visualizing these objects.
 
-
-
-
 # Working with data
 
 What are we waiting for? Let's dive into some data!
@@ -417,7 +406,6 @@ We can load the built-in data `swiss`, which loads as a dataframe, a type of obj
 `View(swiss)` pops up a **Viewer** tab in the source pane ("interactive" use only, don't put in Quarto document!).
 
 `summary()` displays summary information. Note that R is **object-oriented**, and the one function `summary()` provides different information for different types of objects.
-
 
 ```{r}
 #| eval: false
@@ -440,8 +428,6 @@ Try the above commands, see what they do, and try to answer the following questi
 -   How do you take a look at the first few rows? Last few rows?
 -   What questions do you still have about the data?
 :::
-
-
 
 ## Basic plots in base R
 
@@ -477,8 +463,7 @@ abline(h = mean(cars$dist), col = "firebrick") # add horizontal line (y-value)
 abline(v = mean(cars$speed), col = "cornflowerblue") # add vertical line (x-value)
 ```
 
-::: {.callout-note}
-
+::: callout-note
 `Education ~ Agriculture` is a formula of the type `y ~ x`. The first element (`Education`) gets plotted on the y-axis and the second (`Agriculture`) goes on the x-axis. Regression formulae follow this convention as well!
 :::
 
@@ -492,97 +477,91 @@ pairs(swiss,
 ```
 
 
-## Tables with the `gt` Package
+<!-- ## Tables with the `gt` Package -->
 
-Let's make a table that's more polished than the code-y output `R` automatically gives us. To do this, we'll want to install our first **package** called `gt`. In the **console**, run: `install.packages("gt")`.
+<!-- Let's make a table that's more polished than the code-y output `R` automatically gives us. To do this, we'll want to install our first **package** called `gt`. In the **console**, run: `install.packages("gt")`. -->
 
-::: {.callout-caution icon="false"}
-## Different Syntax
+<!-- ::: {.callout-caution icon="false"} -->
+<!-- ## Different Syntax -->
 
-Notice that unlike the `library()` command, *the name of a package to be installed must be in quotes*? This is because the name here is a search term (text, not an object!) while for `library()` it is an actual R object. Either single or double quotes is fine as long as the starting and ending quotes match.
-:::
+<!-- Notice that unlike the `library()` command, *the name of a package to be installed must be in quotes*? This is because the name here is a search term (text, not an object!) while for `library()` it is an actual R object. Either single or double quotes is fine as long as the starting and ending quotes match. -->
+<!-- ::: -->
 
-Let's make some cleaner tables:
+<!-- Let's make some cleaner tables: -->
 
-::: panel-tabset
-### Code
+<!-- ::: panel-tabset -->
+<!-- ### Code -->
 
-```{r}
-#| eval: false
-#| code-line-numbers: "|1|"
-library(gt) # loads gt, do once in your session
-gt(as.data.frame.matrix(summary(swiss))) 
-```
+<!-- ```{r} -->
+<!-- #| eval: false -->
+<!-- #| code-line-numbers: "|1|" -->
+<!-- library(gt) # loads gt, do once in your session -->
+<!-- gt(as.data.frame.matrix(summary(swiss)))  -->
+<!-- ``` -->
 
-::: fragment
-::: {.callout-tip icon="false"}
-## Nesting Functions
+<!-- ::: fragment -->
+<!-- ::: {.callout-tip icon="false"} -->
+<!-- ## Nesting Functions -->
 
-Note that we put the `summary(swiss)` function call inside the `as.data.frame.matrix()` call which all went into the `gt()` function. This is called *nesting functions* and is very common. I'll introduce a method next week to avoid confusion from nesting too many functions inside each other.
-:::
-:::
+<!-- Note that we put the `summary(swiss)` function call inside the `as.data.frame.matrix()` call which all went into the `gt()` function. This is called *nesting functions* and is very common. To avoid confusion from nesting too many functions inside each other, when we have more than a couple of functions we can use a **pipe** to feed the output of one function into another. The next code chunk shows an example of this with the `|>` pipe! -->
+<!-- ::: -->
+<!-- ::: -->
 
-::: fragment
-::: {.callout-note icon="false"}
-## What's `as.data.frame.matrix()` Doing?
+<!-- ::: fragment -->
+<!-- ::: {.callout-note icon="false"} -->
+<!-- ## What's `as.data.frame.matrix()` Doing? -->
 
-`gt()` takes as its first argument a `data.frame`-type object, while `summary()` produces a `table`-type object. Therefore, `as.data.frame.matrix()` was additionally needed to turn the `table` into a `data.frame`.
-:::
-:::
+<!-- `gt()` takes as its first argument a `data.frame`-type object, while `summary()` produces a `table`-type object. Therefore, `as.data.frame.matrix()` was additionally needed to turn the `table` into a `data.frame`. -->
+<!-- ::: -->
+<!-- ::: -->
 
-### Table
+<!-- ### Table -->
 
-```{r}
-#| echo: false
-library(gt) # loads gt, do once in your session
-swiss |> 
-  summary() |> 
-  as.data.frame.matrix() |> 
-  gt() |> 
-  tab_options(table.align = "center", 
-              table.font.size = pct(75)) 
-```
-:::
+<!-- ```{r} -->
+<!-- #| echo: false -->
+<!-- library(gt) # loads gt, do once in your session -->
+<!-- swiss |>  -->
+<!--   summary() |>  -->
+<!--   as.data.frame.matrix() |>  -->
+<!--   gt() |>  -->
+<!--   tab_options(table.align = "center",  -->
+<!--               table.font.size = pct(75))  -->
+<!-- ``` -->
+<!-- ::: -->
 
-We can check out `gt`'s Version of `head()` and `tail()`:
+<!-- We can check out `gt`'s Version of `head()` and `tail()`: -->
 
-::: panel-tabset
-### `head()`
+<!-- ::: panel-tabset -->
+<!-- ### `head()` -->
 
-```{r}
-head(swiss)
-```
+<!-- ```{r} -->
+<!-- head(swiss) -->
+<!-- ``` -->
 
-### `gt_preview()` alternative
+<!-- ### `gt_preview()` alternative -->
 
-```{r}
-#| eval: false
-gt_preview(swiss, 
-           top_n = 3, # default is 5
-           bottom_n = 3) # default is 1 
-```
+<!-- ```{r} -->
+<!-- #| eval: false -->
+<!-- gt_preview(swiss,  -->
+<!--            top_n = 3, # default is 5 -->
+<!--            bottom_n = 3) # default is 1  -->
+<!-- ``` -->
 
-```{r}
-#| echo: false
-swiss |> 
-  gt_preview(top_n = 3, bottom_n = 3) |> 
-  tab_options(table.align = "center", table.font.size = pct(70))
-```
-:::
+<!-- ```{r} -->
+<!-- #| echo: false -->
+<!-- swiss |>  -->
+<!--   gt_preview(top_n = 3, bottom_n = 3) |>  -->
+<!--   tab_options(table.align = "center", table.font.size = pct(70)) -->
+<!-- ``` -->
+<!-- ::: -->
 
-::: fragment
-::: {.callout-note icon="false"}
-## 👋 Bye Bye `as.data.frame.matrix()`
+<!-- ::: fragment -->
+<!-- ::: {.callout-note icon="false"} -->
+<!-- ## 👋 Bye Bye `as.data.frame.matrix()` -->
 
-We no longer need `as.data.frame.matrix()` since we're no longer using `summary()`. Both `head()` and `gt_preview()` take a `data.frame`-type object as their first argument which is the same data type as `swiss`.
-:::
-:::
-
-
-
-
-
-
+<!-- We no longer need `as.data.frame.matrix()` since we're no longer using `summary()`. Both `head()` and `gt_preview()` take a `data.frame`-type object as their first argument which is the same data type as `swiss`. -->
+<!-- ::: -->
+<!-- ::: -->
 
 # Packages and environment
 
@@ -634,11 +613,13 @@ We'll use this **tidyverse** package a lot. In fact, [**tidyverse** is actually 
 
 Typing commands directly into the console is nice sometimes, especially for developing code or testing things out. If you quit, though, the commands you typed and the results you obtained disappear and will not be there when you reopen RStudio later. To save them, you can store the commands in a file. The simplest kind of file is called a **script**.
 
-Open a new script (File > New File > R Script, or Shift+Command+N). This will appear in the Source pane of your RStudio window.
+Open a new script (File \> New File \> R Script, or Shift+Command+N). This will appear in the Source pane of your RStudio window.
 
-Type the line `sqrt(100)`. With your **cursor**[^2] anywhere on that line of code, type Command-Return (Mac) or Control-Return (PC), or click "Run".
+Type the line `sqrt(100)`. With your **cursor**[^3] anywhere on that line of code, type Command-Return (Mac) or Control-Return (PC), or click "Run".
 
-Notice that your cursor moves to the next line, so you can step through line by line and run code sequentially if you have multiple lines of code.  For instance, copy and paste the following lines of code into your script, place your cursor on the first line, and step through the code running it line by line:
+[^3]: This thing is the cursor: [\|]{.blink_me}
+
+Notice that your cursor moves to the next line, so you can step through line by line and run code sequentially if you have multiple lines of code. For instance, copy and paste the following lines of code into your script, place your cursor on the first line, and step through the code running it line by line:
 
 ```{r}
 #| eval: false
@@ -649,19 +630,12 @@ sqrt(400)
 
 To run a set of lines from a script or document without stepping through them line by line, click and drag to highlight them in the **editor** window, then do one of the following:
 
-- Click     ![](images/rtudio_run.png){.absolute top="105" right="430"} *Run* at the top right corner of the window
-- Type Command-Return (Mac) or Control-Return (PC)
+-   Click     ![](images/rtudio_run.png){.absolute top="105" right="430"} *Run* at the top right corner of the window
+-   Type Command-Return (Mac) or Control-Return (PC)
 
-[^2]: This thing is the cursor: [\|]{.blink_me}
-
-::: {.callout-important}
+::: callout-important
 When copying and pasting code from Console, make sure to delete command prompts `>` and other characters (such as `+`) and comment out or delete output.
 :::
-
-
-
-
-
 
 # Commenting your code
 
@@ -685,7 +659,6 @@ x = 9
 x = x - 5
 ```
 
-
 # When is code run?
 
 Note that code in your script file is not run until you run it. Therefore, it is also not necessarily run in the order that it is in your script; it is run in whatever order you execute it. For instance, if you quit RStudio, reopen it, and run just the last line of the script, you will receive an error.
@@ -704,13 +677,6 @@ As one last practice session for today, write a script with code that you learne
 -   Use comments to organize and explain it to yourself for tomorrow, as well as for a month or a year from now.
 -   Then trade code with another math camp participant to give each other feedback. Please share at least one thing that you like about (or learned from) the other person's code and at least one suggestion or idea you have for their code.
 :::
-
-
-
-
-
-
-
 
 # Quarto
 
@@ -735,7 +701,6 @@ tinytex::install_tinytex()
 
 ## Anatomy of a Quarto Document
 
-
 Elements of a Quarto document:
 
 1.  An (optional) YAML header (surrounded by `---`s).
@@ -744,7 +709,6 @@ Elements of a Quarto document:
 
 3.  Chunks of code (surrounded by ```` ``` ```` s) and/or their output.
 
-
 ## R code in a Quarto document
 
 Inside Quarto, lines of R code are called **chunks**. Code is sandwiched between sets of three backticks and `{r}`.
@@ -752,7 +716,6 @@ Inside Quarto, lines of R code are called **chunks**. Code is sandwiched between
 In quarto documents, you can click within a code chunk and click the green arrow    ![](images/rstudio_run_current_chunk.png){.absolute top="355" right="135"} to run the chunk. The button beside that (   ![](images/rstudio_run_all_chunks_above.png){.absolute top="392" right="615"}) runs *all prior chunks*.
 
 You can change whether the output shows up in the quarto document or in your console by clicking the gear symbol for Settings and selecting either "Chunk Output Inline" or "Chunk Output in Console".
-
 
 ### Code chunk options
 
@@ -804,7 +767,6 @@ Four score and seven years ago is the same as `r inline_expr("4*20 + 7", "md")` 
 
 Four score and seven years ago is the same as `r 4*20 + 7` years.
 
-
 Maybe we've saved a variable in a code chunk that we want to reference in the text:
 
 ```{r}
@@ -825,7 +787,6 @@ Having R dump values directly into your document protects you from silly mistake
 -   Consistency! No "find/replace" mishaps; reference a variable in-line throughout your document without manually updating if the calculation changes (e.g. reporting sample sizes).
 
 -   You are more likely to make a typo in a "hard-coded" number than you are to write R code that somehow runs but gives you the wrong thing.
-
 
 ## Quarto Headers
 
@@ -864,8 +825,6 @@ to
 date: "`r inline_expr("Sys.time()", "md")`"
 ```
 
-
-
 ## Quarto text ("markdown")
 
 For details on [text formatting](https://quarto.org/docs/authoring/markdown-basics.html#text-formatting) (e.g. bold), [outlines/bullet points](https://quarto.org/docs/authoring/markdown-basics.html#lists), [nicely formatted math](https://quarto.org/docs/authoring/markdown-basics.html#equations) and more, see the Quarto documentation.
@@ -877,22 +836,6 @@ For details on [text formatting](https://quarto.org/docs/authoring/markdown-basi
 -   [Ways to modify the overall document appearance](https://quarto.org/docs/output-formats/html-basics.html)
 -   [Ways to format parts of your document](https://quarto.org/docs/authoring/markdown-basics.html)
 -   [Learn about the visual editor here](https://quarto.org/docs/visual-editor/)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 # Extra resources
 
