@@ -1,9 +1,9 @@
 project:
   type: website
   output-dir: docs
-  render:
-    - "*.qmd"
-    - "!Homework/CSSS508_HW1_*.qmd"
+  # render:
+  #   - "*.qmd"
+  #   - "!Homework/CSSS508_HW1_*.qmd"
 
 format:
   html:
