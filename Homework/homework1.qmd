@@ -13,8 +13,8 @@ Your document should be pleasant for a peer to look at, with some organization u
 
 ### Template
 
-[rendered html file](CSSS508_HW1_Template.html) • [raw qmd file](CSSS508_HW1_Template.qmd)
+[rendered html file](CSSS508_HW1_Template.html) • [raw qmd file](https://raw.githubusercontent.com/vsass/CSSS508/main/Homework/HW1/CSSS508_HW1_Template.qmd)
 
 ### Example
 
-[rendered html file](CSSS508_HW1_Example.html) • [raw qmd file](CSSS508_HW1_Example.qmd)
+[rendered html file](CSSS508_HW1_Example.html) • [raw qmd file](https://github.com/jpierkunke/CSSS508-Fall2024/blob/main/Homework/CSSS508_HW1_Example.qmd)
