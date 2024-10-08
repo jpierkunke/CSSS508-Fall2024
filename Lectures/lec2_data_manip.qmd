@@ -1,8 +1,8 @@
 ---
-title: "Day 2: Data manipulation and visualization"
-subtitle: "CSSS Math Camp 2024"
-author: "Jess Kunke, with previous material from Jess Godwin"
-date: "Tue 10 Sep 2024"
+title: "Lecture 2: Manipulating and summarizing data"
+subtitle: "CSSS 508"
+author: "Jess Kunke"
+date: "Tue 08 Oct 2024"
 # format:
 #   revealjs:
 #     smaller: true
@@ -13,61 +13,380 @@ format:
     toc-depth: 3
     number_sections: false
     embed-resources: true
-execute: 
+execute:
   eval: false
+  echo: true
+  message: false
+  warning: false
+lightbox: true
 ---
 
-## Today's dataset
+::: {#fig-happy-sad-code layout-ncol=2}
 
-Today we'll be using a subset of the [gapminder dataset](https://www.gapminder.org/data/) including life expectancy at birth (in years), GDP per capita (in US dollars, inflation-adjusted), and population by country.  You can load this into R directly from the **gapminder** package, but to practice reading data from a file, we will read it from the file "gapminder.csv".
+![The experience I think some people had this week](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/5eb9a097-31be-4289-88f7-970b8c232beb_rw_3840.png?h=288fafa64ed9bdad96c8c7b1b07ab87e){#fig-sad .lightbox}
 
-## Packages
+![The experience I want to help people have](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/1e60324c-ed70-4e0d-b2d3-cc6db584e73b_rw_3840.png?h=61ff018499616f89960627e4b8d2eeec){#fig-happy .lightbox}
 
-We will be using the **tidyverse** package today, which we installed yesterday.  Which of the following commands will we need?  Both? One? Neither?  Why?
+Two very different experiences with coding. (Illustration credit: [Allison Horst](https://allisonhorst.com/everything-else))
+:::
+
+There's a certain amount of confusion and struggle that is a natural part of learning new skills and concepts, and that's a great albeit uncomfortable thing. I didn't mean to introduce additional barriers, though, and I'm sorry.
+
+Let's get from @fig-sad to @fig-happy together today!
+
+# Updates and reminders
+
+- From now on (including this week), office hours will be held on Fridays 2-4pm in Padelford (PDL) C-301
+  - Exception: on 10/25 we'll be in a different room (still being confirmed)
+- Make sure to check Ed Discussion and Canvas announcements (you should be receiving Canvas announcements as emails, but you can also see them on Canvas)
+- How to use these lecture notes
+  - Left-hand menu only shows highest-level table of contents until you scroll to a section with subsections
+  - It shows you the subsections of the section you're in
+  - Use this table of contents to help you find the answers to your questions as you work on homework
+
+
+# Outline for today
+
+- Gain more confidence with material from last time
+  - Different working modes: Console, Quarto document, R script
+  - Working environments and how stuff runs in R/RStudio/Quarto
+  - Tips to improve your workflow and coding
+  - Commenting your code
+- Packages: what they are, how to install and load them
+- Tables and subsetting
+- Reading in data from a file
+- Organizing files with R projects
+- Exploring the data
+
+
+# Last time: Recap, practice, and extension
+
+Last time, we...
+
+- Learned how to run code in the Console
+- Learned some R syntax and functions
+- Introduced creating, modifying, and rendering Quarto documents
+
+Let's review, clarify and build upon some key skills and concepts. A lot of this will continue to be clearer as we learn more R, but I want to highlight these points upfront.
+
+## Different working modes 
+
+We saw two different ways to write and organize R code last time: in the Console and in a Quarto document.  A third mode is to make an R script, and we can demo that briefly here.  What's the difference, and when might you use one mode or another?
+
+- Console
+  - Interactive
+  - Great for exploratory analysis
+  - Great for trying out different commands and developing your code
+  - Not really meant for recording your steps for later
+  - Not meant for sharing with other people
+  - Order matters: for example, you have to define a variable (`height = 60`) before you use it (`height + 4`) or modify it (`height = height + 4`)
+    - But if you mix up the order, you get an error, and you can type new code to fix it
+- R script (.R file type)
+  - Great for organizing a final analysis or set of code
+  - Order matters: runs from start to finish
+  - Make notes for yourself/readers in the comments
+- Quarto document (.qmd file type)
+  - Incorporate text, code, tables, plots, etc. together in one document
+  - Great for making a report, website, etc.
+  - Order matters: runs from start to finish
+
+Note: when you render a Quarto document, it actually creates an html file on your computer in the same directory as your qmd file and with the same name. For example, if you render myHW1.qmd it will create myHW1.html in the same folder. It might be an unfamiliar file type, but it's a file just like a pdf or a Word document or an R script. It is this html file which it opens for you in your browser or in RStudio, and after you render it you can always open that file at any time by double-clicking the html file with the same name as your qmd file. So when it comes time to submit your qmd and html files, you'll want to submit the html file that's already on your computer and in the same folder as the qmd file.
+
+## Working environments
+
+When you run `height = 4` or read in data using the Console, you see these objects appear in the Environment tab. The reason it's called the Environment tab is that it shows you what is in your current **global environment**. You can think of this like your work desk in R Studio. It's the stuff you have defined already, that you can work with. If you run the code `x + 4` in the console but you haven't yet defined an object called `x`, you'll get an error because that object is not defined in your global environment.
+
+When you open a script or a Quarto document and put code there, it doesn't get run until you run it. So just because you have defined an object in your script or Quarto document does not mean it has actually been created anywhere yet. Similarly, the order in which you run your code matters.
+
+When you render a Quarto document, it actually creates a *fresh* environment behind the scenes and runs the code in the document start to finish. So if you defined some object `height` in your global environment (you see it in your Environment tab) but you never defined it in your Quarto document, and the code in your Quarto document tries to use it (like `smaller_height = height - 4`), you'll get an error like "object height does not exist".
+
+All of this is important when it comes to troubleshooting errors yourself and when you ask for help in troubleshooting them.
+
+Also, there are a few commands we learned that are useful when you work interactively in the Console but won't work if you try to put them in a Quarto file and render it.  The `View()` command and the `?` command are both commands intended for use in the console only because they produce changes in the interactive RStudio window that can't be reproduced in an html file when you try to render the Quarto file.  Basically, commands that just print stuff or make plots/tables are fine, but commands that pull up viewing windows, help pages, etc probably won't work. So if you get an error when you try to render the qmd file, and you have `View` and `?` commands such as the following in your Quarto file, remove them and try rendering again:
 
 ```{r}
-# note: install.packages REQUIRES quotes around the package name
+#| eval: false
+
+View(swiss)
+?swiss
+?mean
+```
+
+
+## Workflow tips and time savers
+
+For your homework as well as for coding in general, here are some key tips to make your life easier:
+
+- **Render your Quarto document frequently**
+  - If an error occurs, you know it was something you just changed and not anywhere in the whole document
+  - Makes errors more interpretable and easier to troubleshoot
+- Explore and develop your code in the Console, and as you work out parts of your code that you want to include in the final document, put them in your Quarto document or R script (for homework, we're using Quarto documents) in the order that it needs to be run
+- Use RStudio's autocomplete to help you type less and avoid typos
+  - If you type the first 3-4 characters of the name of a dataset or a function in R, a little menu will appear and allow you to autocomplete the rest of the name
+  - If it's a function name you're typing, it will give you a quick summary of the function's purpose and format
+  - As we will see today, if it's a dataset, once you enter the name and type $ it will list all the variables of the dataset and you can autocomplete the name of the variable you want
+- If you already typed some code and you want to type similar code, copy and paste, then modify
+- Use and practice keyboard shortcuts
+  - Shift-Command-C (or Shift-Control-C on a PC) to comment/uncomment a line
+  - Command-Return (or Control-Return on a PC) to run a line of code or a highlighted chunk of code
+  - Option-Command-I to insert a code chunk in a Quarto document
+
+
+
+## Commenting your code
+
+Many languages have a **comment character** that allows you to "comment out" parts of your code so that R will not run them. In R, that comment character is the hashtag `#`.
+
+Why would I ever want to do that? One big reason: you can (and should! please!) use this to write comments to yourself and others who read your code, to explain what you're doing or why. You can see examples of this above; for example, with the logical vectors, I used comments to tell you what each line of code did.
+    
+The second big reason: you can use this to temporarily not run certain lines, like if you're troubleshooting code and you want to run the whole script start to finish but you want to skip some parts without deleting them. Let's test this out. What value does `x` have after this code chunk? Why?
+
+```{r}
+x = 9
+x = x + 2
+x = x - 5
+```
+
+What about after this code chunk, which is the same except the middle line is commented out? Why?
+
+Remember that to toggle back and forth between making the line commented and uncommented, you can use the keyboard shortcuts `shift-control-C` or `shift-command-C`.
+
+```{r}
+x = 9
+# x = x + 2
+x = x - 5
+```
+
+
+
+
+
+# Packages and environment
+
+Simply by downloading `R` you have access to what is referred to as Base `R`. That is, the built-in functions and datasets that `R` comes equipped with, right out of the box. Examples that we've already seen include `<-`, `sqrt()`, `+`, `Sys.time()`, and `summary()` but there are obviously many many more. You can see a whole list of what Base `R` contains by running `library(help = "base")` in the console.
+
+What makes `R` so powerful though is its extensive library of **packages**, bundles of code and data. Due to its open-source nature, anyone (even you!) can write a package that others can use. Packages contain pre-made functions and/or data that can be used to extend Base `R`'s capabilities. A handful packages come with R when you download and install it, but most of them you install afterwards when you want them. It's easy and quick to install or update packages when you need them.
+
+Click on the Packages tab in the Files pane. You'll see a list of names in blue with checkboxes next to them; this is the list of packages that you have installed on your computer.
+
+A key point: once you install a package, there is an additional step you need to do before using it. This is a good example to help us understand the concept of the R "environment" or "session".
+
+-   Installing a package makes the programs in that package available on your computer. It's like buying a baking ingredient and putting it on your shelf at home.
+
+-   Before you can use it, you have to take it off the shelf and put it on the counter or wherever you're going to bake, whatever your workspace is. Similarly, you have to load/attach the package to your current R environment before you can use it.
+
+-   If you don't need an ingredient or it's in your way, you can put it back on the shelf. Similarly, you can unload/detach a package at any time.
+
+-   When you're done baking, you put everything away. Similarly, when you quit R, all your packages are unloaded or detached, so when you open R again next time, you'll need to load/attach the ones you need before you start working with them.
+
+-   Just like you can take out all your ingredients at once or one at a time as needed, you can do the same with packages. When you save your code as a script, we generally recommend loading them all at the start so that it's easy to tell by just looking at the top of the script which packages are required for the code you're writing/using. When you're using R interactively, though, you can add and detach packages throughout the session.
+
+When you look at the Packages tab, the packages that have a checkmark next to them are the ones loaded in your current R session for you to use right now, and the unchecked ones are installed but not currently loaded.
+
+The first time you use a package, you'll need to install it. We'll use this **tidyverse** package a lot. In fact, [**tidyverse** is actually a set or suite of packages](https://www.tidyverse.org/packages/) that have been grouped together so that you can do just one install command and one library command when you want to use them. Here's how we install it:
+
+```{r}
+#| eval: false
+# this function requires quotes around the package name!
 install.packages("tidyverse")
-# for library you can use quotes or not, doesn't matter
-library(tidyverse)
 ```
 
-::: {.callout-caution collapse="true"}
-## Expand this to check your answer...
-
-Remember that you pretty much only ever need to install a package with `install.packages()` once on a given device[^1], while you'll need to load it using the `library()` function at the start of each R session that you want to use that package.
-
-[^1]: You'll also usually need to reinstall the packages you use with `install.packages()` if you update R.
-
-Today we'll be using the **tidyverse** package. If you **haven't installed tidyverse**, you'll need to first install it on your computer using the `install.packages()` function, then load it into your current R session using the `library()` function:
+Then whenever you want to use it, you can load/attach it:
 
 ```{r}
-# note: install.packages REQUIRES quotes around the package name
-install.packages("tidyverse")
-# for library you can use quotes or not, doesn't matter
+#| eval: false
+# for this one, you can use quotes or not
 library(tidyverse)
 ```
 
-If you **have already installed tidyverse** on your computer, then you just need the `library()` function:
+::: {.callout-note title="Tips"}
+- Notice that when you start typing, R suggests different options and you can use the up and down arrows to select the right one and hit enter to autocomplete it; this can save a lot of typing.
+
+- This is also a handy way to test whether you already have a package: run the `library()` command, and if it completes successfully then you already have it installed, and otherwise it will let you the package wasn't found.
+
+- As a general rule, don't include the `install.packages()` command in your scripts and Quarto documents, but do make sure to include the `library()` command to load any packages you use in the script/document. I recommend putting all the `library()` commands at the very top of your document.
+
+- You can use `?function_name` to tell what package the function is from. For example, the command `?n_distinct` brings up the help page for the `n_distinct()` function, and the upper left corner of the help page tells us that this function is from the **dplyr** package (which is part of **tidyverse**).
 
 ```{r}
-library(tidyverse)
+?n_distinct
 ```
 
-If you actually never closed your RStudio session from yesterday (which also means your computer must still be running), then you don't even need to run the `library()` function.
 :::
 
 
 
-## Reading in data from a file
 
-In theory, you can just read the code in with one line:
+# Some basic tables with the `swiss` dataset
+
+Let's try out the `kable()` function from the **knitr** package to make some quick tables that look nicer than just printed output.
+
+```{r}
+install.packages("knitr") # run this once if you need to install the package
+library(knitr) # run this at the start of each R sessions or each script/document that uses the knitr package
+```
+
+```{r}
+#| eval: true
+#| include: false
+library(knitr)
+```
+
+Remember that the `swiss` dataset is built in to R.
+
+```{r}
+#| eval: true
+data(swiss)
+summary(swiss)
+kable(summary(swiss))
+
+head(swiss)
+kable(head(swiss))
+```
+
+You can change the precision of the numbers in the table by specifying the `digits` argument:
+
+```{r}
+#| eval: true
+kable(head(swiss), digits = 0)
+```
+
+What if we want to make a table of multiple specific rows or columns? First we have to learn how to subset data.
+
+
+
+# Subsetting a dataset
+
+There are many ways to access particular rows (observations) or columns (variables) of a dataset. The `$` operator lets you extract a particular variable (column) from a dataset:
+
+```{r}
+swiss$Education
+```
+
+You can use numeric or named indices to access rows and columns. Indices appear in square brackets like `[row_index, column_index]`:
+
+```{r}
+swiss[1,4]
+```
+
+If you specify only the rows but not the columns in the indexing, it will give you all columns for those rows. Similarly, `swiss[,4]` will give you the fourth column of all rows.
+
+```{r}
+swiss[1,]
+swiss[,4]
+```
+
+If your rows or columns are named, you can use the names in quotes instead of numeric indices:
+
+```{r}
+swiss["Courtelary",]
+swiss[,"Education"]
+```
+
+## Extracting multiple rows/columns
+
+You can also extract multiple rows and/or columns by specifying a *vector* of row/column indices or names instead of just a single one:
+
+```{r}
+# some different types of vectors:
+16:20
+c(2, 4, 5)
+c("Conthey", "Herens", "Sion", "Boudry")
+swiss$Education
+
+# using vectors to extract more complex subsets of the data
+swiss[16:20, 2:3]
+swiss[c("Conthey", "Herens", "Sion", "Boudry"), 2:4]
+swiss$Education[2:4]
+```
+
+A very useful kind of vector for indexing and subsetting is a logical-valued vector, meaning its elements are all either true or false.
+
+```{r}
+swiss$Education
+swiss$Education > 20
+swiss$Education == 53
+swiss$Education != 53
+!(swiss$Education == 53)
+```
+
+Now let's use these logical vectors to do even more powerful subsetting:
+
+```{r}
+# get the values of Education that are greater than 20
+swiss$Education[swiss$Education > 20]
+# get the values of Fertility for provinces in which Education is greater than 20
+swiss$Fertility[swiss$Education > 20]
+# get the indices of the Education column for which the value is greater than 20
+which(swiss$Education > 20)
+```
+
+## Other uses of logical variables
+
+How many of the provinces have `Agriculture` lower than 35%? 5%? 1%?
+
+```{r}
+sum(swiss$Agriculture < 35)
+sum(swiss$Agriculture < 5)
+sum(swiss$Agriculture < 1)
+```
+
+What percentage of provinces have `Agriculture` lower than 35%?
+
+```{r}
+mean(swiss$Agriculture < 35)
+```
+
+
+
+
+::: {.callout-tip title="Your Turn"}
+1. Write three different lines of code that will extract the `Fertility` variable of the `swiss` dataset.
+2. What does each of these lines do? Which of these lines work and which don't? Which ones don't work the way you expect? Why do you think that is?
+
+```{r}
+swiss[2,4]
+swiss[Courtelary,]
+swiss["Courtelary"]
+swiss$Fertility[1,4]
+swiss$Fertility[1]
+```
+
+3. Using `kable`, make a table of just the `Agriculture` and `Catholic` variables of the `swiss` dataset.
+4. Modify your answer to part 3 by showing just rows 5 through 10 in the table.
+:::
+
+
+
+
+# Cumulative practice
+
+::: {.callout-tip title="Your Turn"}
+1. Open a fresh R script. Write a script that will make a table of the `swiss` data that shows the values of the fertility and education variables for all provinces for which 10% or less of the population is Catholic.
+  - Load any libraries you need
+  - Make sure the code in your script is in the order it needs to be (e.g. you can't use the `kable()` function until you load the **knitr** package)
+  - Don't include any extraneous or exploratory code like `summary(swiss)` or `mean(swiss$Examination)`, just code that you need for the purpose of this script
+  - Comment your code to briefly explain what you are doing at each step
+2. Show the script to your neighbor to get feedback.
+3. Then turn this script into a very simple Quarto document. Write a sentence or two of text to summarize what the table represents.
+:::
+
+
+
+
+# Reading in data from a file
+
+Today we'll be using a subset of the [gapminder dataset](https://www.gapminder.org/data/) including life expectancy at birth (in years), GDP per capita (in US dollars, inflation-adjusted), and population by country.  You can load this into R directly from the **gapminder** package, but to practice reading data from a file, we will read it from the file "gapminder.csv".
+
+In theory, you can just read in the data with one line of code:
 
 ```{r}
 gapminder <- read_csv("gapminder.csv")
 ```
 
 Did that work for you?  It may or may not.  To know why, we need to talk a bit about how files are organized on your computer, and where R looks for things when you tell it to read in a file. This can be a bit painful and confusing at first, but once you know a bit about it, you can choose some systems that work for you.
+
+## File paths
 
 A **file path** is the path to a folder (directory) or file on your computer. File paths are specified in reference to a **root** directory or a **home** directory. So for example, on my computer, the file path "~/Documents/CSSS-math-camp-2024/gapminder.csv" means that in my home directory (signified by "~"), there should be a "Documents" folder, and in there should be a "CSSS-math-camp-2024" folder, and in there should be a file called "gapminder.csv". This path may or may not exist; it's an address, and a file may or may not actually live there, and one of those folders might not actually be in the folder it's supposed to be in, etc.
 
@@ -110,9 +429,9 @@ cat("C:\\User\\Desktop\\")
 
 A **relative** file path is defined with reference to an arbitrary location. For example, "data/gapminder.csv" means, look in your current directory for a folder called "data", and in there, look for a file called "gapminder.csv".
 
-Reading in the data with `gapminder <- read_csv("gapminder.csv")` will work if RStudio knows to look in the directory that contains our dataset. You can use the command `getwd()` (for "get working directory") to see where RStudio is currently looking for your files. Any relative file paths you use are relative to this working directory. So when you say the file you want is "gapminder.csv", you're looking for that file in this directory.
+Reading in the data with `gapminder <- read_csv("gapminder.csv")` will work if RStudio knows to look in the directory that contains our dataset. You can use the command `getwd()` (for "get working directory") to see the folder where RStudio is currently looking for your files; this location or folder is called your current **working directory**. Any relative file paths you use are relative to this folder. So when you say the file you want is "gapminder.csv", you're looking for that file in this folder.
 
-You can organize your R projects using absolute paths, but this is not what I recommend if you are sharing your code or collaborating with others.
+You can organize your R projects using absolute paths, but this is not what I recommend if you are sharing your code or collaborating with others. Instead, see the next section on R projects!
 
 ::: {.callout-caution collapse="true"}
 ## Expand for tips on using absolute file paths
@@ -121,6 +440,7 @@ You can organize your R projects using absolute paths, but this is not what I re
 - In the RStudio Files pane, navigate to the data set you want, click the gear, select "Copy folder path to clipboard", then paste that file path wherever you want the file path (e.g. inside `read_csv()`).
 :::
 
+## Organizing your work with R projects
 
 A fairly painless and straightforward way to handle these file path challenges is to create an R Project. This R project will be associated with a folder where you put most or all of the code and data needed for the project. When you open the project in RStudio, it will tell RStudio to use that folder as "home base". Then you specify all your file paths relative to that folder.
 
@@ -149,42 +469,13 @@ gapminder <- read_csv("gapminder.csv", show_col_types = FALSE)
 
 
 
-### Commenting your code
-
-Many languages have a **comment character** that allows you to "comment out" parts of your code so that R will not run them. In R, that comment character is the hashtag `#`.
-
-Why would I ever want to do that?
-
-- You can (and should! please!) use this to write comments to yourself and others who read your code, to explain what you're doing or why
-
-    - Notice that one of the code chunks above has a line like that: "get working directory (getwd)"
-    
-- You can use this to temporarily not run certain lines, like if you're troubleshooting code and you want to run the whole script start to finish but you want to skip some parts without deleting them
-
-Let's test this out.  What value does `x` have after this code chunk?  Why?
-
-```{r}
-x = 9
-x = x + 2
-x = x - 5
-```
-
-What about after this code chunk, which is the same except the middle line is commented out? Why?
-
-Note: to toggle back and forth between commented and uncommented, you can use the keyboard shortcuts `shift-control-C` or `shift-command-C`.
-
-```{r}
-x = 9
-# x = x + 2
-x = x - 5
-```
 
 
 
 
 
 
-## Data exploration
+# Data exploration
 
 We already learned several things yesterday that we can use to explore this dataset.  Let's practice (and also learn some new things):
 
@@ -199,6 +490,8 @@ head(gapminder)
 dim(gapminder)
 ncol(gapminder)
 names(gapminder)
+rownames(gapminder)
+colnames(gapminder)
 
 # what range of years?
 range(gapminder$year)
@@ -223,6 +516,8 @@ Let's look at this dataset as a (sort-of) matrix for a moment:
 length(gapminder$country)
 # actually it's the same as asking how many rows are in the dataset
 nrow(gapminder)
+# the number of countries in the dataset is...
+n_distinct(gapminder$country)
 
 # check out the first row
 gapminder[1,]
@@ -248,137 +543,6 @@ gapminder[x, y]
 
 3. How many data points do we have for each country? Is it fairly balanced?
 :::
-
-
-
-
-
-## Data manipulation
-
-Now let's see how to work with data using the **tidyverse**! We've actually already sneakily used two **tidyverse** functions-- `read_csv()` and `n_distinct()`-- but now we'll really get into using **tidyverse** for manipulating data.
-
-Behind the **tidyverse** (and its name) is the idea of **tidy data**:
-
-::: {#fig-tidy layout-nrow=2}
-
-![Tidy data](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/85520b8f-4629-4763-8a2a-9ceff27458bf_rw_1920.jpg?h=21007b20ac00cf37318dca645c215453){#fig-tidy}
-
-![Tidy vs. messy data](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/6e297111-efb7-4555-93d2-085071d1853c_rw_1920.jpg?h=f1951b118eaddaaab8a572422bc16566){#fig-tidy-messy}
-
-Illustrations from the Openscapes blog "Tidy Data for reproducibility, efficiency, and collaboration" by Julia Lowndes and Allison Horst
-:::
-
-<!-- ![Tidy data]() -->
-
-<!-- ![Tidy versus messy data](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/6e297111-efb7-4555-93d2-085071d1853c_rw_1920.jpg?h=f1951b118eaddaaab8a572422bc16566) -->
-
-
-
-###	Filtering and selecting
-
-Filtering allows us to subset the dataset to just the rows that meet some condition:
-
-```{r}
-filter(gapminder, continent == Oceania) # why doesn't this work? fix this line of code
-filter(gapminder, continent == "Oceania" & year == 2007)
-filter(gapminder, year>1980 & year<2000 & country == "Eritrea") 
-
-# what's the difference between this and the previous line? and why doesn't this print anything?
-eritrea = filter(gapminder, year>1980 & year<2000 & country == "Eritrea")
-
-# check out the documentation on filter to see its arguments
-?filter
-```
-
-Selecting allows us to pick or look at just certain columns:
-
-```{r}
-select(gapminder, pop)
-select(gapminder, lifeExp:gdpPercap) # range of variables (columns)
-select(gapminder, country, year) # specific variables/columns
-```
-
-We filter rows, and we select columns.
-
-### Adding/changing columns (variables)
-
-Let's add a column that indicates whether the data is from Afghanistan or not:
-
-```{r}
-mutate(gapminder, isAfghan = (country == "Afghanistan"))
-# how do we change the above line of code so that it stores the result somewhere?
-```
-
-We can also use `mutate()` to modify an existing column. For instance, we can make the year integer format:
-
-```{r}
-gap_int = mutate(gapminder, year = as.integer(year))
-str(gap_int)
-```
-
-### Combining steps
-
-Here is some **pseudocode** to show the general flow for how we can combine steps.  This means this pseudocode won't run as is, but it gives us a general sense for how to put things together.
-
-```{r}
-# approach 1:
-new_data = step1(gapminder)
-new_data = step2(new_data)
-new_data = step3(new_data)
-
-# approach 2:
-new_data = step3(step2(step1(gapminder)))
-```
-
-Let's try this with a concrete example, with actual code we can run.  For instance, let's go back to a question we answered earlier without tidyverse: how many African countries are represented in this dataset, and which ones?
-
-```{r}
-# approach 1:
-num_african_countries = filter(gapminder, continent == "Africa")
-num_african_countries = select(num_african_countries, country)
-num_african_countries = n_distinct(num_african_countries)
-
-# approach 2:
-num_african_countries = n_distinct(select(filter(gapminder, continent == "Africa"), country))
-```
-
-
-::: {.callout-tip title="Your Turn"}
-Write code that will do all of the following with the gapminder data:
-
-1. Subset the data to just the countries in Asia with at least 10 million people, then
-2. Pick just the first four columns.
-:::
-
-
-What is annoying so far about combining these steps? In other words, what do you find annoying about Approaches 1 and 2?
-
-
-
-### Combining steps with pipes
-
-Pipes will make this better; they are a way of feeding one command into another.  First let's see how a pipe works with a single step. Use `shift-control-M` or `shift-command-M` to make the pipe symbol `%>%`.
-
-```{r}
-# without pipe
-filter(gapminder, continent == "Oceania")
-
-# with a pipe
-gapminder %>% filter(continent == "Oceania")
-```
-
-Now let's see how this works with a sequence of commands by rewriting our example above about the number of African countries:
-
-```{r}
-num_african_countries = gapminder %>%
-  # subset to countries in Africa
-  filter(continent == "Africa") %>%
-  # keep just the country column
-  select(country) %>%
-  # count how many unique values there are
-  n_distinct()
-```
-
 
 
 

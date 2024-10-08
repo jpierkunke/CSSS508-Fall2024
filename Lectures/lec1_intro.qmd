@@ -459,8 +459,8 @@ plot(Education ~ Agriculture,
   ylab = "Percent draftees with education beyond primary school",
   main = "Agriculture and education",
   pch = 16) # Point shape
-abline(h = mean(cars$dist), col = "firebrick") # add horizontal line (y-value)
-abline(v = mean(cars$speed), col = "cornflowerblue") # add vertical line (x-value)
+abline(h = mean(swiss$Education), col = "firebrick") # add horizontal line (y-value)
+abline(v = mean(swiss$Agriculture), col = "cornflowerblue") # add vertical line (x-value)
 ```
 
 ::: callout-note
@@ -748,7 +748,7 @@ Try adding or changing the chunk options for the chunk in `my_first_Rmd.qmd` and
 ```{r}
 #| echo: fenced
 #| eval: false
-summary(cars)
+summary(swiss)
 ```
 
 ### In-Line R code

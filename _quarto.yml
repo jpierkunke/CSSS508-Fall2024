@@ -4,6 +4,7 @@ project:
   # render:
   #   - "*.qmd"
   #   - "!Homework/CSSS508_HW1_*.qmd"
+  #   - "!notes/*.qmd"
 
 format:
   html:
