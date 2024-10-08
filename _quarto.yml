@@ -33,6 +33,8 @@ website:
         - Lectures/lectures.qmd
         - file: Lectures/lec1_intro.qmd
           text: "Lecture 1"
+        - file: Lectures/lec2_data_manip.qmd
+          text: "Lecture 2"
 
     - title: "Homework"
       contents: 
