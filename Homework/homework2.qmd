@@ -1,0 +1,26 @@
+---
+title: "Homework 2"
+highlight-style: a11y-dark
+---
+
+### Instructions
+
+Create a new Quarto document (.qmd file) for this new homework; always use a new Quarto document for each homework.
+
+In your Homework 2 Quarto document, explore the `gapminder` dataset from the **gapminder** package. Later in class we will also read this dataset in from a file, but for this homework we will access the dataset from a package. If you have not used this package before on your computer, you'll need to install it first and then load it with `library()` as we saw in class. Otherwise, you can just use `library(gapminder)` to load the package and `data(gapminder)` to load the dataset.
+
+Use your Quarto document to report on a brief exploration of the dataset. This might read like the dataset section of a paper. It doesn't have to be longer than a page or two, and it does not have to be up to the standard of what you would expect in a paper; the purpose is to practice R, RStudio, and Quarto to do things that eventually you would find practically useful. Remember, the homework is just meant to be a chance to practice stuff from class.
+
+Do at least the following:
+
+- Start by doing some exploratory analysis of the dataset in the Console, some/much of which will not make it into your final document. In your Quarto document, only include code that you will use for the final document you submit. For example, don't include commands like `?gapminder`, and also don't include code like `str(gapminder)` or `mean(gapminder$year)` unless you use them in tables, figures, and/or inline code.
+- Use text to summarize what the dataset is, where it comes from, what variables it includes and what they mean.
+- Comment on the range or distribution of one of the dataset variables. You could show a histogram and report some summary statistics of the variable in the text of the document using inline R code (when we use `r code` to print values directly into the text of the document).
+- Include at least one plot of one variable versus another and comment briefly on what you notice in the plot.
+- Make a table of some subset of rows and columns of the dataset and comment briefly on what you notice.
+- Comment your code using some comments (lines that start with `#`), even if the code doesn't show up in the final html document. You don't have to comment every line, but comment at least some lines that you think should be explained to someone who is trying to understand your code. For example, suppose you sent your Quarto document to a colleague because they wanted to reproduce your analysis and play with the dataset themselves. They might find it useful to see a comment that explains what `kable()` does and what kind of table you are trying to make there.
+- Most of all, just have some fun exploring this dataset and practicing what we did in class!
+
+Your document should be pleasant for a peer to look at, with some organization using section headings. Some attempt should be made to label and format plots and tables. Use chunk options to limit the code and raw output you show in the html file when you render your Quarto document. Don't include a figure or table without commenting on it in the text with at least a sentence. Round any numbers you report to a reasonable precision.
+
+ Upload to Canvas both the `.qmd` file and the `.html` file it generates when you render.

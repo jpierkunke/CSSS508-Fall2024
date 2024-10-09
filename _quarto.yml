@@ -41,4 +41,6 @@ website:
         - Homework/homework.qmd
         - file: Homework/homework1.qmd
           text: "Homework 1"
+        - file: Homework/homework2.qmd
+          text: "Homework 2"
 
