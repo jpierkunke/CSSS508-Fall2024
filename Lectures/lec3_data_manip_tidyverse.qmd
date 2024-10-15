@@ -386,7 +386,7 @@ Quick question: why does `data()` work with and without quotes around the datase
 
 At the time you run the `data()` command, is the `gapminder` object defined in your environment?
 
-## Summary statistics with `group_by()` and `summarize()`
+## Summary statistics
 
 How many data points do we have for each continent? Here's how we could use **tidyverse** to find out:
 
