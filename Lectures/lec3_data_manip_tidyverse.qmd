@@ -21,7 +21,7 @@ execute:
 lightbox: true
 ---
 
-![How I feel about R, over time. Illustration credit: Allison Horst.](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/d65eb83f-66e4-4760-8c1f-29d336d1d6df_rw_3840.png?h=ece3b7c448f38a10cd71866e2cbb2b4d){#fig-experience .lightbox}
+![How I feel about R, over time. Illustration credit: Allison Horst.](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/d65eb83f-66e4-4760-8c1f-29d336d1d6df_rw_3840.png?h=ece3b7c448f38a10cd71866e2cbb2b4d)
 
 
 # Updates and reminders
