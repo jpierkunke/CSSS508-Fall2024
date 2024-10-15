@@ -18,7 +18,7 @@
     "href": "Lectures/lec3_data_manip_tidyverse.html",
     "title": "Lecture 3: Tidyverse!",
     "section": "",
-    "text": "From now on (including this week), office hours will be held on Fridays 2-4pm in Padelford (PDL) C-301\n\nException: next week on 10/25 we’ll be in a different room (still being confirmed)\n\nPeer reviews start this week with Homework 2\nSlightly updated lecture schedule\nThank you for your feedback! Please keep it coming!",
+    "text": "Figure 1: How I feel about R, over time. Illustration credit: Allison Horst.",
     "crumbs": [
       "Lectures",
       "Lecture 3: Data manipulation with tidyverse"
@@ -266,14 +266,14 @@
     "href": "index.html",
     "title": "CSSS 508: Intro to R for Social Scientists",
     "section": "",
-    "text": "Jess Kunke (she/they)\n\n\n\nTuesdays 4:30-6:20pm\nThomson Hall, Room 125\n\n\n\nFridays 2-4pm, hybrid (Zoom and Padelford Room C-301)\nNote: we will have a different location (TBD) for Fri 10/25\nFor further course details, please see the syllabus.\nThank you Vic Sass for the fantastic website design!"
+    "text": "Jess Kunke (she/they)\n\n\n\nTuesdays 4:30-6:20pm\nThomson Hall, Room 125\n\n\n\nFridays 2-4pm, hybrid (Zoom and Padelford Room C-301)\nNote: for Fri 10/25 only, we will have office hours in Thomson 211 (and Zoom)\nFor further course details, please see the syllabus.\nThank you Vic Sass for the fantastic website design!"
   },
   {
     "objectID": "index.html#welcome",
     "href": "index.html#welcome",
     "title": "CSSS 508: Intro to R for Social Scientists",
     "section": "",
-    "text": "Jess Kunke (she/they)\n\n\n\nTuesdays 4:30-6:20pm\nThomson Hall, Room 125\n\n\n\nFridays 2-4pm, hybrid (Zoom and Padelford Room C-301)\nNote: we will have a different location (TBD) for Fri 10/25\nFor further course details, please see the syllabus.\nThank you Vic Sass for the fantastic website design!"
+    "text": "Jess Kunke (she/they)\n\n\n\nTuesdays 4:30-6:20pm\nThomson Hall, Room 125\n\n\n\nFridays 2-4pm, hybrid (Zoom and Padelford Room C-301)\nNote: for Fri 10/25 only, we will have office hours in Thomson 211 (and Zoom)\nFor further course details, please see the syllabus.\nThank you Vic Sass for the fantastic website design!"
   },
   {
     "objectID": "Homework/homework2.html",

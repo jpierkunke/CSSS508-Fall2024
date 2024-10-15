@@ -21,11 +21,13 @@ execute:
 lightbox: true
 ---
 
+![How I feel about R, over time. Illustration credit: Allison Horst.](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/d65eb83f-66e4-4760-8c1f-29d336d1d6df_rw_3840.png?h=ece3b7c448f38a10cd71866e2cbb2b4d){#fig-experience .lightbox}
+
 
 # Updates and reminders
 
 - From now on (including this week), office hours will be held on Fridays 2-4pm in Padelford (PDL) C-301
-  - Exception: next week on 10/25 we'll be in a different room (still being confirmed)
+  - Exception: next week on 10/25 we'll be in Thomson 211 for the office hour
 - Peer reviews start this week with Homework 2
 - Slightly updated [lecture schedule](lectures.qmd)
 - Thank you for your feedback! Please keep it coming!
@@ -104,6 +106,8 @@ If you try to use a function from a package that isn't currently loaded, you'll 
 `Error in kable(continent_stats) : could not find function "kable"`
 
 In that case, just run the library command for the relevant package; here, you'd need the package that `kable()` is in, which is the **knitr** package.
+
+![Yet another Allison Horst comic.](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/31e5b53b-32b2-4a1f-b966-31fb14d1867e_rw_3840.png?h=ddd993d1c761c66819c3a5daa13c7d0d)
 :::
 
 
