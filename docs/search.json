@@ -14,6 +14,39 @@
     "text": "Figure 1 further explores the impact of temperature on ozone level.\n\n\nCode\nlibrary(ggplot2)\nggplot(airquality, aes(Temp, Ozone)) + \n  geom_point() + \n  geom_smooth(method = \"loess\")\n\n\n\n\n\n\n\n\nFigure 1: Temperature and ozone level."
   },
   {
+    "objectID": "Lectures/lec3_data_manip_tidyverse.html",
+    "href": "Lectures/lec3_data_manip_tidyverse.html",
+    "title": "Lecture 3: Tidyverse!",
+    "section": "",
+    "text": "From now on (including this week), office hours will be held on Fridays 2-4pm in Padelford (PDL) C-301\n\nException: next week on 10/25 we’ll be in a different room (still being confirmed)\n\nPeer reviews start this week with Homework 2\nSlightly updated lecture schedule\nThank you for your feedback! Please keep it coming!",
+    "crumbs": [
+      "Lectures",
+      "Lecture 3: Data manipulation with tidyverse"
+    ]
+  },
+  {
+    "objectID": "Lectures/lec3_data_manip_tidyverse.html#summary-statistics-with-group_by-and-summarize",
+    "href": "Lectures/lec3_data_manip_tidyverse.html#summary-statistics-with-group_by-and-summarize",
+    "title": "Lecture 3: Tidyverse!",
+    "section": "Summary statistics with group_by() and summarize()",
+    "text": "Summary statistics with group_by() and summarize()\nHow many data points do we have for each continent? Here’s how we could use tidyverse to find out:\n\ngapminder %&gt;%\n  group_by(continent) %&gt;%\n  summarize(n.obs = n())\n\nWhat about other summary statistics, like the minimum, average, and maximum country population on each continent?\n\ngapminder %&gt;%\n  group_by(continent) %&gt;%\n  summarize(\n    min_pop = min(pop),\n    mean_pop = mean(pop),\n    max_pop = max(pop)\n  )\n\nAs always, if you want to store the results as an object in R so you can do other stuff with it later, you can do that by assignment:\n\ncontinent_stats = gapminder %&gt;%\n  group_by(continent) %&gt;%\n  summarize(\n    min_pop = min(pop),\n    mean_pop = mean(pop),\n    max_pop = max(pop)\n  )\n\nWe can also group by more than one thing if we want to define groups by more than one variable. For example, how many data points do we have for each continent and each year?\n\nn_obs_by_cont_year &lt;- gapminder %&gt;%\n  group_by(continent, year) %&gt;%\n  summarize(n.obs = n())\n\nWhat happens if we switch the order of the grouping variables?\n\nn_obs_by_year_cont &lt;- gapminder %&gt;%\n  group_by(year, continent) %&gt;%\n  summarize(n.obs = n())\n\nNotice that the table structure is not ideal; we’ll address this when we cover pivoting! We’ll also find that useful for plots.\n\n\n\n\n\n\nYour Turn\n\n\n\n\nLet’s return to our earlier question: Does each country has data for the same years, or are the years represented in the data different for some countries? Use tidyverse to figure this out.\nFilter the gapminder dataset for only the data on Italy, then compute the average per-capita GDP for each year in that Italy dataset.\n\n\n\n\n\n\n\n\n\nSolutions\n\n\n\n\n\nThere may be multiple approaches, but here are some:\n\n\n\n\ngapminder %&gt;%\n  group_by(country, year) %&gt;%\n  summarize(nobs = n())\n\n\n\n\n\ngapminder %&gt;%\n  filter(country == \"Italy\") %&gt;%\n  group_by(year) %&gt;%\n  summarize(avg_gdp = mean(gdpPercap))",
+    "crumbs": [
+      "Lectures",
+      "Lecture 3: Data manipulation with tidyverse"
+    ]
+  },
+  {
+    "objectID": "Lectures/lec3_data_manip_tidyverse.html#footnotes",
+    "href": "Lectures/lec3_data_manip_tidyverse.html#footnotes",
+    "title": "Lecture 3: Tidyverse!",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nYou’ll also usually need to reinstall the packages you use with install.packages() if you update R.↩︎",
+    "crumbs": [
+      "Lectures",
+      "Lecture 3: Data manipulation with tidyverse"
+    ]
+  },
+  {
     "objectID": "Lectures/lec1_intro.html",
     "href": "Lectures/lec1_intro.html",
     "title": "Lecture 1: Getting started with R, RStudio, and Quarto",
@@ -21,7 +54,7 @@
     "text": "Let’s introduce ourselves!\n\nName, pronouns\nProgram, year\nAny experience with programming or R? (None required!)\nHow do you feel about the course or what are your goals in taking this class?\nWhat is one thing you like about fall?",
     "crumbs": [
       "Lectures",
-      "Lecture 1"
+      "Lecture 1: Getting started"
     ]
   },
   {
@@ -32,7 +65,7 @@
     "text": "Incomplete code\nThe console is ready to receive your code when it shows the little carrot command prompt &gt;. If you mess up (e.g. leave off a parenthesis), R might instead show a + sign prompting you to finish the command:\n\n3*(11-2\n+\n\nIf this happens, finish the command or hit Esc to get out of this.",
     "crumbs": [
       "Lectures",
-      "Lecture 1"
+      "Lecture 1: Getting started"
     ]
   },
   {
@@ -43,7 +76,7 @@
     "text": "Arithmetic in R\nWe can do basic mathematical computations using +, -, * (multiplication), / (division), and () (grouping). Try the following lines, one line at a time. I recommend typing them yourselves instead of copying and pasting.\n\n2+3\n6*7/2\n# The number pi is hard coded into R\npi*1\n# Why should the following two lines give you different results? What is the order of operations in each one?\n6*3/2-3\n6*3/(2-3) # create this line by using the up arrow to copy the previous command and edit it\n2^(3+2)\n# What will dividing by zero give you?\n1/0\n0/0\n\nA few notes:\n\nThere are some special values in R, like NaN and Inf.\nOperations follow the usual order of operations (PEMDAS).\nNotice that the lines starting with the hashtag or pound key # are ignored by R: they appear in the Console but R knows this is not code but something for the human to read. We call these comments and we’ll cover this more later. Other languages have different comment characters that function like # does in R.",
     "crumbs": [
       "Lectures",
-      "Lecture 1"
+      "Lecture 1: Getting started"
     ]
   },
   {
@@ -54,7 +87,7 @@
     "text": "Functions\nsqrt() is an example of a function in R. Arguments are the inputs to a function. In this case, the only argument to sqrt() is x which can be a number or a vector of numbers.\nThe basic template of a function is\nfunction_name(argument1, argument2 = value2, argument3 = value3...)\n\n\n\n\n\n\nNote\n\n\n\nFunctions can have a wide range of arguments and some are required for the function to run, while others remain optional. You can see from each functions’ help page which are not required because they will have an = with some default value pre-selected. If there is no = it is up to the user to define that value and it’s therefore a required specification.\nR is case-sensitive, so if the function is called sqrt, then typing SQRT(100) and Sqrt(100) will give you an error or use some other function if there’s one defined under that name!\n\n\nLet’s try out some other functions:\n\nsqrt(9)\nlog(exp(1)^2)\nlog(1000)\nexp(2)\nsin(2*pi)\n\nNote that log() computes the natural logarithm (base \\(e\\)) by default. See ?log to compute a logarithm with a different base; how would you compute \\(\\log_{10}(1000)\\) and what should the correct answer be? Verify it by running your command into the R console.\nIf you know the name of a function and want to learn more about how to use it, you can access the help documentation by typing ?sqrt in the Console and look at the Help panel on the bottom right.\n\n?sqrt\n\nHelp files provide documentation on how to use functions and what functions produce. They generally consist of the following sections:\n\nDescription - What does it do?\nUsage - How do you write it?\nArguments - What arguments does it take, which are required, and what are the defaults?\nDetails - A more in-depth description\nValue - What does the function return?\nSee Also - Related R functions\nExamples - Example (& reproducible) code\n\nIf you’re trying to look up the help page for a function and can’t remember its name, you can search by a keyword and you will get a list of help pages containing said keyword.\n\n??exponential\n\nYou can also Google “r” and a description of what you’re trying to do.",
     "crumbs": [
       "Lectures",
-      "Lecture 1"
+      "Lecture 1: Getting started"
     ]
   },
   {
@@ -65,7 +98,7 @@
     "text": "Calling Objects\nYou can display or “call” an object simply by using its name.\n\nheight\n\n[1] 65",
     "crumbs": [
       "Lectures",
-      "Lecture 1"
+      "Lecture 1: Getting started"
     ]
   },
   {
@@ -76,7 +109,7 @@
     "text": "Naming Objects\nObject names are case-sensitive and should be meaningful.\nObject names must begin with a letter and can contain letters, numbers, ., and _.\nTry to be consistent in naming objects. RStudio auto-complete means descriptive names are better than short, vague ones! Good names save confusion later!\n\nsnake_case, where you separate lowercase words with _ is a common and practical naming convention that I strongly recommend.\n\n\nsnake_case_is_easy_to_read\nCamelCaseIsAlsoAnOptionButSortOfHardToReadQuickly\nsome.people.use.periods # not recommended because of how R sometimes uses periods",
     "crumbs": [
       "Lectures",
-      "Lecture 1"
+      "Lecture 1: Getting started"
     ]
   },
   {
@@ -87,7 +120,7 @@
     "text": "Using Objects\nAn object’s name represents the information stored in that object, so you can treat the object’s name as if it were the values stored inside. Just like math variables, the name is a placeholder for what is stored in it.\n\nheight + 10\n\n[1] 75\n\nheight + height\n\n[1] 130\n\nsqrt(height)\n\n[1] 8.062258",
     "crumbs": [
       "Lectures",
-      "Lecture 1"
+      "Lecture 1: Getting started"
     ]
   },
   {
@@ -98,7 +131,7 @@
     "text": "Object types\nA vector is one of many data types available in R. Specifically, it is a series of elements, such as numbers, strings, or booleans (i.e. TRUE, FALSE).\nYou can create a vector using the function c() which stands for “combine” or “concatenate”.\n\nheight &lt;- c(60, 65, 52, 71)\nheight\n\n[1] 60 65 52 71\n\n\nIf you name an object the same name as an existing object, it will overwrite it.\nYou can provide a vector as an argument for many functions as we saw before:\n\nsqrt(height)\n\n[1] 7.745967 8.062258 7.211103 8.426150\n\n\nThere are other, more complex data types in R which we will discuss later in the quarter! These include matrices, arrays, lists, and dataframes.\nMost data sets you will work with will be read into R and stored as a dataframe, so this course will mainly focus on manipulating and visualizing these objects.",
     "crumbs": [
       "Lectures",
-      "Lecture 1"
+      "Lecture 1: Getting started"
     ]
   },
   {
@@ -109,7 +142,7 @@
     "text": "Exploring a dataset\nWe can load the built-in data swiss, which loads as a dataframe, a type of object mentioned earlier. Then, we can look at it in a couple different ways.\ndata(swiss) loads this dataframe into the Global Environment.\nView(swiss) pops up a Viewer tab in the source pane (“interactive” use only, don’t put in Quarto document!).\nsummary() displays summary information. Note that R is object-oriented, and the one function summary() provides different information for different types of objects.\n\ndata(swiss) # loads the data set; where does it appear?\nView(swiss)\nstr(swiss)  # tells you about the STRucture of the data set\nhead(swiss) # what does this do?\nsummary(swiss) # what does this tell you?\n?swiss      # brings up a help/description page to tell you more about the data set; often has citations\ndata()        # this tells you about all the data sets available in your current environment\n\n\n\n\n\n\n\nYour Turn\n\n\n\nTry the above commands, see what they do, and try to answer the following questions about the data:\n\nWhere is the data from?\nHow many variables are in this data set, and what are they?\nHow many rows are in this data set, and what do they represent? Do you have a row for every respondent to a survey? Every state of the US?\nWhat format is each variable in?\nHow do you take a look at the first few rows? Last few rows?\nWhat questions do you still have about the data?",
     "crumbs": [
       "Lectures",
-      "Lecture 1"
+      "Lecture 1: Getting started"
     ]
   },
   {
@@ -120,7 +153,7 @@
     "text": "Basic plots in base R\nhist() generates a histogram of a vector. Note that you can access a vector that is a column of a dataframe using $, the extract operator.\n\nhist(swiss$Education) # Histogram\n\n\n\n\n\n\n\n\nWe can try and make this histogram more informative and appealing by specifying more arguments:\n\nhist(swiss$Education,\n  breaks = 10, # affects the number of bins\n  xlab = \"Percent of draftees with education beyond primary school\", # x-axis label\n  main = \"Histogram of education level\") # Title\n\n\n\n\n\n\n\n\nWe can experiment with colors and shapes.\nWe can make scatterplots to show the relationship between two variables.\n\nplot(Education ~ Agriculture,\n  data = swiss,\n  xlab = \"Percent of males involved in agriculture as occupation\",\n  ylab = \"Percent draftees with education beyond primary school\",\n  main = \"Agriculture and education\",\n  pch = 16) # Point shape\nabline(h = mean(swiss$Education), col = \"firebrick\") # add horizontal line (y-value)\nabline(v = mean(swiss$Agriculture), col = \"cornflowerblue\") # add vertical line (x-value)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nEducation ~ Agriculture is a formula of the type y ~ x. The first element (Education) gets plotted on the y-axis and the second (Agriculture) goes on the x-axis. Regression formulae follow this convention as well!\n\n\nWe can check out pairs(), a pairwise scatterplot function. This function is good for a quick look at small datasets with numerical/continuous data.\n\npairs(swiss, \n      pch = 8, \n      col = \"violet\",\n      main = \"Pairwise comparisons of Swiss variables\")",
     "crumbs": [
       "Lectures",
-      "Lecture 1"
+      "Lecture 1: Getting started"
     ]
   },
   {
@@ -131,7 +164,7 @@
     "text": "Creating a Quarto Document\nLet’s try making an Quarto file:\n\nChoose File &gt; New File &gt; Quarto Document…\nMake sure HTML Output is selected\nIn the Title box call this test document My First Qmd and click Create\nSave this document somewhere (you can delete it later) (either with File &gt; Save or clicking     towards the top left of the source pane).\nLastly, click     Render at the top of the source pan to “knit” your document into an html file. This will produce a minimal webpage since we only have a title. We need to add more content!\n\nNote: Please don’t do this now, and you won’t need this for this course, but if you want to create PDF output in the future, you’ll need to run the following code in your console.\n\ninstall.packages(\"quarto\")\ninstall.packages('tinytex')\ntinytex::install_tinytex()",
     "crumbs": [
       "Lectures",
-      "Lecture 1"
+      "Lecture 1: Getting started"
     ]
   },
   {
@@ -142,7 +175,7 @@
     "text": "Anatomy of a Quarto Document\nElements of a Quarto document:\n\nAn (optional) YAML header (surrounded by ---s).\nPlain text and any associated formatting.\nChunks of code (surrounded by ``` s) and/or their output.",
     "crumbs": [
       "Lectures",
-      "Lecture 1"
+      "Lecture 1: Getting started"
     ]
   },
   {
@@ -153,7 +186,7 @@
     "text": "R code in a Quarto document\nInside Quarto, lines of R code are called chunks. Code is sandwiched between sets of three backticks and {r}.\nIn quarto documents, you can click within a code chunk and click the green arrow     to run the chunk. The button beside that (   ) runs all prior chunks.\nYou can change whether the output shows up in the quarto document or in your console by clicking the gear symbol for Settings and selecting either “Chunk Output Inline” or “Chunk Output in Console”.\n\nCode chunk options\nChunks have options that control what happens with their code. They are specified as special comments at the top of a block. For example:\n```{{r}}\n#| label: bar-chart\n#| eval: false\n#| fig-cap: \"A line plot on a polar axis\"\n```\nSome useful and common options include:\n\necho: false - Keeps R code from being shown in the document\neval: false - Shows R code in the document without running it\ninclude: false - Hides all output but still runs code (good for setup chunks where you load packages!)\noutput: false - Doesn’t include the results of that code chunk in the output\ncache: true - Saves results of running that chunk so if it takes a while, you won’t have to re-run it each time you re-render the document\nfig.height: 5, fig.width: 5 - modify the dimensions of any plots that are generated in the chunk (units are in inches)\nfig.cap: \"Text\" - add a caption to your figure in the chunk\n\nTry adding or changing the chunk options for the chunk in my_first_Rmd.qmd and re-render your document to see what happens.\n\n```{r}\n#| eval: false\nsummary(swiss)\n```\n\n\n\nIn-Line R code\nSometimes we want to insert a value directly into our text. We do that using code in single backticks starting off with r.\nFour score and seven years ago is the same as `r 4*20 + 7` years.\nFour score and seven years ago is the same as 87 years.\nMaybe we’ve saved a variable in a code chunk that we want to reference in the text:\n\nx &lt;- sqrt(77)\n\nThe value of `x` rounded to the nearest two decimals is `r round(x, 2)`.\nThe value of x rounded to the nearest two decimals is 8.77.\nHaving R dump values directly into your document protects you from silly mistakes:\n\nNever wonder “how did I come up with this quantity?” ever again: Just look at your formula in your .qmd file!\nConsistency! No “find/replace” mishaps; reference a variable in-line throughout your document without manually updating if the calculation changes (e.g. reporting sample sizes).\nYou are more likely to make a typo in a “hard-coded” number than you are to write R code that somehow runs but gives you the wrong thing.",
     "crumbs": [
       "Lectures",
-      "Lecture 1"
+      "Lecture 1: Getting started"
     ]
   },
   {
@@ -164,7 +197,7 @@
     "text": "Quarto Headers\nThe header of a .qmd file is a YAML4code block, and everything else is part of the main document. Try adding some of these other fields to your YAML and re-render it to see what it looks like.\n\n---\ntitle: \"Untitled\"\nauthor: \"Victoria Sass\"\ndate: \"March 26, 2024\"\noutput: html_document\n---\n\nTo mess with global formatting, you can modify the header. Be careful though, YAML is space-sensitive; spaces and indents matter!\n\noutput:\n  html_document:\n    theme: readable\n\nIn your YAML header, make the date come from R’s Sys.time() function by changing:\ndate: \"March 26, 2024\"\nto\ndate: \"`r Sys.time()`\"",
     "crumbs": [
       "Lectures",
-      "Lecture 1"
+      "Lecture 1: Getting started"
     ]
   },
   {
@@ -175,7 +208,7 @@
     "text": "Quarto text (“markdown”)\nFor details on text formatting (e.g. bold), outlines/bullet points, nicely formatted math and more, see the Quarto documentation.\n\nGetting started with Quarto\n\nTutorial: Hello, Quarto\nTutorial: Computations\nTutorial: Authoring\n\nWays to modify the overall document appearance\nWays to format parts of your document\nLearn about the visual editor here",
     "crumbs": [
       "Lectures",
-      "Lecture 1"
+      "Lecture 1: Getting started"
     ]
   },
   {
@@ -186,7 +219,7 @@
     "text": "Footnotes\n\n\nComment and organize your code well!↩︎\nThis thing is the cursor: |↩︎\nThis thing is the cursor: |↩︎\nYou can read a bit more about YAML headers in Quarto here and this reference page lists all options possible for html output.↩︎",
     "crumbs": [
       "Lectures",
-      "Lecture 1"
+      "Lecture 1: Getting started"
     ]
   },
   {
@@ -345,7 +378,7 @@
     "text": "(a) The experience I think some people had this week\n\n\n\n\n\n\n\n\n\n\n\n(b) The experience I want to help people have\n\n\n\n\n\n\n\nFigure 1: Two very different experiences with coding. (Illustration credit: Allison Horst)\nThere’s a certain amount of confusion and struggle that is a natural part of learning new skills and concepts, and that’s a great albeit uncomfortable thing. I didn’t mean to introduce additional barriers, though, and I’m sorry.\nLet’s get from Figure 1 (a) to Figure 1 (b) together today!",
     "crumbs": [
       "Lectures",
-      "Lecture 2"
+      "Lecture 2: Data manipulation with base R"
     ]
   },
   {
@@ -356,7 +389,7 @@
     "text": "Different working modes\nWe saw two different ways to write and organize R code last time: in the Console and in a Quarto document. A third mode is to make an R script, and we can demo that briefly here. What’s the difference, and when might you use one mode or another?\n\nConsole\n\nInteractive\nGreat for exploratory analysis\nGreat for trying out different commands and developing your code\nNot really meant for recording your steps for later\nNot meant for sharing with other people\nOrder matters: for example, you have to define a variable (height = 60) before you use it (height + 4) or modify it (height = height + 4)\n\nBut if you mix up the order, you get an error, and you can type new code to fix it\n\n\nR script (.R file type)\n\nGreat for organizing a final analysis or set of code\nOrder matters: runs from start to finish\nMake notes for yourself/readers in the comments\n\nQuarto document (.qmd file type)\n\nIncorporate text, code, tables, plots, etc. together in one document\nGreat for making a report, website, etc.\nOrder matters: runs from start to finish\n\n\nNote: when you render a Quarto document, it actually creates an html file on your computer in the same directory as your qmd file and with the same name. For example, if you render myHW1.qmd it will create myHW1.html in the same folder. It might be an unfamiliar file type, but it’s a file just like a pdf or a Word document or an R script. It is this html file which it opens for you in your browser or in RStudio, and after you render it you can always open that file at any time by double-clicking the html file with the same name as your qmd file. So when it comes time to submit your qmd and html files, you’ll want to submit the html file that’s already on your computer and in the same folder as the qmd file.",
     "crumbs": [
       "Lectures",
-      "Lecture 2"
+      "Lecture 2: Data manipulation with base R"
     ]
   },
   {
@@ -367,7 +400,7 @@
     "text": "Working environments\nWhen you run height = 4 or read in data using the Console, you see these objects appear in the Environment tab. The reason it’s called the Environment tab is that it shows you what is in your current global environment. You can think of this like your work desk in R Studio. It’s the stuff you have defined already, that you can work with. If you run the code x + 4 in the console but you haven’t yet defined an object called x, you’ll get an error because that object is not defined in your global environment.\nWhen you open a script or a Quarto document and put code there, it doesn’t get run until you run it. So just because you have defined an object in your script or Quarto document does not mean it has actually been created anywhere yet. Similarly, the order in which you run your code matters.\nWhen you render a Quarto document, it actually creates a fresh environment behind the scenes and runs the code in the document start to finish. So if you defined some object height in your global environment (you see it in your Environment tab) but you never defined it in your Quarto document, and the code in your Quarto document tries to use it (like smaller_height = height - 4), you’ll get an error like “object height does not exist”.\nAll of this is important when it comes to troubleshooting errors yourself and when you ask for help in troubleshooting them.\nAlso, there are a few commands we learned that are useful when you work interactively in the Console but won’t work if you try to put them in a Quarto file and render it. The View() command and the ? command are both commands intended for use in the console only because they produce changes in the interactive RStudio window that can’t be reproduced in an html file when you try to render the Quarto file. Basically, commands that just print stuff or make plots/tables are fine, but commands that pull up viewing windows, help pages, etc probably won’t work. So if you get an error when you try to render the qmd file, and you have View and ? commands such as the following in your Quarto file, remove them and try rendering again:\n\nView(swiss)\n?swiss\n?mean",
     "crumbs": [
       "Lectures",
-      "Lecture 2"
+      "Lecture 2: Data manipulation with base R"
     ]
   },
   {
@@ -378,7 +411,7 @@
     "text": "Workflow tips and time savers\nFor your homework as well as for coding in general, here are some key tips to make your life easier:\n\nRender your Quarto document frequently\n\nIf an error occurs, you know it was something you just changed and not anywhere in the whole document\nMakes errors more interpretable and easier to troubleshoot\n\nExplore and develop your code in the Console, and as you work out parts of your code that you want to include in the final document, put them in your Quarto document or R script (for homework, we’re using Quarto documents) in the order that it needs to be run\nUse RStudio’s autocomplete to help you type less and avoid typos\n\nIf you type the first 3-4 characters of the name of a dataset or a function in R, a little menu will appear and allow you to autocomplete the rest of the name\nIf it’s a function name you’re typing, it will give you a quick summary of the function’s purpose and format\nAs we will see today, if it’s a dataset, once you enter the name and type $ it will list all the variables of the dataset and you can autocomplete the name of the variable you want\n\nIf you already typed some code and you want to type similar code, copy and paste, then modify\nUse and practice keyboard shortcuts\n\nShift-Command-C (or Shift-Control-C on a PC) to comment/uncomment a line\nCommand-Return (or Control-Return on a PC) to run a line of code or a highlighted chunk of code\nOption-Command-I to insert a code chunk in a Quarto document",
     "crumbs": [
       "Lectures",
-      "Lecture 2"
+      "Lecture 2: Data manipulation with base R"
     ]
   },
   {
@@ -389,7 +422,7 @@
     "text": "Commenting your code\nMany languages have a comment character that allows you to “comment out” parts of your code so that R will not run them. In R, that comment character is the hashtag #.\nWhy would I ever want to do that? One big reason: you can (and should! please!) use this to write comments to yourself and others who read your code, to explain what you’re doing or why. You can see examples of this above; for example, with the logical vectors, I used comments to tell you what each line of code did.\nThe second big reason: you can use this to temporarily not run certain lines, like if you’re troubleshooting code and you want to run the whole script start to finish but you want to skip some parts without deleting them. Let’s test this out. What value does x have after this code chunk? Why?\n\nx = 9\nx = x + 2\nx = x - 5\n\nWhat about after this code chunk, which is the same except the middle line is commented out? Why?\nRemember that to toggle back and forth between making the line commented and uncommented, you can use the keyboard shortcuts shift-control-C or shift-command-C.\n\nx = 9\n# x = x + 2\nx = x - 5",
     "crumbs": [
       "Lectures",
-      "Lecture 2"
+      "Lecture 2: Data manipulation with base R"
     ]
   },
   {
@@ -400,7 +433,7 @@
     "text": "Extracting multiple rows/columns\nYou can also extract multiple rows and/or columns by specifying a vector of row/column indices or names instead of just a single one:\n\n# some different types of vectors:\n16:20\nc(2, 4, 5)\nc(\"Conthey\", \"Herens\", \"Sion\", \"Boudry\")\nswiss$Education\n\n# using vectors to extract more complex subsets of the data\nswiss[16:20, 2:3]\nswiss[c(\"Conthey\", \"Herens\", \"Sion\", \"Boudry\"), 2:4]\nswiss$Education[2:4]\n\nA very useful kind of vector for indexing and subsetting is a logical-valued vector, meaning its elements are all either true or false.\n\nswiss$Education\nswiss$Education &gt; 20\nswiss$Education == 53\nswiss$Education != 53\n!(swiss$Education == 53)\n\nNow let’s use these logical vectors to do even more powerful subsetting:\n\n# get the values of Education that are greater than 20\nswiss$Education[swiss$Education &gt; 20]\n# get the values of Fertility for provinces in which Education is greater than 20\nswiss$Fertility[swiss$Education &gt; 20]\n# get the indices of the Education column for which the value is greater than 20\nwhich(swiss$Education &gt; 20)",
     "crumbs": [
       "Lectures",
-      "Lecture 2"
+      "Lecture 2: Data manipulation with base R"
     ]
   },
   {
@@ -411,7 +444,7 @@
     "text": "Other uses of logical variables\nHow many of the provinces have Agriculture lower than 35%? 5%? 1%?\n\nsum(swiss$Agriculture &lt; 35)\nsum(swiss$Agriculture &lt; 5)\nsum(swiss$Agriculture &lt; 1)\n\nWhat percentage of provinces have Agriculture lower than 35%?\n\nmean(swiss$Agriculture &lt; 35)\n\n\n\n\n\n\n\nYour Turn\n\n\n\n\nWrite three different lines of code that will extract the Fertility variable of the swiss dataset.\nWhat does each of these lines do? Which of these lines work and which don’t? Which ones don’t work the way you expect? Why do you think that is?\n\n\nswiss[2,4]\nswiss[Courtelary,]\nswiss[\"Courtelary\"]\nswiss$Fertility[1,4]\nswiss$Fertility[1]\n\n\nUsing kable, make a table of just the Agriculture and Catholic variables of the swiss dataset.\nModify your answer to part 3 by showing just rows 5 through 10 in the table.",
     "crumbs": [
       "Lectures",
-      "Lecture 2"
+      "Lecture 2: Data manipulation with base R"
     ]
   },
   {
@@ -422,7 +455,7 @@
     "text": "File paths\nA file path is the path to a folder (directory) or file on your computer. File paths are specified in reference to a root directory or a home directory. So for example, on my computer, the file path “~/Documents/CSSS-math-camp-2024/gapminder.csv” means that in my home directory (signified by “~”), there should be a “Documents” folder, and in there should be a “CSSS-math-camp-2024” folder, and in there should be a file called “gapminder.csv”. This path may or may not exist; it’s an address, and a file may or may not actually live there, and one of those folders might not actually be in the folder it’s supposed to be in, etc.\nFile paths can be absolute or relative. An absolute file path is defined with reference to the root directory. For example, “/Users/jessicakunke/Documents/CSSS-math-camp-2024/gapminder.csv” is an absolute file path. On a Windows machine, the root directory is usually “C:\\”, and the slashes in the path are all backward slashes “\\” instead of forward slashes “/”. On Mac and Linux machines, the root directory is usually “/”.\n\n\n\n\n\n\nAn important note for Windows users\n\n\n\n\n\ntl;dr: use a double backslash instead of a single backslash throughout your Windows file paths.\nThe deets:\nUnfortunately, R and other languages use backslashes as an “escape character”. What does that mean? Consider how character values have to be surrounded by double quotes to indicate it’s a character value instead of a variable/object/function name. Then what do you do if your character string includes double quotes? You “escape” the quotes with a backslash:\n\n# these two lines won't work if you uncomment them\n# print(\"He said \"whooooaaa\"\")\n# cat(\"He said \"whooooaaa\"\")\n\n# but these work; note the different output of print and cat\nprint('He said \\\"whooooaaa\\\"')\ncat('He said \\\"whooooaaa\\\"')\n\nAs a result, if you want to include a backslash as a character, you need to escape it with another backslash:\n\n# these two lines won't work if you uncomment them\n#   specifically, they expect you to type more (they think the commands aren't \n#   complete) because the \\\" is interpreted as part of the character string and\n#   it's expecting another \" to end the character string\n# print(\"C:\\User\\Desktop\\\")\n# cat(\"C:\\User\\Desktop\\\")\n\n# but these work\nprint(\"C:\\\\User\\\\Desktop\\\\\")\ncat(\"C:\\\\User\\\\Desktop\\\\\")\n\n\n\n\nA relative file path is defined with reference to an arbitrary location. For example, “data/gapminder.csv” means, look in your current directory for a folder called “data”, and in there, look for a file called “gapminder.csv”.\nReading in the data with gapminder &lt;- read_csv(\"gapminder.csv\") will work if RStudio knows to look in the directory that contains our dataset. You can use the command getwd() (for “get working directory”) to see the folder where RStudio is currently looking for your files; this location or folder is called your current working directory. Any relative file paths you use are relative to this folder. So when you say the file you want is “gapminder.csv”, you’re looking for that file in this folder.\nYou can organize your R projects using absolute paths, but this is not what I recommend if you are sharing your code or collaborating with others. Instead, see the next section on R projects!\n\n\n\n\n\n\nExpand for tips on using absolute file paths\n\n\n\n\n\n\nCheck out setwd() and getwd()\nIn the RStudio Files pane, navigate to the data set you want, click the gear, select “Copy folder path to clipboard”, then paste that file path wherever you want the file path (e.g. inside read_csv()).",
     "crumbs": [
       "Lectures",
-      "Lecture 2"
+      "Lecture 2: Data manipulation with base R"
     ]
   },
   {
@@ -433,15 +466,50 @@
     "text": "Organizing your work with R projects\nA fairly painless and straightforward way to handle these file path challenges is to create an R Project. This R project will be associated with a folder where you put most or all of the code and data needed for the project. When you open the project in RStudio, it will tell RStudio to use that folder as “home base”. Then you specify all your file paths relative to that folder.\nLet’s try this approach. Create an R Project (File &gt; New Project) and select either New Directory or Existing Directory.\nOnce your new project opens, let’s see where the current working directory is (it should be the folder that you made the project in):\n\n# get working directory (getwd)\ngetwd()\n\nMake sure that gapminder.csv is in this directory, then try loading the file again as before:\n\ngapminder &lt;- read_csv(\"gapminder.csv\")\n\nTa-da!\nNotice this command is kind of noisy, printing out a bunch of stuff we don’t need. As the message says, we can make it “quieter” by setting another argument of the read_csv() function:\n\ngapminder &lt;- read_csv(\"gapminder.csv\", show_col_types = FALSE)",
     "crumbs": [
       "Lectures",
-      "Lecture 2"
+      "Lecture 2: Data manipulation with base R"
     ]
+  },
+  {
+    "objectID": "Lectures/lec4_data_viz.html#getting-started-with-ggplot",
+    "href": "Lectures/lec4_data_viz.html#getting-started-with-ggplot",
+    "title": "Lecture 4: Data visualization with Tidyverse!",
+    "section": "Getting started with ggplot()",
+    "text": "Getting started with ggplot()\nBy popular demand, let’s make a plot of population over time for the country of Japan.\nFirst, review: how do you get a subset of the data that’s just the Japan data?\n\n# your code here...\njapan_data =\n\nCool, now let’s plot population versus time with ggplot():\n\nggplot(japan_data, aes(x = year, y = pop))\n\n\n\n\n\n\n\n\nWeird, what do you notice? ggplot() is funny in that the first line which actually has the ggplot function only declares the initial plot area; it doesn’t make the full plot. To do that, we add a + at the end of the ggplot() line and add additional lines of code. For example, “geoms” (geometry layers) add the actual lines, points, bars, etc.:\n\nggplot(japan_data, aes(x = year, y = pop)) +\n  geom_line()\n\n\n\n\n\n\n\n\nWe can combine multiple layers too as long as they make sense for the data structure:\n\nggplot(japan_data, aes(x = year, y = pop)) +\n  geom_line() +\n  geom_point()\n\nWe can make things a lot prettier and more customized too. Here are just a few examples of things we can do:\n\nggplot(japan_data, aes(x = year, y = pop/1e6)) +\n  geom_line(color = \"maroon\", alpha = 0.7) +\n  geom_point(color = \"maroon\", alpha = 0.7) +\n  xlab(\"Year\") + ylab(\"Population (millions of people)\") +\n  ggtitle(\"Japan's population over time\") +\n  theme_bw()"
+  },
+  {
+    "objectID": "Lectures/lec4_data_viz.html#saving-plots-to-file",
+    "href": "Lectures/lec4_data_viz.html#saving-plots-to-file",
+    "title": "Lecture 4: Data visualization with Tidyverse!",
+    "section": "Saving plots to file",
+    "text": "Saving plots to file\nAfter we make a plot, we can save the plot to file as a png, jpg, or another file type. There are multiple functions we can use to do this, and here is one I use a lot:\n\nggsave(\"japan_plot.png\")\n\nI often use some of the other arguments of ggsave() to specify the scale and dimensions of the plot, which also affects the size of axis tick labels relative to the plot:\n\nggsave(\"japan_plot_dim.png\", width = 10, height = 7, units = \"cm\")\n\nRemember that “japan_plot.png” is a relative file path, so this is going to save the image file to your current working directory. If you’re using an R Project, then you’re probably going to be saving it into that project’s folder. If you want to save it somewhere else, you can do that by specifying the path you want. To do this, let’s first see how the paste() function works:\n\npaste(\"Hello\", \"World!\")\npaste0(\"Hello\", \"World!\")\n\nNow let’s apply that function to save the file to another location than the default folder. Note that you need to make sure there is a slash (forward or backward depending on your operating system) between the file path you’re adding and the file name.\n\n# example 1: relative path within the folder you're in now\nplot_folder = \"plots/\"\nggsave(paste0(plot_folder, \"japan_plot.png\"))\n\n# example 2: absolute path to any place on your computer\nplot_folder = \"~/Documents/math-camp-plots/\"\nggsave(paste0(plot_folder, \"japan_plot.png\"))"
+  },
+  {
+    "objectID": "Lectures/lec4_data_viz.html#plotting-multiple-countries",
+    "href": "Lectures/lec4_data_viz.html#plotting-multiple-countries",
+    "title": "Lecture 4: Data visualization with Tidyverse!",
+    "section": "Plotting multiple countries",
+    "text": "Plotting multiple countries\nWhat if we want to compare several countries on the same plot?\n\nmulti_country_data = filter(gapminder, country %in% c(\"Japan\", \"Nigeria\", \"Argentina\", \"New Zealand\"))\n\nggplot(multi_country_data, aes(x = year, y = pop)) +\n  geom_line()\n\nWhoa, why does the plot look like that, and how can we fix it?\n\n\n\n\n\n\nExpand this for a solution\n\n\n\n\n\nThe issue is that the multi_country_data dataset has both multiple countries and multiple years, and currently ggplot does not know to group the time series data by country in deciding which lines to plot. It is treating it as data to plot as a single line, when we would like a separate line for each country.\nTo fix this, we will specify a grouping variable using the group argument to the aes() function:\n\nmulti_country_data = filter(gapminder, country %in% c(\"Japan\", \"Nigeria\", \"Argentina\", \"New Zealand\"))\n\nggplot(multi_country_data, aes(x = year, y = pop, group = country)) +\n  geom_line()\n\nWe probably also want to distinguish and label the lines somehow by what country they represent:\n\nmulti_country_data = filter(gapminder, country %in% c(\"Japan\", \"Nigeria\", \"Argentina\", \"New Zealand\"))\n\nggplot(multi_country_data, aes(x = year, y = pop, group = country, color = country)) +\n  geom_line()"
+  },
+  {
+    "objectID": "Lectures/lec4_data_viz.html#facets-subplots",
+    "href": "Lectures/lec4_data_viz.html#facets-subplots",
+    "title": "Lecture 4: Data visualization with Tidyverse!",
+    "section": "Facets (subplots)",
+    "text": "Facets (subplots)\nWhat if we want to plot each country in a different subplot so that we can see each curve on its own scale? We can use facet_wrap():\n\nggplot(multi_country_data, aes(x = year, y = pop, group = country)) +\n  geom_line() +\n  facet_wrap(~ country, scales = \"free\")\n\nNote that since they all share an x-axis (years), it might make sense to plot them vertically stacked so that the years line up. For this, we can use facet_grid() which allows us to arrange the plots specifically in a row or a column:\n\nggplot(multi_country_data, aes(x = year, y = pop, group = country)) +\n  geom_line() +\n  # make countries the rows\n  facet_grid(country ~ ., scales = \"free\")"
+  },
+  {
+    "objectID": "Lectures/lec4_data_viz.html#pivoting-for-plots",
+    "href": "Lectures/lec4_data_viz.html#pivoting-for-plots",
+    "title": "Lecture 4: Data visualization with Tidyverse!",
+    "section": "Pivoting for plots",
+    "text": "Pivoting for plots\nWhat if we want to plot one country but three different variables: lifeExp, pop, and gdpPercap? We’d basically like to group by variable, but to do that, it has to be a column of the dataset. As in we need a column whose values are “lifeExp”, “pop”, and “gdpPercap” (or some other names for these three quantities).\nTo do this… yes, we will pivot longer!\n\njapan_wide = japan_data %&gt;%\n  pivot_longer(\n    cols = lifeExp:gdpPercap,\n    names_to = \"variable\",\n    values_to = \"value\"\n  )\n\nggplot(japan_wide, aes(x = year, y = value, group = variable)) +\n  geom_line() +\n  facet_wrap(~ variable, scales = \"free\")\n\nAgain, we can use facet_grid() to stack the plots so they align by year:\n\nggplot(japan_wide, aes(x = year, y = value, group = variable)) +\n  geom_line() +\n  facet_grid(variable ~ ., scales = \"free\")\n\n\n\n\n\n\n\nYour Turn\n\n\n\nWhat else might you want to plot from this dataset? Imagine some plots you’d like to make, then use the tools above (and further documentation online if you like, such as the ggplot gallery and the vignettes or “articles” here) to make them."
   },
   {
     "objectID": "Lectures/lectures.html",
     "href": "Lectures/lectures.html",
     "title": "Lecture schedule",
     "section": "",
-    "text": "Please note that this schedule is subject to change.\n\n\n\nLecture\nDate\nTopic\n\n\n\n\n1\n01 Oct 2024\nIntroduction to R, R Studio, and Quarto\n\n\n2\n08 Oct 2024\nManipulating and Summarizing Data\n\n\n3\n15 Oct 2024\nVisualizing Data\n\n\n4\n22 Oct 2024\nWorkflow and Reproducibility\n\n\n5\n29 Oct 2024\nImporting, Exporting, and Cleaning Data\n\n\n6\n05 Nov 2024\nData Structures & Types\n\n\n7\n12 Nov 2024\nWorking with Text Data\n\n\n8\n19 Nov 2024\nWriting Functions\n\n\n9\n26 Nov 2024\nIteration\n\n\n10\n03 Dec 2024\nNext Steps",
+    "text": "Please note that this schedule is subject to change.\n\n\n\nLecture\nDate\nTopic\n\n\n\n\n1\n01 Oct 2024\nIntroduction to R, R Studio, and Quarto\n\n\n2\n08 Oct 2024\nData Manipulation with base R\n\n\n3\n15 Oct 2024\nData Manipulation with tidyverse\n\n\n4\n22 Oct 2024\nData Visualization with tidyverse\n\n\n5\n29 Oct 2024\nImporting, Exporting, and Cleaning Data\n\n\n6\n05 Nov 2024\nData Structures & Types\n\n\n7\n12 Nov 2024\nWorking with Text Data\n\n\n8\n19 Nov 2024\nWriting Functions\n\n\n9\n26 Nov 2024\nIteration\n\n\n10\n03 Dec 2024\nNext Steps",
     "crumbs": [
       "Lectures",
       "Lecture schedule"

@@ -1,0 +1,242 @@
+---
+title: "Lecture 4: Data visualization with Tidyverse!"
+subtitle: "CSSS 508"
+author: "Jess Kunke"
+date: "Tue 22 Oct 2024"
+# format:
+#   revealjs:
+#     smaller: true
+#     scrollable: true
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number_sections: false
+    embed-resources: true
+execute:
+  eval: false
+  echo: true
+  message: false
+  warning: false
+lightbox: true
+---
+
+
+# Updates and reminders
+
+
+# Outline for today
+
+- Plots with **tidyverse**!
+
+
+# Pivoting tables and data
+
+In the last example, the table has a separate row for each year-continent combination. What we would probably find more readable is to have each row represent a year (or continent) and each column represent a continent (or year), and then the values currently in the `n.obs` column would become the entries in each cell of the table.
+
+We say that `n_obs_by_year_cont` is currently in long format, and we would like to pivot to a wider format. To do that, we'll use the tidyverse function `pivot_wider()`:
+
+```{r}
+# we start with n_obs_by_year_cont
+table_year_cont = n_obs_by_year_cont %>%
+  pivot_wider(
+    # which current column has values we want to use as the names of our new columns?
+    names_from = continent,
+    # which current column has the values for those new columns?
+    values_from = n.obs
+  )
+```
+
+How would we change the above code so that rows are continents and columns are years?
+
+Sometimes we have a wide-format table that we want to pivot longer. This will come up later as we're plotting.
+
+Before we move to plots, let's take a moment to think about which lines of code above depend on which previous lines. Starting with the last code chunk above, where we created `table_year_cont`, what other code had to be run before that in order for it to work? What is the minimum set of code above that we would need to keep in a script so that we could open a fresh R Session and run the script start to finish without errors to create `table_year_cont`?
+
+
+# Data viz
+
+Now for some plotting.
+
+![](https://imgflip.com/s/meme/Evil-Plotting-Raccoon.jpg)
+
+Not that kind of plotting.
+
+## Getting started with `ggplot()`
+
+By popular demand, let's make a plot of population over time for the country of Japan.
+
+First, review: how do you get a subset of the data that's just the Japan data?
+
+```{r}
+# your code here...
+japan_data =
+```
+
+```{r}
+#| eval: true
+#| echo: false
+library(tidyverse)
+gapminder <- read_csv("gapminder.csv", show_col_types = FALSE)
+japan_data = filter(gapminder, country == "Japan")
+```
+
+Cool, now let's plot population versus time with `ggplot()`:
+
+```{r}
+#| eval: true
+ggplot(japan_data, aes(x = year, y = pop))
+```
+
+Weird, what do you notice?  `ggplot()` is funny in that the first line which actually has the ggplot function only declares the initial plot area; it doesn't make the full plot. To do that, we add a `+` at the end of the `ggplot()` line and add additional lines of code. For example, "geoms" (geometry layers) add the actual lines, points, bars, etc.:
+
+```{r}
+#| eval: true
+ggplot(japan_data, aes(x = year, y = pop)) +
+  geom_line()
+```
+
+We can combine multiple layers too as long as they make sense for the data structure:
+
+```{r}
+ggplot(japan_data, aes(x = year, y = pop)) +
+  geom_line() +
+  geom_point()
+```
+
+We can make things a lot prettier and more customized too.  Here are just a few examples of things we can do:
+
+```{r}
+#| eval: true
+ggplot(japan_data, aes(x = year, y = pop/1e6)) +
+  geom_line(color = "maroon", alpha = 0.7) +
+  geom_point(color = "maroon", alpha = 0.7) +
+  xlab("Year") + ylab("Population (millions of people)") +
+  ggtitle("Japan's population over time") +
+  theme_bw()
+```
+
+
+## Saving plots to file
+
+After we make a plot, we can save the plot to file as a png, jpg, or another file type. There are multiple functions we can use to do this, and here is one I use a lot:
+
+```{r}
+ggsave("japan_plot.png")
+```
+
+I often use some of the other arguments of `ggsave()` to specify the scale and dimensions of the plot, which also affects the size of axis tick labels relative to the plot:
+
+```{r}
+ggsave("japan_plot_dim.png", width = 10, height = 7, units = "cm")
+```
+
+Remember that "japan_plot.png" is a relative file path, so this is going to save the image file to your current working directory.  If you're using an R Project, then you're probably going to be saving it into that project's folder. If you want to save it somewhere else, you can do that by specifying the path you want. To do this, let's first see how the `paste()` function works:
+
+```{r}
+paste("Hello", "World!")
+paste0("Hello", "World!")
+```
+
+Now let's apply that function to save the file to another location than the default folder. Note that you need to make sure there is a slash (forward or backward depending on your operating system) between the file path you're adding and the file name.
+
+```{r}
+# example 1: relative path within the folder you're in now
+plot_folder = "plots/"
+ggsave(paste0(plot_folder, "japan_plot.png"))
+
+# example 2: absolute path to any place on your computer
+plot_folder = "~/Documents/math-camp-plots/"
+ggsave(paste0(plot_folder, "japan_plot.png"))
+```
+
+## Plotting multiple countries
+
+What if we want to compare several countries on the same plot?
+
+```{r}
+multi_country_data = filter(gapminder, country %in% c("Japan", "Nigeria", "Argentina", "New Zealand"))
+
+ggplot(multi_country_data, aes(x = year, y = pop)) +
+  geom_line()
+```
+
+Whoa, why does the plot look like that, and how can we fix it?
+
+::: {.callout-tip collapse="true"}
+## Expand this for a solution
+
+The issue is that the `multi_country_data` dataset has both multiple countries and multiple years, and currently ggplot does not know to group the time series data by country in deciding which lines to plot. It is treating it as data to plot as a single line, when we would like a separate line for each country.
+
+To fix this, we will specify a grouping variable using the `group` argument to the `aes()` function:
+
+```{r}
+multi_country_data = filter(gapminder, country %in% c("Japan", "Nigeria", "Argentina", "New Zealand"))
+
+ggplot(multi_country_data, aes(x = year, y = pop, group = country)) +
+  geom_line()
+```
+
+We probably also want to distinguish and label the lines somehow by what country they represent:
+
+```{r}
+multi_country_data = filter(gapminder, country %in% c("Japan", "Nigeria", "Argentina", "New Zealand"))
+
+ggplot(multi_country_data, aes(x = year, y = pop, group = country, color = country)) +
+  geom_line()
+```
+:::
+
+
+## Facets (subplots)
+
+What if we want to plot each country in a different subplot so that we can see each curve on its own scale? We can use `facet_wrap()`:
+
+```{r}
+ggplot(multi_country_data, aes(x = year, y = pop, group = country)) +
+  geom_line() +
+  facet_wrap(~ country, scales = "free")
+```
+
+Note that since they all share an x-axis (years), it might make sense to plot them vertically stacked so that the years line up. For this, we can use `facet_grid()` which allows us to arrange the plots specifically in a row or a column:
+
+```{r}
+ggplot(multi_country_data, aes(x = year, y = pop, group = country)) +
+  geom_line() +
+  # make countries the rows
+  facet_grid(country ~ ., scales = "free")
+```
+
+
+
+## Pivoting for plots
+
+What if we want to plot one country but three different variables: lifeExp, pop, and gdpPercap?  We'd basically like to group by variable, but to do that, it has to be a column of the dataset. As in we need a column whose values are "lifeExp", "pop", and "gdpPercap" (or some other names for these three quantities).
+
+To do this... yes, we will pivot longer!
+
+```{r}
+japan_wide = japan_data %>%
+  pivot_longer(
+    cols = lifeExp:gdpPercap,
+    names_to = "variable",
+    values_to = "value"
+  )
+
+ggplot(japan_wide, aes(x = year, y = value, group = variable)) +
+  geom_line() +
+  facet_wrap(~ variable, scales = "free")
+```
+
+Again, we can use `facet_grid()` to stack the plots so they align by year:
+
+```{r}
+ggplot(japan_wide, aes(x = year, y = value, group = variable)) +
+  geom_line() +
+  facet_grid(variable ~ ., scales = "free")
+```
+
+::: {.callout-tip title="Your Turn"}
+What else might you want to plot from this dataset? Imagine some plots you'd like to make, then use the tools above (and further documentation online if you like, such as the [ggplot gallery](https://r-graph-gallery.com/) and the vignettes or "articles" [here](https://ggplot2.tidyverse.org/)) to make them.
+:::
+

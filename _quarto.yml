@@ -32,9 +32,11 @@ website:
       contents: 
         - Lectures/lectures.qmd
         - file: Lectures/lec1_intro.qmd
-          text: "Lecture 1"
+          text: "Lecture 1: Getting started"
         - file: Lectures/lec2_data_manip.qmd
-          text: "Lecture 2"
+          text: "Lecture 2: Data manipulation with base R"
+        - file: Lectures/lec3_data_manip_tidyverse.qmd
+          text: "Lecture 3: Data manipulation with tidyverse"
 
     - title: "Homework"
       contents: 

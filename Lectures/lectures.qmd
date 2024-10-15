@@ -7,9 +7,9 @@ title: "Lecture schedule"
 | Lecture | Date        | Topic                                   |
 |:-------:|-------------|-----------------------------------------|
 |    1    | 01 Oct 2024 | Introduction to R, R Studio, and Quarto |
-|    2    | 08 Oct 2024 | Manipulating and Summarizing Data       |
-|    3    | 15 Oct 2024 | Visualizing Data                        |
-|    4    | 22 Oct 2024 | Workflow and Reproducibility            |
+|    2    | 08 Oct 2024 | Data Manipulation with base R           |
+|    3    | 15 Oct 2024 | Data Manipulation with **tidyverse**    |
+|    4    | 22 Oct 2024 | Data Visualization with **tidyverse**   |
 |    5    | 29 Oct 2024 | Importing, Exporting, and Cleaning Data |
 |    6    | 05 Nov 2024 | Data Structures & Types                 |
 |    7    | 12 Nov 2024 | Working with Text Data                  |

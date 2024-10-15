@@ -1,0 +1,466 @@
+---
+title: "Lecture 3: Tidyverse!"
+subtitle: "CSSS 508"
+author: "Jess Kunke"
+date: "Tue 15 Oct 2024"
+# format:
+#   revealjs:
+#     smaller: true
+#     scrollable: true
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number_sections: false
+    embed-resources: true
+execute:
+  eval: false
+  echo: true
+  message: false
+  warning: false
+lightbox: true
+---
+
+
+# Updates and reminders
+
+- From now on (including this week), office hours will be held on Fridays 2-4pm in Padelford (PDL) C-301
+  - Exception: next week on 10/25 we'll be in a different room (still being confirmed)
+- Peer reviews start this week with Homework 2
+- Slightly updated [lecture schedule](lectures.qmd)
+- Thank you for your feedback! Please keep it coming!
+
+
+# Outline for today
+
+- Quarto html formatting (based on things I noticed in people's HW1 and HW2)
+- Recap on installing and loading packages
+- Data exploration with base R
+- Data exploration/manipulation with **tidyverse**!
+
+# Quarto html formatting
+
+- **YAML should include title, format, and embed-resources**, plus any additional options you like (e.g. execute, author, date)
+- Filename formatting
+  - Hashtags in filenames causes rendering issues
+  - Other than hyphens/underscores, I recommend you use only letters and numbers
+  - Use underscores or hyphens instead of spaces
+    - If you have to run code on a computing cluster or do other kinds of scripting, you will probably prefer not to have spaces
+    - Uploading and downloading files from a site when the filename has spaces can cause issues sometimes
+    - [One example of further reading] (https://superuser.com/questions/29111/what-technical-reasons-exist-for-not-using-space-characters-in-file-names)
+- Editing in source mode vs visual mode
+- Filename versus title of your document
+  - Give your document a title using capitalization and spacing
+- Format your document the way you would a report
+  - Capitalization, spellcheck, introduction, sections
+  - Doesn't have to be complicated or long, just professional and easy to read
+
+
+# Today's dataset
+
+Today we'll be using the [gapminder dataset](https://www.gapminder.org/data/) including life expectancy at birth (in years), GDP per capita (in US dollars, inflation-adjusted), and population by country.  We'll be loading this into R directly from the **gapminder** package.  Later on in the course, to practice reading data from a file, we can read it in from the file "gapminder.csv".
+
+# Packages: a quick recap
+
+We will be using the **knitr**, **tidyverse** and **gapminder** packages today, which we've already installed.  Which of the following commands will we need? Why?
+
+```{r}
+# note: install.packages REQUIRES quotes around the package name
+install.packages("knitr")
+install.packages("tidyverse")
+install.packages("gapminder")
+# for library you can use quotes or not, doesn't matter
+library(knitr)
+library(tidyverse)
+library(gapminder)
+```
+
+::: {.callout-caution collapse="true"}
+## Expand this to check your answer...
+
+Remember that you pretty much only ever need to install a package with `install.packages()` once on a given device[^1], while you'll need to load it using the `library()` function at the start of each R session that you want to use that package.
+
+[^1]: You'll also usually need to reinstall the packages you use with `install.packages()` if you update R.
+
+So for instance, if you **haven't installed tidyverse**, you'll need to first install it on your computer using the `install.packages()` function, then load it into your current R session using the `library()` function:
+
+```{r}
+# note: install.packages REQUIRES quotes around the package name
+install.packages("tidyverse")
+# for library you can use quotes or not, doesn't matter
+library(tidyverse)
+```
+
+If you **have already installed tidyverse** on your computer, then you just need the `library()` function:
+
+```{r}
+library(tidyverse)
+```
+
+If you actually never closed your RStudio session from the last time you were using the packages you need (which also means your computer must still be running), then you don't even need to run the `library()` function.
+
+If you try to use a function from a package that isn't currently loaded, you'll get an error like this that says it couldn't find the function:
+
+`Error in kable(continent_stats) : could not find function "kable"`
+
+In that case, just run the library command for the relevant package; here, you'd need the package that `kable()` is in, which is the **knitr** package.
+:::
+
+
+
+# Data exploration with base R
+
+We already learned several things that we can use to explore this dataset.  Let's practice and also learn some new tools. Consider these questions about the `gapminder` dataset:
+
+1. How many observations and variables are in this dataset?
+2. What range of years are represented in the dataset?  At what intervals or what frequency (annual, biannual, ...)?
+3. How many countries and how many continents are in this dataset?
+4. How many observations do we have on each continent?
+
+Note that in this case, the package and the dataset it includes happen to have the same name, gapminder. The commands below are acting on the dataset `gapminder`, not the package **gapminder**.
+
+```{r}
+str(gapminder)
+head(gapminder)
+dim(gapminder)
+ncol(gapminder)
+names(gapminder)
+
+# what range of years?
+range(gapminder$year)
+# how many unique years?
+n_distinct(gapminder$year)
+# what unique years?
+unique(gapminder$year)
+# what frequency?
+diff(gapminder$year) # hmm... not what we want...
+diff(unique(gapminder$year))
+
+# how many countries? continents?
+n_distinct(gapminder$country)
+# how many obs on each continent?
+table(gapminder$continent)
+```
+
+Let's look at this dataset as a (sort-of) matrix for a moment:
+
+```{r}
+# how long is the country column? is it equal to the number of countries in the dataset?
+length(gapminder$country)
+# actually it's the same as asking how many rows are in the dataset
+nrow(gapminder)
+
+# check out the first row
+gapminder[1,]
+
+# check out the first column
+gapminder[,1]
+
+# pick out the fourth row of the third column, two different ways
+gapminder[4,3]
+gapminder[4,"year"]
+```
+
+Let's figure something out together using what we learned last time about logicals and indexing: how many African countries are represented in this dataset? Which ones?
+
+For the first question, we can phrase this as, "We want to know the number of countries for which the continent is Africa." That "for which" cues us in that we want to index by continent:
+
+```{r}
+gapminder$country[gapminder$continent == "Africa"]
+```
+
+We can count how many unique countries there are or tell which ones they are by wrapping one function around this: do we want to use `unique()` or `n_distinct()`? Which one tells us what?
+
+```{r}
+unique(gapminder$country[gapminder$continent == "Africa"])
+n_distinct(gapminder$country[gapminder$continent == "Africa"])
+```
+
+::: {.callout-tip title="Your Turn"}
+1. Replace the `x` and `y` placeholders to get the per-capita GDP for the 34th observation (your final code should not have any `x` or `y`):
+
+```{r}
+gapminder[x, y]
+```
+
+2. How many countries in Oceania are in this dataset? Which ones?
+
+3. How many different years of data do we have for Zimbabwe? Which years?  What about for Australia?
+:::
+
+What if we wanted to check whether each country has data for each of these same years?  For that, we'll use **tidyverse**!
+
+
+
+# Data manipulation with **tidyverse**
+
+Now let's see how to work with data using the **tidyverse**! We've actually already been using one **tidyverse** function-- `n_distinct()`-- but now we'll really get into using **tidyverse** for manipulating data.
+
+Behind the **tidyverse** (and its name) is the idea of **tidy data**:
+
+::: {#fig-tidy layout-nrow=2}
+
+![Tidy data](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/85520b8f-4629-4763-8a2a-9ceff27458bf_rw_1920.jpg?h=21007b20ac00cf37318dca645c215453){#fig-tidy}
+
+![Tidy vs. messy data](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/6e297111-efb7-4555-93d2-085071d1853c_rw_1920.jpg?h=f1951b118eaddaaab8a572422bc16566){#fig-tidy-messy}
+
+Illustrations from the Openscapes blog "Tidy Data for reproducibility, efficiency, and collaboration" by Julia Lowndes and Allison Horst
+:::
+
+<!-- ![Tidy data]() -->
+
+<!-- ![Tidy versus messy data](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/6e297111-efb7-4555-93d2-085071d1853c_rw_1920.jpg?h=f1951b118eaddaaab8a572422bc16566) -->
+
+
+
+###	Filtering and selecting
+
+We filter rows and select columns.
+
+Filtering allows us to subset the dataset to just the *rows* that meet some condition.  Here's how we did it with base R:
+
+```{r}
+gapminder[gapminder$continent == Oceania] # why doesn't this line of code work? fix the two errors...
+gapminder[gapminder$continent == "Oceania" & gapminder$year == 2007, ]
+gapminder[gapminder$year>1980 & gapminder$year<2000 & gapminder$country == "Eritrea", ]
+```
+
+And here's how we can do those same things with **tidyverse**:
+
+```{r}
+filter(gapminder, continent == Oceania) # why doesn't this work? fix this line of code
+filter(gapminder, continent == "Oceania" & year == 2007)
+filter(gapminder, year > 1980 & year < 2000 & country == "Eritrea") 
+```
+
+What's the difference between the following line and the previous line, and why doesn't this print anything?
+
+```{r}
+eritrea = filter(gapminder, year > 1980 & year < 2000 & country == "Eritrea")
+```
+
+As always, you can check out the documentation on `filter()` to see its arguments:
+
+```{r}
+?filter
+```
+
+Note: you might be wondering why on earth I asked you to learn some base R before we got into **tidyverse**. It's very useful to know some of both. For instance, base R can often be much faster if you end up working with very big data or lots of computations, and some commands can be easier in base R in certain contexts. You might also be working with or looking at someone else's code and find they wrote it using base R or **tidyverse**, and in this class you will have seen some of both.
+
+Selecting allows us to pick or look at just certain *columns*:
+
+```{r}
+select(gapminder, pop)
+select(gapminder, lifeExp:gdpPercap) # range of variables (columns)
+select(gapminder, country, year) # specific variables/columns
+```
+
+We `filter()` rows, and we `select()` columns.
+
+### Adding/changing columns (variables)
+
+Let's add a column that indicates whether the data is from Afghanistan or not; to do this, we'll use the `mutate()` function. Notice that we can always add parentheses in R code to clarify grouping.
+
+```{r}
+mutate(gapminder, isAfghan = (country == "Afghanistan"))
+# how do we change the above line of code so that it stores the result somewhere?
+```
+
+We can also use `mutate()` to modify an existing column. For instance, we can reformat the type of a column, round the values of a column, or convert units:
+
+```{r}
+# make year an integer format
+gm_int = mutate(gapminder, year = as.integer(year))
+str(gapminder)
+str(gm_int)
+
+# round the gdpPercap variable to 1 decimal place
+gm_rounded = mutate(gapminder, gdpPercap = round(gdpPercap, 1))
+head(gapminder$gdpPercap)
+head(gm_rounded$gdpPercap)
+
+# convert pop to millions
+gm_millions = mutate(gapminder, pop = pop/10^6)
+head(gapminder$pop)
+head(gm_millions$pop)
+```
+
+### Combining steps
+
+(Note: in the next section we'll see a better way to do this.)
+
+Here is some **pseudocode** to show the general flow for how we can combine steps.  What is pseudocode? It won't run as code (it's not complete code), but it gives us a general sense for how to put our code together. It's kind of like saying "subject verb object": it's not really a full sentence itself, but it outlines the grammatical structure for how someone could string together a simple English sentence like "I like R." (No propaganda here...)
+
+```{r}
+# approach 1: do each function on a separate line
+new_data = step1(gapminder)
+new_data = step2(new_data)
+new_data = step3(new_data)
+
+# approach 2: nested functions
+new_data = step3(step2(step1(gapminder)))
+```
+
+In the first approach, you define some new object called `new_data` that is the result of applying `step1` (whatever that function is) to the `gapminder` dataset. This means we're **not** modifying `gapminder` itself; we're calling the modified dataset something else, `new_data`. Then you apply your next step (called `step2` here) to `new_data`, that new copy of your dataset, and update `new_data`, so `new_data` now reflects whatever changes you made in Steps 1 and 2. And so on.
+
+The second approach does the same thing, but by nesting the functions, you don't have to name the inputs and outputs to each function at each step. The input to Step 2 is the result (output) of Step 1, and so on.
+
+Let's try this with a concrete example, with actual code we can run.  For instance, let's go back to a question we answered earlier without **tidyverse**: how many African countries are represented in this dataset, and which ones?
+
+```{r}
+# approach 1: do each function on a separate line
+num_african_countries = filter(gapminder, continent == "Africa")
+num_african_countries = select(num_african_countries, country)
+num_african_countries = n_distinct(num_african_countries)
+
+# approach 2: nested functions
+num_african_countries = n_distinct(select(filter(gapminder, continent == "Africa"), country))
+```
+
+
+::: {.callout-tip title="Your Turn"}
+Write code that will do all of the following with the gapminder data:
+
+1. Subset the data to just the countries in Asia with at least 10 million people, then
+2. Pick just the first four columns.
+:::
+
+What is annoying so far about combining these steps? In other words, what do you find annoying about Approaches 1 and 2?
+
+Going through these two approaches to combining steps is a great way to practice how code works. Now we'll cover a third approach that might address some of the things you didn't like about these first two approaches: pipes.
+
+![](https://media.istockphoto.com/id/538025236/photo/heap-of-shiny-metal-steel-pipes-with-selective-focus-effect.jpg?s=612x612&w=0&k=20&c=NU2vEghQxU77iNNYFwXbt9Q9TRIJUq5TnsUeQjQVMdY=)
+
+Uh, well, actually we'll use code pipes. But just like physical pipes, they direct the flow of something (our code).
+
+
+### Combining steps with pipes
+
+Pipes will make this better; pipes are a way of feeding one command into another.  First let's see how a pipe works with a single step. Use `shift-control-M` or `shift-command-M` to make the pipe symbol `%>%`.
+
+```{r}
+# without pipe
+filter(gapminder, continent == "Oceania")
+
+# with a pipe
+gapminder %>% filter(continent == "Oceania")
+```
+
+Now let's see how this works with a sequence of commands by rewriting our example above about the number of African countries:
+
+```{r}
+num_african_countries = gapminder %>%
+  # subset to countries in Africa
+  filter(continent == "Africa") %>%
+  # keep just the country column
+  select(country) %>%
+  # count how many different values there are (countries in this case)
+  n_distinct()
+```
+
+Remember: this doesn't change the `gapminder` dataset itself (take a look at `gapminder` to double-check). Instead we're calling the resulting output `num_african_countries`. If we wanted to overwrite the `gapminder` dataset with these changes (which I don't think we'd want to do in this case but sometimes we do), we'd assign the results to `gapminder`:
+
+```{r}
+gapminder = gapminder %>%
+  # subset to countries in Africa
+  filter(continent == "Africa") %>%
+  # keep just the country column
+  select(country) %>%
+  # count how many different values there are (countries in this case)
+  n_distinct()
+```
+
+If you just ran that last code chunk and overwrote `gapminder`, let's reload the original dataset:
+
+```{r}
+data("gapminder") # or data(gapminder)
+```
+
+Quick question: why does `data()` work with and without quotes around the dataset name?  Let's discuss this comment in the documentation `?data`:
+
+> The ability to specify a dataset by name (without quotes) is a convenience: in programming the datasets should be specified by character strings (with quotes).
+
+At the time you run the `data()` command, is the `gapminder` object defined in your environment?
+
+## Summary statistics with `group_by()` and `summarize()`
+
+How many data points do we have for each continent? Here's how we could use **tidyverse** to find out:
+
+```{r}
+gapminder %>%
+  group_by(continent) %>%
+  summarize(n.obs = n())
+```
+
+What about other summary statistics, like the minimum, average, and maximum country population on each continent?
+
+```{r}
+gapminder %>%
+  group_by(continent) %>%
+  summarize(
+    min_pop = min(pop),
+    mean_pop = mean(pop),
+    max_pop = max(pop)
+  )
+```
+
+As always, if you want to store the results as an object in R so you can do other stuff with it later, you can do that by assignment:
+
+```{r}
+continent_stats = gapminder %>%
+  group_by(continent) %>%
+  summarize(
+    min_pop = min(pop),
+    mean_pop = mean(pop),
+    max_pop = max(pop)
+  )
+```
+
+We can also group by more than one thing if we want to define groups by more than one variable. For example, how many data points do we have for each continent and each year?
+
+```{r}
+n_obs_by_cont_year <- gapminder %>%
+  group_by(continent, year) %>%
+  summarize(n.obs = n())
+```
+
+What happens if we switch the order of the grouping variables?
+
+```{r}
+n_obs_by_year_cont <- gapminder %>%
+  group_by(year, continent) %>%
+  summarize(n.obs = n())
+```
+
+Notice that the table structure is not ideal; we'll address this when we cover pivoting! We'll also find that useful for plots.
+
+:::{.callout-tip}
+## Your Turn
+
+1. Let's return to our earlier question: Does each country has data for the same years, or are the years represented in the data different for some countries? Use **tidyverse** to figure this out.
+
+2. Filter the `gapminder` dataset for only the data on Italy, then compute the average per-capita GDP for each year in that Italy dataset.
+:::
+
+:::{.callout-tip collapse="true"}
+## Solutions
+
+There may be multiple approaches, but here are some:
+
+1. 
+
+```{r}
+gapminder %>%
+  group_by(country, year) %>%
+  summarize(nobs = n())
+```
+
+2. 
+```{r}
+gapminder %>%
+  filter(country == "Italy") %>%
+  group_by(year) %>%
+  summarize(avg_gdp = mean(gdpPercap))
+```
+:::
+
