@@ -324,7 +324,7 @@
     "href": "Homework/homework.html#rubric-students-use-to-grade-assignments",
     "title": "Overview",
     "section": "Rubric Students Use to Grade Assignments",
-    "text": "Rubric Students Use to Grade Assignments\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nEvaluation\nPoints\n\n\n\n\nDidn't turn anything in.\n0\n\n\nTurned in but low effort, ignoring many directions.\n1\n\n\nDecent effort, followed directions with some minor issues.\n2\n\n\nNailed it!\n3",
+    "text": "Rubric Students Use to Grade Assignments\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nEvaluation\nPoints\n\n\n\n\nDidn't turn anything in.\n0\n\n\nLow effort, assignment ignores many directions.\n1\n\n\nDecent effort, assignment follows most of the directions but some parts are missing without comment.\n2\n\n\nGood effort, assignment follows the directions even if there are errors in some of the implementation.\n3",
     "crumbs": [
       "Homework",
       "Overview"
@@ -335,7 +335,7 @@
     "href": "Homework/homework.html#peer-review",
     "title": "Overview",
     "section": "Peer Review",
-    "text": "Peer Review\nYou are required to both grade and provide feedback on a peer’s homework each week. Reading/evaluating the work of others is useful and important! Good programmers realize that most problems have been solved by others; the trick is figuring out how to apply existing code to new problems. You will develop this skill by reading others’ code, evaluating their approach to problems, providing suggestions, and pointing out when you learned something new. Good peer reviews give constructive, polite, and insightful comments, are specific and concise, use the grading rubric above, and point out what you learned from their code. Poor peer reviews are impolite or unprofessional, are generic (i.e., could be applied to anyone’s homework), or fail to provide useful suggestions.\n\n\n\n\n\n\nLate Homework Will Automatically Lose Peer-Review Credit\n\n\n\nPeer reviews are autmatically randomly assigned through Canvas at the due date. Therefore, if you don’t submit your homework on time, you will not be given a peer’s homework to review and vice versa. Life is messy and complicated and we all miss deadlines for a variety of reasons. If that happens, you can email me to request that I review and provide feedback on a late assignment, but you won’t be able to earn peer-review credit for that particular homework.",
+    "text": "Peer Review\nYou are required to both grade and provide feedback on a peer’s homework each week. Reading and evaluating the work of others is useful and important! Good programmers realize that most problems have been solved by others; the trick is figuring out how to apply existing code to new problems. You will develop this skill by reading others’ code, evaluating their approach to problems, providing suggestions, and pointing out when you learned something new. Good peer reviews give constructive, polite, and insightful comments, are specific and concise, use the grading rubric above, and point out what you learned from their code. Poor peer reviews are impolite or unprofessional, are generic (i.e., could be applied to anyone’s homework), or fail to provide useful suggestions.\n\n\n\n\n\n\nLate Homework Will Automatically Lose Peer-Review Credit\n\n\n\nPeer reviews are autmatically randomly assigned through Canvas at the due date. Therefore, if you don’t submit your homework on time, you will not be given a peer’s homework to review and vice versa. Life is messy and complicated and we all miss deadlines for a variety of reasons. If that happens, you can email me to request that I review and provide feedback on a late assignment, but you won’t be able to earn peer-review credit for that particular homework.",
     "crumbs": [
       "Homework",
       "Overview"
@@ -346,7 +346,7 @@
     "href": "Homework/homework.html#rubric-instructor-uses-to-grade-peer-review",
     "title": "Overview",
     "section": "Rubric Instructor Uses to Grade Peer Review",
-    "text": "Rubric Instructor Uses to Grade Peer Review\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nEvaluation\nPoints\n\n\n\n\nDidn’t follow all peer-review instructions.\n0\n\n\nPeer review is at least several sentences long,  mentions any and all key issues from the assignment,  and points out at least one positive thing in your  peer’s work (and hopefully more!).\n1",
+    "text": "Rubric Instructor Uses to Grade Peer Review\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nEvaluation\nPoints\n\n\n\n\nDidn’t follow all peer-review instructions.\n0\n\n\nPeer review is at least four sentences long,  kindly mentions and explains any key issues with the assignment,  points out at least one positive thing in your  peer’s work, and clearly states the number of points earned.\n1",
     "crumbs": [
       "Homework",
       "Overview"

@@ -6,9 +6,9 @@ library(gt)
 ## homework
 
 rubric_table <- tibble(Evaluation = c("Didn't turn anything in.", 
-                                "Turned in but low effort, ignoring many directions.", 
-                                "Decent effort, followed directions with some minor issues.", 
-                                "Nailed it!"), 
+                                "Low effort, assignment ignores many directions.", 
+                                "Decent effort, assignment follows most of the directions but some parts are missing without comment.", 
+                                "Good effort, assignment follows the directions even if there are errors in some of the implementation."), 
                  Points = 0:3)
 
 rubric <- rubric_table |>  
@@ -42,10 +42,10 @@ rubric <- rubric_table |>
 ## peer review
 
 peer_review_table <- tibble(Evaluation = c("Didn't follow all peer-review instructions.", 
-                                           "Peer review is at least several sentences long, <br> 
-                                           mentions any and all key issues from the assignment, <br> 
-                                           and points out at least one positive thing in your <br> 
-                                           peer’s work (and hopefully more!)."),
+                                           "Peer review is at least four sentences long, <br> 
+                                           kindly mentions and explains any key issues with the assignment, <br> 
+                                           points out at least one positive thing in your <br> 
+                                           peer’s work, and clearly states the number of points earned."),
                             Points = 0:1)
 
 peer_review_rubric <- peer_review_table |> 
