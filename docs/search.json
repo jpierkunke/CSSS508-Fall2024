@@ -481,39 +481,114 @@
     ]
   },
   {
-    "objectID": "Lectures/lec4_data_viz.html#getting-started-with-ggplot",
-    "href": "Lectures/lec4_data_viz.html#getting-started-with-ggplot",
-    "title": "Lecture 4: Data visualization with Tidyverse!",
+    "objectID": "Lectures/lec4_debugging_data_viz.html",
+    "href": "Lectures/lec4_debugging_data_viz.html",
+    "title": "Lecture 4: Debugging, and data visualization with tidyverse!",
+    "section": "",
+    "text": "Homework and peer reviews (including for HW2) will be graded for completion\n\nThis is a one-credit course and I want the focus to be on practice, not points\n\nReminder: this week’s office hour is in Thomson, not Padelford (see website for details)\n\nDoes the office hour time work for people?",
+    "crumbs": [
+      "Lectures",
+      "Lecture 4: Debugging and data visualization"
+    ]
+  },
+  {
+    "objectID": "Lectures/lec4_debugging_data_viz.html#code-chunk-options",
+    "href": "Lectures/lec4_debugging_data_viz.html#code-chunk-options",
+    "title": "Lecture 4: Debugging, and data visualization with tidyverse!",
+    "section": "Code chunk options",
+    "text": "Code chunk options\nThere are several code chunk options, including echo, include, and eval. You can review them in the Quarto documentation here.\n\nWhich chunk option do we use…\n\nto show/hide the code in the rendered html document?\nto run/not run the code?\nto run the code but not show any output or messages from it?\n\nWhich chunk option(s) should we use when we load packages at the beginning of the Quarto document?\nWhich chunk option(s) should we use if we want to show the code we used to make a graph, but we don’t want to actually run it (we might do this in a tutorial, like to show how to install a package)?",
+    "crumbs": [
+      "Lectures",
+      "Lecture 4: Debugging and data visualization"
+    ]
+  },
+  {
+    "objectID": "Lectures/lec4_debugging_data_viz.html#formatting-text-to-look-like-code",
+    "href": "Lectures/lec4_debugging_data_viz.html#formatting-text-to-look-like-code",
+    "title": "Lecture 4: Debugging, and data visualization with tidyverse!",
+    "section": "Formatting text to look like code",
+    "text": "Formatting text to look like code\nTo do this, surround the text with backticks (`): `mutate()` will become mutate().",
+    "crumbs": [
+      "Lectures",
+      "Lecture 4: Debugging and data visualization"
+    ]
+  },
+  {
+    "objectID": "Lectures/lec4_debugging_data_viz.html#how-to-read-a-quarto-rendering-error-message",
+    "href": "Lectures/lec4_debugging_data_viz.html#how-to-read-a-quarto-rendering-error-message",
+    "title": "Lecture 4: Debugging, and data visualization with tidyverse!",
+    "section": "How to read a Quarto rendering error message",
+    "text": "How to read a Quarto rendering error message\nWhen you try to render a Quarto document and it fails, you get an error message something like this:\n\nLet’s break this down.\n\nThe thing with the arrow ==&gt; at the top is the command that RStudio runs when you click the Render button.\nThen it says it’s processing your file, and it shows some of the progress it made through rendering\n\nThe “unnamed-chunk-2” refers to a code chunk in your code\nIt says unnamed because we didn’t name the chunk (we hadn’t talked about how to do that anyway). If you had named it, the name would appear there instead of “unnamed-chunk-2”.\n\nThe actual error message starts with “Quitting from ….”\n\nThe part that tells you something about what’s happening is the error message itself: object 'true' not found. This suggests that somewhere you typed a “true” where it doesn’t know what to do with it.",
+    "crumbs": [
+      "Lectures",
+      "Lecture 4: Debugging and data visualization"
+    ]
+  },
+  {
+    "objectID": "Lectures/lec4_debugging_data_viz.html#naming-chunks",
+    "href": "Lectures/lec4_debugging_data_viz.html#naming-chunks",
+    "title": "Lecture 4: Debugging, and data visualization with tidyverse!",
+    "section": "Naming chunks",
+    "text": "Naming chunks\nIf I render the following Quarto document:\n\nI get the following error message:\n\nIf I take the same Quarto document and just name my code chunks like so:\n\nThen I get somewhat more helpful output about the progress before the error:\n\n\n\n\n\n\n\nYour turn\n\n\n\nMake a Quarto document that looks like the second one above, with the named chunks.\nThen identify and fix the error(s) to get it rendering successfully.",
+    "crumbs": [
+      "Lectures",
+      "Lecture 4: Debugging and data visualization"
+    ]
+  },
+  {
+    "objectID": "Lectures/lec4_debugging_data_viz.html#render-frequently",
+    "href": "Lectures/lec4_debugging_data_viz.html#render-frequently",
+    "title": "Lecture 4: Debugging, and data visualization with tidyverse!",
+    "section": "Render frequently!",
+    "text": "Render frequently!\nRule number 1: render frequently! But of course sometimes you forget, or you have other reasons that you add a lot of code or make a lot of code before rendering. Let’s talk about how to troubleshoot in that case: sequentially cut out code and try rendering again.\n\nCut (as in cut and paste, not as in delete) everything after the first code chunk.\nTry to render the document again.\n\nIf it doesn’t render successfully, you know that at least the first issue is in the small document you just tried to render: the YAML header, some Markdown text/formatting, or the first code chunk.\nIf it renders without errors, then the issue must be happening somewhere in the part that you cut. Paste it back, and now repeat step 1 but cut everything after the second code chunk. And so on.\n\n\nOnce you identify what line is triggering the error message, then you can work on figuring out what caused the error. Remember: this is not necessarily the code you want to edit. The part of the code you modify to fix the issue could be in an earlier line of code or an earlier code chunk.\n\n\n\n\n\n\nYour turn\n\n\n\nIn fact let’s practice that right now! In the qmd file below,\n\nWhich line is generating the error message? (To which line is the error message referring?)\nWhere would you edit the code to fix the error?",
+    "crumbs": [
+      "Lectures",
+      "Lecture 4: Debugging and data visualization"
+    ]
+  },
+  {
+    "objectID": "Lectures/lec4_debugging_data_viz.html#getting-started-with-ggplot",
+    "href": "Lectures/lec4_debugging_data_viz.html#getting-started-with-ggplot",
+    "title": "Lecture 4: Debugging, and data visualization with tidyverse!",
     "section": "Getting started with ggplot()",
-    "text": "Getting started with ggplot()\nBy popular demand, let’s make a plot of population over time for the country of Japan.\nFirst, review: how do you get a subset of the data that’s just the Japan data?\n\n# your code here...\njapan_data =\n\nCool, now let’s plot population versus time with ggplot():\n\nggplot(japan_data, aes(x = year, y = pop))\n\n\n\n\n\n\n\n\nWeird, what do you notice? ggplot() is funny in that the first line which actually has the ggplot function only declares the initial plot area; it doesn’t make the full plot. To do that, we add a + at the end of the ggplot() line and add additional lines of code. For example, “geoms” (geometry layers) add the actual lines, points, bars, etc.:\n\nggplot(japan_data, aes(x = year, y = pop)) +\n  geom_line()\n\n\n\n\n\n\n\n\nWe can combine multiple layers too as long as they make sense for the data structure:\n\nggplot(japan_data, aes(x = year, y = pop)) +\n  geom_line() +\n  geom_point()\n\nWe can make things a lot prettier and more customized too. Here are just a few examples of things we can do:\n\nggplot(japan_data, aes(x = year, y = pop/1e6)) +\n  geom_line(color = \"maroon\", alpha = 0.7) +\n  geom_point(color = \"maroon\", alpha = 0.7) +\n  xlab(\"Year\") + ylab(\"Population (millions of people)\") +\n  ggtitle(\"Japan's population over time\") +\n  theme_bw()"
+    "text": "Getting started with ggplot()\nBy popular demand, let’s make a plot of population over time for the country of Japan.\nFirst, review: how do you get the subset of the gapminder dataset that consists of just the Japan data?\n\n# finish this code...\njapan_data =\n\nCool, now let’s plot population versus time with ggplot():\n\nggplot(japan_data, aes(x = year, y = pop))\n\n\n\n\n\n\n\n\nWeird, what do you notice? ggplot() is funny in that the first line which actually has the ggplot function only declares the initial plot area; it doesn’t make the full plot. To do that, we add a + at the end of the ggplot() line and add additional lines of code. For example, “geoms” (geometry layers) add the actual lines, points, bars, etc.:\n\nggplot(japan_data, aes(x = year, y = pop)) +\n  geom_line()\n\n\n\n\n\n\n\n\nWe can combine multiple layers too as long as they make sense for the data structure:\n\nggplot(japan_data, aes(x = year, y = pop)) +\n  geom_line() +\n  geom_point()\n\n\n\n\n\n\n\n\nWe can make things a lot prettier and more customized too. Here are just a few examples of things we can do:\n\nggplot(japan_data, aes(x = year, y = pop/1e6)) +\n  geom_line(color = \"maroon\", alpha = 0.7) +\n  geom_point(color = \"maroon\", alpha = 0.7) +\n  xlab(\"Year\") + ylab(\"Population (millions of people)\") +\n  ggtitle(\"Japan's population over time\") +\n  theme_bw()",
+    "crumbs": [
+      "Lectures",
+      "Lecture 4: Debugging and data visualization"
+    ]
   },
   {
-    "objectID": "Lectures/lec4_data_viz.html#saving-plots-to-file",
-    "href": "Lectures/lec4_data_viz.html#saving-plots-to-file",
-    "title": "Lecture 4: Data visualization with Tidyverse!",
-    "section": "Saving plots to file",
-    "text": "Saving plots to file\nAfter we make a plot, we can save the plot to file as a png, jpg, or another file type. There are multiple functions we can use to do this, and here is one I use a lot:\n\nggsave(\"japan_plot.png\")\n\nI often use some of the other arguments of ggsave() to specify the scale and dimensions of the plot, which also affects the size of axis tick labels relative to the plot:\n\nggsave(\"japan_plot_dim.png\", width = 10, height = 7, units = \"cm\")\n\nRemember that “japan_plot.png” is a relative file path, so this is going to save the image file to your current working directory. If you’re using an R Project, then you’re probably going to be saving it into that project’s folder. If you want to save it somewhere else, you can do that by specifying the path you want. To do this, let’s first see how the paste() function works:\n\npaste(\"Hello\", \"World!\")\npaste0(\"Hello\", \"World!\")\n\nNow let’s apply that function to save the file to another location than the default folder. Note that you need to make sure there is a slash (forward or backward depending on your operating system) between the file path you’re adding and the file name.\n\n# example 1: relative path within the folder you're in now\nplot_folder = \"plots/\"\nggsave(paste0(plot_folder, \"japan_plot.png\"))\n\n# example 2: absolute path to any place on your computer\nplot_folder = \"~/Documents/math-camp-plots/\"\nggsave(paste0(plot_folder, \"japan_plot.png\"))"
-  },
-  {
-    "objectID": "Lectures/lec4_data_viz.html#plotting-multiple-countries",
-    "href": "Lectures/lec4_data_viz.html#plotting-multiple-countries",
-    "title": "Lecture 4: Data visualization with Tidyverse!",
+    "objectID": "Lectures/lec4_debugging_data_viz.html#plotting-multiple-countries",
+    "href": "Lectures/lec4_debugging_data_viz.html#plotting-multiple-countries",
+    "title": "Lecture 4: Debugging, and data visualization with tidyverse!",
     "section": "Plotting multiple countries",
-    "text": "Plotting multiple countries\nWhat if we want to compare several countries on the same plot?\n\nmulti_country_data = filter(gapminder, country %in% c(\"Japan\", \"Nigeria\", \"Argentina\", \"New Zealand\"))\n\nggplot(multi_country_data, aes(x = year, y = pop)) +\n  geom_line()\n\nWhoa, why does the plot look like that, and how can we fix it?\n\n\n\n\n\n\nExpand this for a solution\n\n\n\n\n\nThe issue is that the multi_country_data dataset has both multiple countries and multiple years, and currently ggplot does not know to group the time series data by country in deciding which lines to plot. It is treating it as data to plot as a single line, when we would like a separate line for each country.\nTo fix this, we will specify a grouping variable using the group argument to the aes() function:\n\nmulti_country_data = filter(gapminder, country %in% c(\"Japan\", \"Nigeria\", \"Argentina\", \"New Zealand\"))\n\nggplot(multi_country_data, aes(x = year, y = pop, group = country)) +\n  geom_line()\n\nWe probably also want to distinguish and label the lines somehow by what country they represent:\n\nmulti_country_data = filter(gapminder, country %in% c(\"Japan\", \"Nigeria\", \"Argentina\", \"New Zealand\"))\n\nggplot(multi_country_data, aes(x = year, y = pop, group = country, color = country)) +\n  geom_line()"
+    "text": "Plotting multiple countries\nWhat if we want to compare several countries on the same plot? We might try the following code, but it looks bonkers. Try it and see:\n\nmulti_country_data = filter(gapminder, country %in% c(\"Japan\", \"Nigeria\", \"Argentina\", \"New Zealand\"))\n\nggplot(multi_country_data, aes(x = year, y = pop)) +\n  geom_line()\n\n\n\n\n\n\n\n\nWhy does the plot look like that, and how can we fix it? As part of troubleshooting, we might check what a scatterplot looks like (without connecting the lines):\n\nggplot(multi_country_data, aes(x = year, y = pop)) +\n  geom_point()\n\n\n\n\n\n\n\n\nNotice that looks reasonable. So what’s the issue with the line plot?\n\n\n\n\n\n\nExpand this for a solution\n\n\n\n\n\nThe issue is that the multi_country_data dataset has both multiple countries and multiple years, and currently ggplot does not know to group the time series data by country when it is deciding how to connect the points with lines. It is treating it as data to plot as a single line, when we would like a separate line for each country.\nTo fix this, we will specify a grouping variable using the group argument to the aes() function:\n\nmulti_country_data = filter(gapminder, country %in% c(\"Japan\", \"Nigeria\", \"Argentina\", \"New Zealand\"))\n\nggplot(multi_country_data, aes(x = year, y = pop, group = country)) +\n  geom_line()\n\n\n\n\n\n\n\n\nWe probably also want to distinguish and label the lines somehow by what country they represent:\n\nmulti_country_data = filter(gapminder, country %in% c(\"Japan\", \"Nigeria\", \"Argentina\", \"New Zealand\"))\n\nggplot(multi_country_data, aes(x = year, y = pop, group = country, color = country)) +\n  geom_line()",
+    "crumbs": [
+      "Lectures",
+      "Lecture 4: Debugging and data visualization"
+    ]
   },
   {
-    "objectID": "Lectures/lec4_data_viz.html#facets-subplots",
-    "href": "Lectures/lec4_data_viz.html#facets-subplots",
-    "title": "Lecture 4: Data visualization with Tidyverse!",
+    "objectID": "Lectures/lec4_debugging_data_viz.html#facets-subplots",
+    "href": "Lectures/lec4_debugging_data_viz.html#facets-subplots",
+    "title": "Lecture 4: Debugging, and data visualization with tidyverse!",
     "section": "Facets (subplots)",
-    "text": "Facets (subplots)\nWhat if we want to plot each country in a different subplot so that we can see each curve on its own scale? We can use facet_wrap():\n\nggplot(multi_country_data, aes(x = year, y = pop, group = country)) +\n  geom_line() +\n  facet_wrap(~ country, scales = \"free\")\n\nNote that since they all share an x-axis (years), it might make sense to plot them vertically stacked so that the years line up. For this, we can use facet_grid() which allows us to arrange the plots specifically in a row or a column:\n\nggplot(multi_country_data, aes(x = year, y = pop, group = country)) +\n  geom_line() +\n  # make countries the rows\n  facet_grid(country ~ ., scales = \"free\")"
+    "text": "Facets (subplots)\nWhat if we want to plot each country in a different subplot so that we can see each curve on its own scale? We can use facet_wrap():\n\nggplot(multi_country_data, aes(x = year, y = pop, group = country)) +\n  geom_line() +\n  facet_wrap(~ country, scales = \"free\")\n\n\n\n\n\n\n\n\nNote that since they all share an x-axis (years), it might make sense to plot them vertically stacked so that the years line up. For this, we can use facet_grid() which allows us to arrange the plots specifically in a row or a column:\n\nggplot(multi_country_data, aes(x = year, y = pop, group = country)) +\n  geom_line() +\n  # make countries the rows\n  facet_grid(country ~ ., scales = \"free\")",
+    "crumbs": [
+      "Lectures",
+      "Lecture 4: Debugging and data visualization"
+    ]
   },
   {
-    "objectID": "Lectures/lec4_data_viz.html#pivoting-for-plots",
-    "href": "Lectures/lec4_data_viz.html#pivoting-for-plots",
-    "title": "Lecture 4: Data visualization with Tidyverse!",
+    "objectID": "Lectures/lec4_debugging_data_viz.html#pivoting-for-plots",
+    "href": "Lectures/lec4_debugging_data_viz.html#pivoting-for-plots",
+    "title": "Lecture 4: Debugging, and data visualization with tidyverse!",
     "section": "Pivoting for plots",
-    "text": "Pivoting for plots\nWhat if we want to plot one country but three different variables: lifeExp, pop, and gdpPercap? We’d basically like to group by variable, but to do that, it has to be a column of the dataset. As in we need a column whose values are “lifeExp”, “pop”, and “gdpPercap” (or some other names for these three quantities).\nTo do this… yes, we will pivot longer!\n\njapan_wide = japan_data %&gt;%\n  pivot_longer(\n    cols = lifeExp:gdpPercap,\n    names_to = \"variable\",\n    values_to = \"value\"\n  )\n\nggplot(japan_wide, aes(x = year, y = value, group = variable)) +\n  geom_line() +\n  facet_wrap(~ variable, scales = \"free\")\n\nAgain, we can use facet_grid() to stack the plots so they align by year:\n\nggplot(japan_wide, aes(x = year, y = value, group = variable)) +\n  geom_line() +\n  facet_grid(variable ~ ., scales = \"free\")\n\n\n\n\n\n\n\nYour Turn\n\n\n\nWhat else might you want to plot from this dataset? Imagine some plots you’d like to make, then use the tools above (and further documentation online if you like, such as the ggplot gallery and the vignettes or “articles” here) to make them."
+    "text": "Pivoting for plots\nWhat if we want to plot one country but three different variables: lifeExp, pop, and gdpPercap? We’d basically like to group by variable, but to do that, it has to be a column of the dataset. As in we need a column whose values are “lifeExp”, “pop”, and “gdpPercap” (or some other names for these three quantities).\nTo do this… yes, we will pivot longer!\n\njapan_wide = japan_data %&gt;%\n  pivot_longer(\n    cols = lifeExp:gdpPercap,\n    names_to = \"variable\",\n    values_to = \"value\"\n  )\n\nggplot(japan_wide, aes(x = year, y = value, group = variable)) +\n  geom_line() +\n  facet_wrap(~ variable, scales = \"free\")\n\n\n\n\n\n\n\n\nAgain, we can use facet_grid() to stack the plots so they align by year:\n\nggplot(japan_wide, aes(x = year, y = value, group = variable)) +\n  geom_line() +\n  facet_grid(variable ~ ., scales = \"free\")\n\n\n\n\n\n\n\n\nTo see what else you can do with ggplot, check out further documentation online such as the ggplot gallery and the ggplot vignettes or “articles”. Happy exploring!",
+    "crumbs": [
+      "Lectures",
+      "Lecture 4: Debugging and data visualization"
+    ]
   },
   {
     "objectID": "Lectures/lectures.html",
