@@ -39,6 +39,9 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -186,35 +189,40 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>This page contains general instructions for assignments/peer reviews. For homework-specific instructions and templates go to the specific assignment listed on the left.</p>
-<hr>
+<p>This page contains general instructions for assignments and peer reviews. For homework-specific instructions and templates go to the specific assignment listed on the left.</p>
+<p>All assignments should be created using Quarto and uploaded to Canvas as both html and qmd files. Your document should be pleasant for a peer to look at and follow all instructions. Use sections for organization, label figures/tables, and use code chunks.</p>
+<p>This is a one-credit pass/fail course intended to help you learn R. The focus is on learning and practice, not on points. Assignments and peer reviews will be graded for completion, but the points are not the point: they are key opportunities to practice R/RStudio/Quarto and to learn from each other. Feel free to work together, discussion questions on Ed Discussion, trade ideas and tips.</p>
+<section id="peer-review" class="level2">
+<h2 class="anchored" data-anchor-id="peer-review">Peer Review</h2>
+<p>You are required to examine and provide feedback on a peer’s homework submission each week. Reading and evaluating the work of others is useful and important! Good programmers realize that most problems have been solved by others; the trick is figuring out how to apply existing code to new problems. You will develop this skill by reading others’ code, seeing how other people approached the problems, providing suggestions, and pointing out when you learned something new. Please give constructive, polite, and insightful comments that encourage your classmate and help them learn from you.</p>
+</section>
 <section id="a-note-about-rendering-your-html-documents" class="level2">
 <h2 class="anchored" data-anchor-id="a-note-about-rendering-your-html-documents">A Note About Rendering Your HTML documents</h2>
 <p>You need to include <code>embed-resources: true</code> in your YAML header in order for your HTML documents to include any plot output when you upload them to Canvas. It should look something like the following:</p>
-<p><img src="images/quarto_embed.png" class="img-fluid"></p>
+<p><a href="images/quarto_embed.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="images/quarto_embed.png" class="img-fluid"></a></p>
 <p>You can read more about this option <a href="https://quarto.org/docs/reference/formats/html.html#rendering">here</a> but basically, whenever you render a .qmd file to HTML, all output created goes into a separate, associated folder, which is referenced when displaying the page in your web browser. However, when you upload the HTML file separately from that folder (e.g.&nbsp;to Canvas or through email), it doesn’t have the specific output images to reference, so they won’t appear. When you specify in your YAML header that you want to embed resources, you’re explicitly adding the output created by your code to the HTML file so that a separate output folder is longer created and you can send your HTML file with all its output as one entity.</p>
 </section>
 <section id="assignment-due-dates" class="level2">
 <h2 class="anchored" data-anchor-id="assignment-due-dates">Assignment Due Dates</h2>
 <div class="cell" data-layout-align="left">
 <div class="cell-output-display">
-<div id="lfkvbgrvgx" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#lfkvbgrvgx table {
+<div id="foyoneozdz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#foyoneozdz table {
   font-family: Raleway, Fraunces;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#lfkvbgrvgx thead, #lfkvbgrvgx tbody, #lfkvbgrvgx tfoot, #lfkvbgrvgx tr, #lfkvbgrvgx td, #lfkvbgrvgx th {
+#foyoneozdz thead, #foyoneozdz tbody, #foyoneozdz tfoot, #foyoneozdz tr, #foyoneozdz td, #foyoneozdz th {
   border-style: none;
 }
 
-#lfkvbgrvgx p {
+#foyoneozdz p {
   margin: 0;
   padding: 0;
 }
 
-#lfkvbgrvgx .gt_table {
+#foyoneozdz .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -240,12 +248,12 @@ ul.task-list li input[type="checkbox"] {
   border-left-color: #D3D3D3;
 }
 
-#lfkvbgrvgx .gt_caption {
+#foyoneozdz .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#lfkvbgrvgx .gt_title {
+#foyoneozdz .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -257,7 +265,7 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-width: 0;
 }
 
-#lfkvbgrvgx .gt_subtitle {
+#foyoneozdz .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -269,7 +277,7 @@ ul.task-list li input[type="checkbox"] {
   border-top-width: 0;
 }
 
-#lfkvbgrvgx .gt_heading {
+#foyoneozdz .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -281,13 +289,13 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#lfkvbgrvgx .gt_bottom_border {
+#foyoneozdz .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#lfkvbgrvgx .gt_col_headings {
+#foyoneozdz .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -302,7 +310,7 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#lfkvbgrvgx .gt_col_heading {
+#foyoneozdz .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -322,7 +330,7 @@ ul.task-list li input[type="checkbox"] {
   overflow-x: hidden;
 }
 
-#lfkvbgrvgx .gt_column_spanner_outer {
+#foyoneozdz .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -334,15 +342,15 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 4px;
 }
 
-#lfkvbgrvgx .gt_column_spanner_outer:first-child {
+#foyoneozdz .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#lfkvbgrvgx .gt_column_spanner_outer:last-child {
+#foyoneozdz .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#lfkvbgrvgx .gt_column_spanner {
+#foyoneozdz .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -354,11 +362,11 @@ ul.task-list li input[type="checkbox"] {
   width: 100%;
 }
 
-#lfkvbgrvgx .gt_spanner_row {
+#foyoneozdz .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#lfkvbgrvgx .gt_group_heading {
+#foyoneozdz .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -384,7 +392,7 @@ ul.task-list li input[type="checkbox"] {
   text-align: left;
 }
 
-#lfkvbgrvgx .gt_empty_group_heading {
+#foyoneozdz .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -399,15 +407,15 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 
-#lfkvbgrvgx .gt_from_md > :first-child {
+#foyoneozdz .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#lfkvbgrvgx .gt_from_md > :last-child {
+#foyoneozdz .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#lfkvbgrvgx .gt_row {
+#foyoneozdz .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -426,7 +434,7 @@ ul.task-list li input[type="checkbox"] {
   overflow-x: hidden;
 }
 
-#lfkvbgrvgx .gt_stub {
+#foyoneozdz .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -439,7 +447,7 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#lfkvbgrvgx .gt_stub_row_group {
+#foyoneozdz .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -453,15 +461,15 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: top;
 }
 
-#lfkvbgrvgx .gt_row_group_first td {
+#foyoneozdz .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#lfkvbgrvgx .gt_row_group_first th {
+#foyoneozdz .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#lfkvbgrvgx .gt_summary_row {
+#foyoneozdz .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -471,16 +479,16 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#lfkvbgrvgx .gt_first_summary_row {
+#foyoneozdz .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#lfkvbgrvgx .gt_first_summary_row.thick {
+#foyoneozdz .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#lfkvbgrvgx .gt_last_summary_row {
+#foyoneozdz .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -490,7 +498,7 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: #D3D3D3;
 }
 
-#lfkvbgrvgx .gt_grand_summary_row {
+#foyoneozdz .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -500,7 +508,7 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#lfkvbgrvgx .gt_first_grand_summary_row {
+#foyoneozdz .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -510,7 +518,7 @@ ul.task-list li input[type="checkbox"] {
   border-top-color: #D3D3D3;
 }
 
-#lfkvbgrvgx .gt_last_grand_summary_row_top {
+#foyoneozdz .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -520,11 +528,11 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: #D3D3D3;
 }
 
-#lfkvbgrvgx .gt_striped {
+#foyoneozdz .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#lfkvbgrvgx .gt_table_body {
+#foyoneozdz .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -533,7 +541,7 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: #D3D3D3;
 }
 
-#lfkvbgrvgx .gt_footnotes {
+#foyoneozdz .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -547,7 +555,7 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#lfkvbgrvgx .gt_footnote {
+#foyoneozdz .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -556,7 +564,7 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#lfkvbgrvgx .gt_sourcenotes {
+#foyoneozdz .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -570,7 +578,7 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#lfkvbgrvgx .gt_sourcenote {
+#foyoneozdz .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -578,72 +586,72 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#lfkvbgrvgx .gt_left {
+#foyoneozdz .gt_left {
   text-align: left;
 }
 
-#lfkvbgrvgx .gt_center {
+#foyoneozdz .gt_center {
   text-align: center;
 }
 
-#lfkvbgrvgx .gt_right {
+#foyoneozdz .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#lfkvbgrvgx .gt_font_normal {
+#foyoneozdz .gt_font_normal {
   font-weight: normal;
 }
 
-#lfkvbgrvgx .gt_font_bold {
+#foyoneozdz .gt_font_bold {
   font-weight: bold;
 }
 
-#lfkvbgrvgx .gt_font_italic {
+#foyoneozdz .gt_font_italic {
   font-style: italic;
 }
 
-#lfkvbgrvgx .gt_super {
+#foyoneozdz .gt_super {
   font-size: 65%;
 }
 
-#lfkvbgrvgx .gt_footnote_marks {
+#foyoneozdz .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#lfkvbgrvgx .gt_asterisk {
+#foyoneozdz .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#lfkvbgrvgx .gt_indent_1 {
+#foyoneozdz .gt_indent_1 {
   text-indent: 5px;
 }
 
-#lfkvbgrvgx .gt_indent_2 {
+#foyoneozdz .gt_indent_2 {
   text-indent: 10px;
 }
 
-#lfkvbgrvgx .gt_indent_3 {
+#foyoneozdz .gt_indent_3 {
   text-indent: 15px;
 }
 
-#lfkvbgrvgx .gt_indent_4 {
+#foyoneozdz .gt_indent_4 {
   text-indent: 20px;
 }
 
-#lfkvbgrvgx .gt_indent_5 {
+#foyoneozdz .gt_indent_5 {
   text-indent: 25px;
 }
 
-#lfkvbgrvgx .katex-display {
+#foyoneozdz .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#lfkvbgrvgx div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#foyoneozdz div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -708,1010 +716,6 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </div>
-<hr>
-<p>All assignments should be created using Quarto and uploaded to Canvas as both html and qmd files. Your document should be pleasant for a peer to look at and follow all instructions. Use sections for organization, label figures/tables, and use code chunks.</p>
-</section>
-<section id="rubric-students-use-to-grade-assignments" class="level2">
-<h2 class="anchored" data-anchor-id="rubric-students-use-to-grade-assignments">Rubric Students Use to Grade Assignments</h2>
-<div class="cell">
-<div class="cell-output-display">
-<div id="tdlnajxzdl" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#tdlnajxzdl table {
-  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-#tdlnajxzdl thead, #tdlnajxzdl tbody, #tdlnajxzdl tfoot, #tdlnajxzdl tr, #tdlnajxzdl td, #tdlnajxzdl th {
-  border-style: none;
-}
-
-#tdlnajxzdl p {
-  margin: 0;
-  padding: 0;
-}
-
-#tdlnajxzdl .gt_table {
-  display: table;
-  border-collapse: collapse;
-  line-height: normal;
-  margin-left: 0;
-  margin-right: auto;
-  color: #333333;
-  font-size: 105%;
-  font-weight: normal;
-  font-style: normal;
-  background-color: #FFFFFF;
-  width: auto;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #A8A8A8;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #A8A8A8;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-}
-
-#tdlnajxzdl .gt_caption {
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
-
-#tdlnajxzdl .gt_title {
-  color: #333333;
-  font-size: 125%;
-  font-weight: initial;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-color: #FFFFFF;
-  border-bottom-width: 0;
-}
-
-#tdlnajxzdl .gt_subtitle {
-  color: #333333;
-  font-size: 85%;
-  font-weight: initial;
-  padding-top: 3px;
-  padding-bottom: 5px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-color: #FFFFFF;
-  border-top-width: 0;
-}
-
-#tdlnajxzdl .gt_heading {
-  background-color: #FFFFFF;
-  text-align: center;
-  border-bottom-color: #FFFFFF;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#tdlnajxzdl .gt_bottom_border {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#tdlnajxzdl .gt_col_headings {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#tdlnajxzdl .gt_col_heading {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: normal;
-  text-transform: inherit;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 5px;
-  padding-bottom: 6px;
-  padding-left: 5px;
-  padding-right: 5px;
-  overflow-x: hidden;
-}
-
-#tdlnajxzdl .gt_column_spanner_outer {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: normal;
-  text-transform: inherit;
-  padding-top: 0;
-  padding-bottom: 0;
-  padding-left: 4px;
-  padding-right: 4px;
-}
-
-#tdlnajxzdl .gt_column_spanner_outer:first-child {
-  padding-left: 0;
-}
-
-#tdlnajxzdl .gt_column_spanner_outer:last-child {
-  padding-right: 0;
-}
-
-#tdlnajxzdl .gt_column_spanner {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  overflow-x: hidden;
-  display: inline-block;
-  width: 100%;
-}
-
-#tdlnajxzdl .gt_spanner_row {
-  border-bottom-style: hidden;
-}
-
-#tdlnajxzdl .gt_group_heading {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-  text-align: left;
-}
-
-#tdlnajxzdl .gt_empty_group_heading {
-  padding: 0.5px;
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: middle;
-}
-
-#tdlnajxzdl .gt_from_md > :first-child {
-  margin-top: 0;
-}
-
-#tdlnajxzdl .gt_from_md > :last-child {
-  margin-bottom: 0;
-}
-
-#tdlnajxzdl .gt_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  margin: 10px;
-  border-top-style: solid;
-  border-top-width: 1px;
-  border-top-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-  overflow-x: hidden;
-}
-
-#tdlnajxzdl .gt_stub {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-right-style: solid;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#tdlnajxzdl .gt_stub_row_group {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-right-style: solid;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  padding-left: 5px;
-  padding-right: 5px;
-  vertical-align: top;
-}
-
-#tdlnajxzdl .gt_row_group_first td {
-  border-top-width: 2px;
-}
-
-#tdlnajxzdl .gt_row_group_first th {
-  border-top-width: 2px;
-}
-
-#tdlnajxzdl .gt_summary_row {
-  color: #333333;
-  background-color: #FFFFFF;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#tdlnajxzdl .gt_first_summary_row {
-  border-top-style: solid;
-  border-top-color: #D3D3D3;
-}
-
-#tdlnajxzdl .gt_first_summary_row.thick {
-  border-top-width: 2px;
-}
-
-#tdlnajxzdl .gt_last_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#tdlnajxzdl .gt_grand_summary_row {
-  color: #333333;
-  background-color: #FFFFFF;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#tdlnajxzdl .gt_first_grand_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-style: double;
-  border-top-width: 6px;
-  border-top-color: #D3D3D3;
-}
-
-#tdlnajxzdl .gt_last_grand_summary_row_top {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-style: double;
-  border-bottom-width: 6px;
-  border-bottom-color: #D3D3D3;
-}
-
-#tdlnajxzdl .gt_striped {
-  background-color: rgba(128, 128, 128, 0.05);
-}
-
-#tdlnajxzdl .gt_table_body {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#tdlnajxzdl .gt_footnotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#tdlnajxzdl .gt_footnote {
-  margin: 0px;
-  font-size: 90%;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#tdlnajxzdl .gt_sourcenotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#tdlnajxzdl .gt_sourcenote {
-  font-size: 90%;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#tdlnajxzdl .gt_left {
-  text-align: left;
-}
-
-#tdlnajxzdl .gt_center {
-  text-align: center;
-}
-
-#tdlnajxzdl .gt_right {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-}
-
-#tdlnajxzdl .gt_font_normal {
-  font-weight: normal;
-}
-
-#tdlnajxzdl .gt_font_bold {
-  font-weight: bold;
-}
-
-#tdlnajxzdl .gt_font_italic {
-  font-style: italic;
-}
-
-#tdlnajxzdl .gt_super {
-  font-size: 65%;
-}
-
-#tdlnajxzdl .gt_footnote_marks {
-  font-size: 75%;
-  vertical-align: 0.4em;
-  position: initial;
-}
-
-#tdlnajxzdl .gt_asterisk {
-  font-size: 100%;
-  vertical-align: 0;
-}
-
-#tdlnajxzdl .gt_indent_1 {
-  text-indent: 5px;
-}
-
-#tdlnajxzdl .gt_indent_2 {
-  text-indent: 10px;
-}
-
-#tdlnajxzdl .gt_indent_3 {
-  text-indent: 15px;
-}
-
-#tdlnajxzdl .gt_indent_4 {
-  text-indent: 20px;
-}
-
-#tdlnajxzdl .gt_indent_5 {
-  text-indent: 25px;
-}
-
-#tdlnajxzdl .katex-display {
-  display: inline-flex !important;
-  margin-bottom: 0.75em !important;
-}
-
-#tdlnajxzdl div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
-  height: 0px !important;
-}
-</style>
-
-<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header gt_col_headings">
-<th id="<div data-qmd-base64=&quot;KipFdmFsdWF0aW9uKio=&quot;><div class='gt_from_md'><p><strong>Evaluation</strong></p>
-</div></div>" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" style="border-top-width: 2px; border-top-style: solid; border-top-color: #000000; border-left-width: 2px; border-left-style: solid; border-left-color: #000000" scope="col"><p><strong>Evaluation</strong></p></th>
-<th id="<div data-qmd-base64=&quot;KipQb2ludHMqKg==&quot;><div class='gt_from_md'><p><strong>Points</strong></p>
-</div></div>" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" style="border-top-width: 2px; border-top-style: solid; border-top-color: #000000; border-right-width: 2px; border-right-style: solid; border-right-color: #000000" scope="col"><p><strong>Points</strong></p></th>
-</tr>
-</thead>
-<tbody class="gt_table_body">
-<tr class="odd">
-<td class="gt_row gt_center" headers="Evaluation" style="background-color: rgba(224,69,69,0.57); border-left-width: 2px; border-left-style: solid; border-left-color: #000000">Didn't turn anything in.</td>
-<td class="gt_row gt_center" headers="Points" style="background-color: rgba(224,69,69,0.57); border-right-width: 2px; border-right-style: solid; border-right-color: #000000">0</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_center" headers="Evaluation" style="background-color: rgba(242,237,87,0.47); border-left-width: 2px; border-left-style: solid; border-left-color: #000000">Low effort, assignment ignores many directions.</td>
-<td class="gt_row gt_center" headers="Points" style="background-color: rgba(242,237,87,0.47); border-right-width: 2px; border-right-style: solid; border-right-color: #000000">1</td>
-</tr>
-<tr class="odd">
-<td class="gt_row gt_center" headers="Evaluation" style="background-color: rgba(102,189,189,0.69); border-left-width: 2px; border-left-style: solid; border-left-color: #000000">Decent effort, assignment follows most of the directions but some parts are missing without comment.</td>
-<td class="gt_row gt_center" headers="Points" style="background-color: rgba(102,189,189,0.69); border-right-width: 2px; border-right-style: solid; border-right-color: #000000">2</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_center" headers="Evaluation" style="background-color: rgba(79,121,168,0.69); border-left-width: 2px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: #000000">Good effort, assignment follows the directions even if there are errors in some of the implementation.</td>
-<td class="gt_row gt_center" headers="Points" style="background-color: rgba(79,121,168,0.69); border-right-width: 2px; border-right-style: solid; border-right-color: #000000; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: #000000">3</td>
-</tr>
-</tbody>
-</table>
-
-</div>
-</div>
-</div>
-</section>
-<section id="peer-review" class="level2">
-<h2 class="anchored" data-anchor-id="peer-review">Peer Review</h2>
-<p>You are required to <strong>both grade and provide feedback</strong> on a peer’s homework each week. Reading and evaluating the work of others is useful and important! Good programmers realize that most problems have been solved by others; the trick is figuring out how to apply existing code to new problems. You will develop this skill by reading others’ code, evaluating their approach to problems, providing suggestions, and pointing out when you learned something new. <span style="background-color: #decbe4;"><strong>Good peer reviews</strong> give constructive, polite, and insightful comments, are specific and concise, use the grading rubric above, and point out what you learned from their code.</span> <span style="background-color: #fdcdac;"><strong>Poor peer reviews</strong> are impolite or unprofessional, are generic (i.e., could be applied to anyone’s homework), or fail to provide useful suggestions.</span></p>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Late Homework Will Automatically Lose Peer-Review Credit
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Peer reviews are autmatically randomly assigned through Canvas at the due date. Therefore, if you don’t submit your homework on time, you will not be given a peer’s homework to review and vice versa. Life is messy and complicated and we all miss deadlines for a variety of reasons. If that happens, you can email me to request that I review and provide feedback on a late assignment, but you won’t be able to earn peer-review credit for that particular homework.</p>
-</div>
-</div>
-</section>
-<section id="rubric-instructor-uses-to-grade-peer-review" class="level2">
-<h2 class="anchored" data-anchor-id="rubric-instructor-uses-to-grade-peer-review">Rubric Instructor Uses to Grade Peer Review</h2>
-<p><br>
-</p>
-<div class="cell">
-<div class="cell-output-display">
-<div id="qxvbdlihyj" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#qxvbdlihyj table {
-  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-#qxvbdlihyj thead, #qxvbdlihyj tbody, #qxvbdlihyj tfoot, #qxvbdlihyj tr, #qxvbdlihyj td, #qxvbdlihyj th {
-  border-style: none;
-}
-
-#qxvbdlihyj p {
-  margin: 0;
-  padding: 0;
-}
-
-#qxvbdlihyj .gt_table {
-  display: table;
-  border-collapse: collapse;
-  line-height: normal;
-  margin-left: 0;
-  margin-right: auto;
-  color: #333333;
-  font-size: 105%;
-  font-weight: normal;
-  font-style: normal;
-  background-color: #FFFFFF;
-  width: auto;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #A8A8A8;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #A8A8A8;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-}
-
-#qxvbdlihyj .gt_caption {
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
-
-#qxvbdlihyj .gt_title {
-  color: #333333;
-  font-size: 125%;
-  font-weight: initial;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-color: #FFFFFF;
-  border-bottom-width: 0;
-}
-
-#qxvbdlihyj .gt_subtitle {
-  color: #333333;
-  font-size: 85%;
-  font-weight: initial;
-  padding-top: 3px;
-  padding-bottom: 5px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-color: #FFFFFF;
-  border-top-width: 0;
-}
-
-#qxvbdlihyj .gt_heading {
-  background-color: #FFFFFF;
-  text-align: center;
-  border-bottom-color: #FFFFFF;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#qxvbdlihyj .gt_bottom_border {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#qxvbdlihyj .gt_col_headings {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#qxvbdlihyj .gt_col_heading {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: normal;
-  text-transform: inherit;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 5px;
-  padding-bottom: 6px;
-  padding-left: 5px;
-  padding-right: 5px;
-  overflow-x: hidden;
-}
-
-#qxvbdlihyj .gt_column_spanner_outer {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: normal;
-  text-transform: inherit;
-  padding-top: 0;
-  padding-bottom: 0;
-  padding-left: 4px;
-  padding-right: 4px;
-}
-
-#qxvbdlihyj .gt_column_spanner_outer:first-child {
-  padding-left: 0;
-}
-
-#qxvbdlihyj .gt_column_spanner_outer:last-child {
-  padding-right: 0;
-}
-
-#qxvbdlihyj .gt_column_spanner {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  overflow-x: hidden;
-  display: inline-block;
-  width: 100%;
-}
-
-#qxvbdlihyj .gt_spanner_row {
-  border-bottom-style: hidden;
-}
-
-#qxvbdlihyj .gt_group_heading {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-  text-align: left;
-}
-
-#qxvbdlihyj .gt_empty_group_heading {
-  padding: 0.5px;
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: middle;
-}
-
-#qxvbdlihyj .gt_from_md > :first-child {
-  margin-top: 0;
-}
-
-#qxvbdlihyj .gt_from_md > :last-child {
-  margin-bottom: 0;
-}
-
-#qxvbdlihyj .gt_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  margin: 10px;
-  border-top-style: solid;
-  border-top-width: 1px;
-  border-top-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-  overflow-x: hidden;
-}
-
-#qxvbdlihyj .gt_stub {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-right-style: solid;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#qxvbdlihyj .gt_stub_row_group {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-right-style: solid;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  padding-left: 5px;
-  padding-right: 5px;
-  vertical-align: top;
-}
-
-#qxvbdlihyj .gt_row_group_first td {
-  border-top-width: 2px;
-}
-
-#qxvbdlihyj .gt_row_group_first th {
-  border-top-width: 2px;
-}
-
-#qxvbdlihyj .gt_summary_row {
-  color: #333333;
-  background-color: #FFFFFF;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#qxvbdlihyj .gt_first_summary_row {
-  border-top-style: solid;
-  border-top-color: #D3D3D3;
-}
-
-#qxvbdlihyj .gt_first_summary_row.thick {
-  border-top-width: 2px;
-}
-
-#qxvbdlihyj .gt_last_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#qxvbdlihyj .gt_grand_summary_row {
-  color: #333333;
-  background-color: #FFFFFF;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#qxvbdlihyj .gt_first_grand_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-style: double;
-  border-top-width: 6px;
-  border-top-color: #D3D3D3;
-}
-
-#qxvbdlihyj .gt_last_grand_summary_row_top {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-style: double;
-  border-bottom-width: 6px;
-  border-bottom-color: #D3D3D3;
-}
-
-#qxvbdlihyj .gt_striped {
-  background-color: rgba(128, 128, 128, 0.05);
-}
-
-#qxvbdlihyj .gt_table_body {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#qxvbdlihyj .gt_footnotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#qxvbdlihyj .gt_footnote {
-  margin: 0px;
-  font-size: 90%;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#qxvbdlihyj .gt_sourcenotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#qxvbdlihyj .gt_sourcenote {
-  font-size: 90%;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#qxvbdlihyj .gt_left {
-  text-align: left;
-}
-
-#qxvbdlihyj .gt_center {
-  text-align: center;
-}
-
-#qxvbdlihyj .gt_right {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-}
-
-#qxvbdlihyj .gt_font_normal {
-  font-weight: normal;
-}
-
-#qxvbdlihyj .gt_font_bold {
-  font-weight: bold;
-}
-
-#qxvbdlihyj .gt_font_italic {
-  font-style: italic;
-}
-
-#qxvbdlihyj .gt_super {
-  font-size: 65%;
-}
-
-#qxvbdlihyj .gt_footnote_marks {
-  font-size: 75%;
-  vertical-align: 0.4em;
-  position: initial;
-}
-
-#qxvbdlihyj .gt_asterisk {
-  font-size: 100%;
-  vertical-align: 0;
-}
-
-#qxvbdlihyj .gt_indent_1 {
-  text-indent: 5px;
-}
-
-#qxvbdlihyj .gt_indent_2 {
-  text-indent: 10px;
-}
-
-#qxvbdlihyj .gt_indent_3 {
-  text-indent: 15px;
-}
-
-#qxvbdlihyj .gt_indent_4 {
-  text-indent: 20px;
-}
-
-#qxvbdlihyj .gt_indent_5 {
-  text-indent: 25px;
-}
-
-#qxvbdlihyj .katex-display {
-  display: inline-flex !important;
-  margin-bottom: 0.75em !important;
-}
-
-#qxvbdlihyj div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
-  height: 0px !important;
-}
-</style>
-
-<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header gt_col_headings">
-<th id="<div data-qmd-base64=&quot;KipFdmFsdWF0aW9uKio=&quot;><div class='gt_from_md'><p><strong>Evaluation</strong></p>
-</div></div>" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" style="border-top-width: 2px; border-top-style: solid; border-top-color: #000000; border-left-width: 2px; border-left-style: solid; border-left-color: #000000" scope="col"><p><strong>Evaluation</strong></p></th>
-<th id="<div data-qmd-base64=&quot;KipQb2ludHMqKg==&quot;><div class='gt_from_md'><p><strong>Points</strong></p>
-</div></div>" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" style="border-top-width: 2px; border-top-style: solid; border-top-color: #000000; border-right-width: 2px; border-right-style: solid; border-right-color: #000000" scope="col"><p><strong>Points</strong></p></th>
-</tr>
-</thead>
-<tbody class="gt_table_body">
-<tr class="odd">
-<td class="gt_row gt_center" headers="Evaluation" style="background-color: rgba(242,237,87,0.47); border-left-width: 2px; border-left-style: solid; border-left-color: #000000"><p>Didn’t follow all peer-review instructions.</p></td>
-<td class="gt_row gt_center" headers="Points" style="background-color: rgba(242,237,87,0.47); border-right-width: 2px; border-right-style: solid; border-right-color: #000000"><p>0</p></td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_center" headers="Evaluation" style="background-color: rgba(102,189,189,0.69); border-left-width: 2px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: #000000"><p>Peer review is at least four sentences long, <br> kindly mentions and explains any key issues with the assignment, <br> points out at least one positive thing in your <br> peer’s work, and clearly states the number of points earned.</p></td>
-<td class="gt_row gt_center" headers="Points" style="background-color: rgba(102,189,189,0.69); border-right-width: 2px; border-right-style: solid; border-right-color: #000000; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: #000000"><p>1</p></td>
-</tr>
-</tbody>
-</table>
-
-</div>
-</div>
-</div>
-</section>
-<section id="when-to-contact-the-instructor" class="level2">
-<h2 class="anchored" data-anchor-id="when-to-contact-the-instructor">When to Contact the Instructor</h2>
-<p>A number of situations may warrant contacting the instructor:</p>
-<ol type="1">
-<li><p>If you believe you have received an unfair peer review, you can <strong>resubmit</strong> your homework for evaluation by the instructor. The assignment will be regraded, which may result in a higher, same, or lower grade.</p></li>
-<li><p>If you wish for more feedback on a particular part of the homework, you can ask the instructor for additional explanation <strong>without resubmitting</strong> during office hours or over Slack.</p></li>
-<li><p>If you receive no feedback, I will provide gentle peer review <strong>on request</strong>.</p></li>
-</ol>
 
 
 </section>
@@ -2138,6 +1142,38 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+<script>var lightboxQuarto = GLightbox({"selector":".lightbox","closeEffect":"zoom","loop":false,"descPosition":"bottom","openEffect":"zoom"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
 
 
 

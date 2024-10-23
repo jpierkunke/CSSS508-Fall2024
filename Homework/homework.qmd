@@ -1,11 +1,18 @@
 ---
 title: "Overview"
 highlight-style: a11y-dark
+lightbox: true
 ---
 
-This page contains general instructions for assignments/peer reviews. For homework-specific instructions and templates go to the specific assignment listed on the left.
+This page contains general instructions for assignments and peer reviews. For homework-specific instructions and templates go to the specific assignment listed on the left.
 
-------------------------------------------------------------------------
+All assignments should be created using Quarto and uploaded to Canvas as both html and qmd files. Your document should be pleasant for a peer to look at and follow all instructions. Use sections for organization, label figures/tables, and use code chunks.
+
+This is a one-credit pass/fail course intended to help you learn R. The focus is on learning and practice, not on points. Assignments and peer reviews will be graded for completion, but the points are not the point: they are key opportunities to practice R/RStudio/Quarto and to learn from each other. Feel free to work together, discussion questions on Ed Discussion, trade ideas and tips.
+
+## Peer Review
+
+You are required to examine and provide feedback on a peer's homework submission each week. Reading and evaluating the work of others is useful and important! Good programmers realize that most problems have been solved by others; the trick is figuring out how to apply existing code to new problems. You will develop this skill by reading others' code, seeing how other people approached the problems, providing suggestions, and pointing out when you learned something new. Please give constructive, polite, and insightful comments that encourage your classmate and help them learn from you.
 
 ## A Note About Rendering Your HTML documents
 
@@ -57,53 +64,3 @@ schedule |>
               table.border.top.style = "hidden") 
 ```
 
-------------------------------------------------------------------------
-
-All assignments should be created using Quarto and uploaded to Canvas as both html and qmd files. Your document should be pleasant for a peer to look at and follow all instructions. Use sections for organization, label figures/tables, and use code chunks.
-
-## Rubric Students Use to Grade Assignments
-
-```{r}
-#| echo: false
-#| warning: false
-#| message: false
-
-source("rubric.R")
-
-rubric |> 
-  tab_options(table.align = "left", table.font.size = pct(105))
-  
-```
-
-## Peer Review
-
-You are required to **both grade and provide feedback** on a peer's homework each week. Reading and evaluating the work of others is useful and important! Good programmers realize that most problems have been solved by others; the trick is figuring out how to apply existing code to new problems. You will develop this skill by reading others' code, evaluating their approach to problems, providing suggestions, and pointing out when you learned something new. [**Good peer reviews** give constructive, polite, and insightful comments, are specific and concise, use the grading rubric above, and point out what you learned from their code.]{style="background-color: #decbe4;"} [**Poor peer reviews** are impolite or unprofessional, are generic (i.e., could be applied to anyone's homework), or fail to provide useful suggestions.]{style="background-color: #fdcdac;"}
-
-::: callout-important
-## Late Homework Will Automatically Lose Peer-Review Credit
-
-Peer reviews are autmatically randomly assigned through Canvas at the due date. Therefore, if you don't submit your homework on time, you will not be given a peer's homework to review and vice versa. Life is messy and complicated and we all miss deadlines for a variety of reasons. If that happens, you can email me to request that I review and provide feedback on a late assignment, but you won't be able to earn peer-review credit for that particular homework.
-:::
-
-## Rubric Instructor Uses to Grade Peer Review
-
-\
-
-```{r}
-#| echo: false
-#| warning: false
-#| message: false
-
-peer_review_rubric |> 
-  tab_options(table.align = "left", table.font.size = pct(105))
-```
-
-## When to Contact the Instructor
-
-A number of situations may warrant contacting the instructor:
-
-1.  If you believe you have received an unfair peer review, you can **resubmit** your homework for evaluation by the instructor. The assignment will be regraded, which may result in a higher, same, or lower grade.
-
-2.  If you wish for more feedback on a particular part of the homework, you can ask the instructor for additional explanation **without resubmitting** during office hours or over Slack.
-
-3.  If you receive no feedback, I will provide gentle peer review **on request**.
