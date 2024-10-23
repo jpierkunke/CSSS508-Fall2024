@@ -1,0 +1,10 @@
+---
+title: "Homework 4"
+highlight-style: a11y-dark
+---
+
+### Instructions
+
+Homework 4 has been posted on Canvas, and the instructions are posted there. Rather than reading instructions here for creating your own Quarto document, from the Canvas assignment you can download a Quarto file that has the homework instructions/problems and spaces for you to add/modify text and code. You'll upload that qmd file and its rendered html file as your homework submission.
+
+Happy coding! I look forward to hearing how this homework goes for you.
