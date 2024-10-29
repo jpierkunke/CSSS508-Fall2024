@@ -37,8 +37,10 @@ website:
           text: "Lecture 2: Data manipulation with base R"
         - file: Lectures/lec3_data_manip_tidyverse.qmd
           text: "Lecture 3: Data manipulation with tidyverse"
-        - file: Lectures/lec4_debugging_data_viz.qmd
-          text: "Lecture 4: Debugging and data visualization"
+        - file: Lectures/lec4_debugging_review.qmd
+          text: "Lecture 4: Debugging and review"
+        - file: Lectures/lec5_data_viz.qmd
+          text: "Lecture 5: Data visualization"
 
     - title: "Homework"
       contents: 

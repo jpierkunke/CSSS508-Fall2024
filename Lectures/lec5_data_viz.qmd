@@ -1,0 +1,387 @@
+---
+title: "Lecture 5: Data visualization with tidyverse!"
+subtitle: "CSSS 508"
+author: "Jess Kunke"
+date: "Tue 22 Oct 2024"
+# format:
+#   revealjs:
+#     smaller: true
+#     scrollable: true
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number_sections: false
+    embed-resources: true
+execute:
+  message: false
+  warning: false
+lightbox: true
+---
+
+```{r}
+#| include: false
+library(knitr)
+library(gapminder)
+library(tidyverse)
+```
+
+![ggplot gives you lots of flexibility in making beautiful plots! Illustration by Allison Horst.](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/9a306c0a-dac8-413d-ba2e-cc7fd4c4d5c8_rw_1920.png?h=c802991088a9623f1f7aa18c470797ee){width=70% fig-align="left"}
+
+# Updates and reminders
+
+- Homework and peer reviews are graded for completion
+- Office hours are now Mon 4-5pm and Fri 2-3pm on Zoom only
+- Feedback on new homework format?
+
+# Outline for today
+
+- Review how to use `group_by()` and `summarize()` together
+- Pivoting tables and data
+- Introduce plots with **tidyverse**!
+- If we have time: a little more debugging practice with rendering Quarto documents
+
+
+# Review using `group_by()` and `summarize()`
+
+First let's review `group_by()` and `summarize()` (or `summarise()`, either spelling works).
+
+- Use these together when you want to compute something for subgroups of the data: average population by country and year, number of observations per year, total population by continent, etc.
+- To identify what variables to `group_by()`, think about what the subgroups are for which you want to compute something. If you want to know the number of observations for each year in the data, you would use `group_by(year)`. Just be careful to spell the name of the variable exactly as it's spelled in the dataset (e.g. Year vs year vs yr, pop vs Population vs population).
+- Possible summarize functions include `n()` for computing the number of rows or observations and `mean(var)` for computing the average of a variable `var`. Notice that any function that works on a variable requires you to specify what variable you're taking the mean/sum/min/etc. of. That's why `n()` doesn't require an argument/input while `mean()` does.
+
+:::{.callout-note}
+## Your turn
+Use `group_by()` and `summarize()` to compute the following. I've provided template code for the first one to get you started.
+
+1. average population by country and year
+2. total population by continent in 1952 (note: you may need another tidyverse operation in here)
+
+How could you check your answer to part 2?
+
+```{r}
+#| eval: false
+avg_pop = gapminder %>%
+  group_by() %>%
+  summarize()
+```
+
+
+```{r}
+#| eval: false
+#| echo: false
+total_pop = gapminder %>%
+  filter(year == 1952) %>%
+  group_by(continent) %>%
+  summarize(total_pop = sum(pop))
+```
+
+
+:::
+
+# Pivoting tables and data
+
+Recall where we left off last time with data manipulation in **tidyverse**: We wanted to summarize how many observations we had for each year and each continent, so we made the following table.
+
+```{r}
+n_obs_by_year_cont <- gapminder %>%
+  group_by(year, continent) %>%
+  summarize(n.obs = n())
+
+kable(head(n_obs_by_year_cont, n=12))
+```
+
+This table has a separate row for each year-continent combination. What we would probably find more readable is to have each row represent a year (or continent) and each column represent a continent (or year), and then the values currently in the `n.obs` column would become the entries in each cell of the table:
+
+```{r}
+#| echo: false
+# we start with n_obs_by_year_cont
+table_year_cont = n_obs_by_year_cont %>%
+  pivot_wider(
+    # which current column has the values we want to be the names of new columns?
+    names_from = continent,
+    # which current column has the values for those new columns?
+    values_from = n.obs
+  )
+  
+kable(table_year_cont)
+```
+
+We say that `n_obs_by_year_cont` is currently in long format, and we would like to pivot to a wider format. To do that, we'll use the **tidyverse** function `pivot_wider()`:
+
+```{r}
+# we start with n_obs_by_year_cont
+table_year_cont = n_obs_by_year_cont %>%
+  pivot_wider(
+    # get the names for the new columns from the continent column
+    names_from = continent,
+    # get the values for the new columns from the n.obs column
+    values_from = n.obs
+  )
+```
+
+Sometimes we have a wide-format table that we want to pivot longer. This will come up later as we're plotting.
+
+:::{.callout-note}
+## Your turn
+
+Consider that last code chunk, copied and pasted here for clarity:
+
+```{r}
+#| eval: false
+# we start with n_obs_by_year_cont
+table_year_cont = n_obs_by_year_cont %>%
+  pivot_wider(
+    # get the names for the new columns from the continent column
+    names_from = continent,
+    # get the values for the new columns from the n.obs column
+    values_from = n.obs
+  )
+```
+
+1. How would we change this code so that rows are continents and columns are years?
+
+2. What other code would we have to run before this code in order for it to work? In other words, if we open a fresh R Session, what is the minimum set of code we would need to run first so that we could create `table_year_cont` without errors? Or equivalently, if we put the above code in a Quarto document, what is the minimum set of code we would need to put in the Quarto document before this code chunk so that the Quarto document would render without errors?
+:::
+
+We'll get more practice with pivoting later with plotting and also in the homework.
+
+# Data viz
+
+Now for some plotting.
+
+![](https://imgflip.com/s/meme/Evil-Plotting-Raccoon.jpg)
+
+Not that kind of plotting.
+
+## Getting started with `ggplot()`
+
+Let's make a plot of population over time for the country of Japan.
+
+First, review: how do you get the subset of the `gapminder` dataset that consists of just the Japan data, and store it in R as an object called `japan_data`?
+
+```{r}
+#| echo: false
+japan_data = filter(gapminder, country == "Japan")
+```
+
+Cool, now let's plot population versus time with `ggplot()`:
+
+```{r}
+ggplot(japan_data, aes(x = year, y = pop))
+```
+
+Weird, what do you notice?  `ggplot()` is funny in that the first line which actually has the ggplot function only declares the initial plot area; it doesn't make the full plot. To do that, we add a `+` at the end of the `ggplot()` line and add additional lines of code. For example, "geoms" (geometry layers) add the actual lines, points, bars, etc.:
+
+```{r}
+ggplot(japan_data, aes(x = year, y = pop)) +
+  geom_line()
+```
+
+We can combine multiple layers too as long as they make sense for the data structure:
+
+```{r}
+ggplot(japan_data, aes(x = year, y = pop)) +
+  geom_line() +
+  geom_point()
+```
+
+We can make things a lot prettier and more customized too.  Here are just a few examples of things we can do:
+
+```{r}
+ggplot(japan_data, aes(x = year, y = pop/1e6)) +
+  geom_line(color = "maroon", alpha = 0.7) +
+  geom_point(color = "maroon", alpha = 0.7) +
+  xlab("Year") + ylab("Population (millions of people)") +
+  ggtitle("Japan's population over time") +
+  theme_bw()
+```
+
+:::{.callout-note}
+## Your turn
+
+Start with a simple `ggplot` plot of population versus life expectancy for the Japan data; by simple, I mean just do the bare minimum to make the plot without adding additional features. Then let's add/change some things:
+
+- Rename the axis labels so that they look more polished.
+- Add a title to your plot.
+- Change the theme.
+- Change the color of the line.
+- What does changing the value of alpha to 0.1 or 1 do?
+
+:::
+
+## Plotting multiple countries
+
+What if we want to compare several countries on the same plot? We might try the following code, but it looks bonkers. Try it and see:
+
+```{r}
+multi_country_data = filter(gapminder, country %in% c("Japan", "Nigeria", "Argentina", "New Zealand"))
+
+ggplot(multi_country_data, aes(x = year, y = pop)) +
+  geom_line()
+```
+
+Why does the plot look like that, and how can we fix it? As part of troubleshooting, we might check what a scatterplot looks like (without connecting the lines):
+
+```{r}
+ggplot(multi_country_data, aes(x = year, y = pop)) +
+  geom_point()
+```
+
+Notice that looks reasonable. So what do you think is the issue with the line plot?
+
+
+::: {.callout-tip collapse="true"}
+## Expand this for a solution
+
+The issue is that the `multi_country_data` dataset has both multiple countries and multiple years, and currently ggplot does not know to group the time series data by country when it is deciding how to connect the points with lines. It is treating it as data to plot as a single line, when we would like a separate line for each country.
+
+To fix this, we will specify a grouping variable using the `group` argument to the `aes()` function:
+
+```{r}
+multi_country_data = filter(gapminder, country %in% c("Japan", "Nigeria", "Argentina", "New Zealand"))
+
+ggplot(multi_country_data, aes(x = year, y = pop, group = country)) +
+  geom_line()
+```
+
+We probably also want to distinguish and label the lines somehow by what country they represent:
+
+```{r}
+multi_country_data = filter(gapminder, country %in% c("Japan", "Nigeria", "Argentina", "New Zealand"))
+
+ggplot(multi_country_data, aes(x = year, y = pop, group = country, color = country)) +
+  geom_line()
+```
+:::
+
+
+
+
+## Facets (subplots)
+
+What if we want to plot each country in a different subplot so that we can see each curve on its own scale? We can use `facet_wrap()`:
+
+```{r}
+ggplot(multi_country_data, aes(x = year, y = pop, group = country)) +
+  geom_line() +
+  facet_wrap(~ country, scales = "free")
+```
+
+In fact, we no longer need the `group = country` argument because we're going to put each country in its own plot/panel anyway:
+
+```{r}
+ggplot(multi_country_data, aes(x = year, y = pop)) +
+  geom_line() +
+  facet_wrap(~ country, scales = "free")
+```
+
+Note that since they all share an x-axis (years), it might make sense to plot them vertically stacked so that the years line up. For this, we can use `facet_grid()` which allows us to arrange the plots specifically in a row or a column:
+
+```{r}
+ggplot(multi_country_data, aes(x = year, y = pop, group = country)) +
+  geom_line() +
+  # make countries the rows
+  facet_grid(country ~ ., scales = "free")
+```
+
+
+
+## Pivoting for plots
+
+What if we want to plot one country over time but we want to plot three different variables for it: `lifeExp`, `pop`, and `gdpPercap`?  We'd basically like to group by variable, but to do that with `ggplot`, it has to be a column of the dataset. As in we need a column whose values are "lifeExp", "pop", and "gdpPercap" (or some other names for these three quantities) and another column whose value is the value of that variable.
+
+To see this, start thinking how you would construct this plot. You might want the first line to look something like this (this is pseudocode):
+
+```{r}
+#| eval: false
+# ggplot(japan_data, aes(x = year, y = value of one of the variables, group = variable))
+
+# or if they're on separate panels/subplots:
+
+# ggplot(japan_data, aes(x = year, y = value of one of the variables)) + facet_wrap(...on variable)
+```
+
+
+To do this... yes, we will pivot the data longer!
+
+```{r}
+japan_wide = japan_data %>%
+  pivot_longer(
+    cols = lifeExp:gdpPercap,
+    names_to = "variable",
+    values_to = "value"
+  )
+
+ggplot(japan_wide, aes(x = year, y = value)) +
+  geom_line() +
+  facet_wrap(~ variable, scales = "free")
+```
+
+Again, we can use `facet_grid()` to stack the plots so they align by year:
+
+```{r}
+ggplot(japan_wide, aes(x = year, y = value)) +
+  geom_line() +
+  facet_grid(variable ~ ., scales = "free")
+```
+
+To see what else you can do with `ggplot`, check out further documentation online such as the [ggplot gallery](https://r-graph-gallery.com/) and the [ggplot vignettes or "articles"](https://ggplot2.tidyverse.org/). Happy exploring!
+
+
+
+
+# Debugging when you render Quarto documents
+
+## Naming code chunks
+
+If I render the following Quarto document:
+
+![](images/unnamed_qmdfile.png)
+
+I get the following error message:
+
+![](images/unnamed_error.png)
+
+If I take the same Quarto document and just name my code chunks like so:
+
+![](images/named_qmdfile.png)
+
+Then I get somewhat more helpful output about the progress before the error:
+
+![](images/named_error.png)
+
+
+::: {.callout-note}
+## Your turn
+Make a Quarto document that looks like the second one above, with the named chunks.
+
+Then identify and fix the error(s) to get it rendering successfully.
+:::
+
+
+## Identifying where you want to edit the code
+
+Once you identify what line is triggering the error message, then you can work on figuring out what caused the error.  *Remember: this is not necessarily the code you want to edit. The part of the code you modify to fix the issue could be in an earlier line of code or an earlier code chunk.*
+
+::: {.callout-note}
+## Your turn
+In fact let's practice that right now! In the qmd file below,
+
+1. Which line is generating the error message? (To which line is the error message referring?)
+2. Where would you edit the code to fix the error?
+
+![](images/exploratory_qmdfile.png)
+![](images/exploratory_error.png)
+:::
+
+## How to locate an error when you've rendered too much at once
+
+Rule number 1: render frequently! But of course sometimes you forget, or you have other reasons that you add a lot of code or make a lot of code before rendering. Let's talk about how to troubleshoot in that case if you haven't named your code chunks: sequentially cut out code and try rendering again.
+
+  1. Cut (as in cut and paste, not as in delete) everything after the first code chunk.
+  2. Try to render the document again.
+      a. If it **doesn't render successfully**, you know that at least the first issue is in the small document you just tried to render: the YAML header, some Markdown text/formatting, or the first code chunk.
+      b. If it **renders without errors**, then the issue must be happening somewhere in the part that you cut. Paste it back, and now repeat step 1 but cut everything after the *second* code chunk. And so on.
+
+

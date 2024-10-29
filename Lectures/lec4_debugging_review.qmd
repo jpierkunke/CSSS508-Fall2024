@@ -1,0 +1,171 @@
+---
+title: "Lecture 4: Debugging and review"
+subtitle: "CSSS 508"
+author: "Jess Kunke"
+date: "Tue 22 Oct 2024"
+# format:
+#   revealjs:
+#     smaller: true
+#     scrollable: true
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number_sections: false
+    embed-resources: true
+execute:
+  message: false
+  warning: false
+lightbox: true
+---
+
+```{r}
+#| include: false
+library(knitr)
+library(gapminder)
+library(tidyverse)
+```
+
+# Updates and reminders
+
+- Homework and peer reviews (including for HW2) will be graded for completion
+  - This is a one-credit course and I want the focus to be on practice, not points
+- Reminder: this week's office hour is in Thomson, not Padelford (see website for details)
+  - Does the office hour time work for people?
+
+# Outline for today?
+
+- Quick review of topics that came up on Ed Discussion
+- Practice with debugging
+
+# Quick review
+
+## Code chunk options
+
+There are several code chunk options, including `echo`, `include`, and `eval`. You can review them [in the Quarto documentation here](https://quarto.org/docs/computations/execution-options.html).
+
+1. Which chunk option do we use...
+
+    - to show/hide the code in the rendered html document?
+    - to run/not run the code?
+    - to run the code but not show any output or messages from it?
+
+2. Which chunk option(s) should we use when we load packages at the beginning of the Quarto document?
+
+3. Which chunk option(s) should we use if we want to show the code we used to make a graph, but we don't want to actually run it (we might do this in a tutorial, like to show how to install a package)?
+
+## Formatting text to look like code
+
+To do this, surround the text with backticks (\`): \`mutate()\` will become `mutate()`.
+
+
+# Debugging
+
+::: {#fig-debug layout-nrow=2}
+
+![Debugging can be frustrating, tiring, and crazymaking for everyone, no matter how long you've been coding.](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/d6b4f8cb-53bf-49d5-822c-e45cd01204a4_rw_1920.png?h=9f4b33568bc02517ffe006cd7bba24f7)
+
+![Take a breath, step back, and take a fresh look. Trust in yourself that you can figure it out.](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/d4f90788-7a14-4d44-94ab-da13dd41f009_rw_1920.png?h=3c16fde6443e1a29a6afe563810bdac4)
+
+If at first (or at the 15th try) you don't succeed... you are not alone! With practice, you'll catch bugs faster and you'll code in ways that help you avoid errors in the first place. You'll still have to troubleshoot, but you won't get caught up so often in the same errors that used to stump you. Embrace the struggle and practice productively with the tips below. (Illustrations: Allison Horst.)
+:::
+
+General principles and tips:
+
+- Test your code/render your document frequently so that any new errors must be coming from a small set of recent changes you made
+- Keep calm and be patient with yourself and with R
+- Break the problem down into testable pieces, ruling out possible explanations one at a time
+  - Read and maybe google the error messages
+    - Some are more useful to google than others; you get more intuition for this over time
+  - Identify spots in the code that are likely causing the issue
+    - Helpful to test/render frequently
+    - Naming your Quarto code chunks can help to identify the spot that's causing the issue (we'll talk about this today)
+    - Look for clues from the error messages you get, like `object XXX not found` or an issue with a particular function
+  - Change one of the possible problems, and test if you still get the error
+- Step through your code line by line, thinking about what is defined so far and what the result of each line is
+
+::: {.callout-note}
+## Your turn
+Here's an example that brings together a bunch of different concepts we've seen. Try this in small groups, then we'll go over it as a class.
+
+I tried to write code to convert the population to millions and filter for just the rows with a population of at least 10 million. Why isn't it working? How would you modify the code to get it working?
+
+Note:
+
+- You'll probably have to debug this code in multiple steps
+- Just because the final result doesn't print an error message doesn't guarantee it's working; make sure to check whether at the end you have the result you wanted
+
+```{r}
+#| eval: false
+library(gapminder)
+mutate(gapminder, v3 = pop/10^6)
+filter(gapminder, pop > 10)
+```
+:::
+
+## How to read a Quarto rendering error message
+
+When you try to render a Quarto document and it fails, you get an error message something like this:
+
+![](images/quarto_error_message.png)
+
+Let's break this down.
+
+  - The thing with the arrow `==>` at the top is the command that RStudio runs when you click the Render button.
+  - Then it says it's processing your file, and it shows some of the progress it made through rendering
+    - The "unnamed-chunk-2" refers to a code chunk in your code
+    - It says unnamed because we didn't name the chunk (we hadn't talked about how to do that anyway). If you had named it, the name would appear there instead of "unnamed-chunk-2".
+  - The actual error message starts with "Quitting from ...."
+    - The part that tells you something about what's happening is the error message itself: `object 'true' not found.` This suggests that somewhere you typed a "true" where it doesn't know what to do with it.
+    
+## Naming chunks
+
+If I render the following Quarto document:
+
+![](images/unnamed_qmdfile.png)
+
+I get the following error message:
+
+![](images/unnamed_error.png)
+
+If I take the same Quarto document and just name my code chunks like so:
+
+![](images/named_qmdfile.png)
+
+Then I get somewhat more helpful output about the progress before the error:
+
+![](images/named_error.png)
+
+
+::: {.callout-note}
+## Your turn
+Make a Quarto document that looks like the second one above, with the named chunks.
+
+Then identify and fix the error(s) to get it rendering successfully.
+:::
+
+
+## Render frequently!
+
+Rule number 1: render frequently! But of course sometimes you forget, or you have other reasons that you add a lot of code or make a lot of code before rendering. Let's talk about how to troubleshoot in that case: sequentially cut out code and try rendering again.
+
+  1. Cut (as in cut and paste, not as in delete) everything after the first code chunk.
+  2. Try to render the document again.
+      a. If it **doesn't render successfully**, you know that at least the first issue is in the small document you just tried to render: the YAML header, some Markdown text/formatting, or the first code chunk.
+      b. If it **renders without errors**, then the issue must be happening somewhere in the part that you cut. Paste it back, and now repeat step 1 but cut everything after the *second* code chunk. And so on.
+
+Once you identify what line is triggering the error message, then you can work on figuring out what caused the error.  *Remember: this is not necessarily the code you want to edit. The part of the code you modify to fix the issue could be in an earlier line of code or an earlier code chunk.*
+
+::: {.callout-note}
+## Your turn
+In fact let's practice that right now! In the qmd file below,
+
+1. Which line is generating the error message? (To which line is the error message referring?)
+2. Where would you edit the code to fix the error?
+
+![](images/exploratory_qmdfile.png)
+![](images/exploratory_error.png)
+:::
+
+
+
