@@ -1,0 +1,75 @@
+---
+title: "Homework 5"
+highlight-style: a11y-dark
+embed-resources: true
+execute: 
+  eval: false
+---
+
+### Instructions
+
+Homework 5 has been posted on Canvas, and just as with Homework 4, you can download a Quarto document from the Homework 5 Canvas assignment that has the homework instructions/problems and spaces for you to add/modify text and code. You'll upload that qmd file and its rendered html file as your homework submission. I've also posted the instructions here, and if you prefer, you can create a new Quarto document from scratch and answer these problems in it instead of the one provided on the Homework 5 Canvas assignment. In that case, you will submit that qmd file and the html file you get when you render it.
+
+- Modify this document to complete your homework for Homework 5.
+- Post questions on Ed Discussion, discuss with each other, and get as far as you can on these problems.
+- If by the time the homework is due you have worked on a problem but did't fully complete it, feel free to leave your work so far and write about where you're stuck or what is going wrong or what your question is, and your peer evaluator might have some input.
+- Feel free to change the format of this document in ways that you think make the output look nicer or easier to read, but keep the general structure (sections, questions, etc) so that your peer reviewer knows which part is which.
+
+```{r}
+#| include: false
+library(gapminder)
+library(tidyverse)
+```
+
+## Section A: Pivoting with the `gapminder` dataset
+
+1. We saw in lecture how to pivot `n_obs_by_year_cont` wider:
+
+```{r}
+obs_by_year_cont_wider = n_obs_by_year_cont %>%
+  pivot_wider(
+    # get the names for the new columns from the continent column
+    names_from = continent,
+    # get the values for the new columns from the n.obs column
+    values_from = n.obs
+  )
+```
+
+Write code to pivot `obs_by_year_cont_wider` longer and call the resulting table `obs_by_year_cont_longer`.  You should find that `obs_by_year_cont_longer` is the same as `n_obs_by_year_cont`. Use `kable()` to display the two tables neatly in your rendered html file.
+
+```{r}
+# your code here
+```
+
+
+2. Following the example from class using `%in%`, create a subset of the `gapminder` dataset that has just the data for Argentina, El Salvador, and Uruguay before 1990, and give this dataset an appropriate name. Then reformat the dataset so that each row is a country, each column is a year, and each cell of the table is the per-capita GDP. (If you would like a little extra challenge, make each cell of the table the total GDP by multiplying population and per-capita GDP.) Display the table in the rendered html file using `kable()`.
+
+```{r}
+# your code here
+```
+
+3. For extra practice, work your way through some of the examples [here](https://tidyr.tidyverse.org/articles/pivot.html) for both pivoting longer and pivoting wider. These examples are designed to help you gradually learn about additional options you can set during pivoting and how to handle problems of varying complexity. I recommend trying the first couple examples in the pivoting longer section and the `tidycensus` example in the pivoting wider section. For each example you check out, I recommend first reading the section about it and the code that goes with it, then try it out yourself. For many of them you don't have to install any new packages, but some like `tidycensus` will require that you install a package (`such as `tidycensus`) first in order to access the dataset they use. Then explain (here, in text, below this problem and before Section B) one or two things you learned.
+
+
+## Section B: Plots
+
+In this section, the code chunks are not created for you. Create a new code chunk below each problem and before the next to put your code for that problem. If the problem asks you questions that you should answer in words instead of code, write your answers in text below the problem rather than as comments in the code.
+
+1. Plot per-capita GDP versus life expectancy for Colombia as a line, points, or both. Give the plot appropriate axis labels and a title. Try out a few themes and use a theme you like. Set the color and transparency of the line/points.
+
+2. Plot per-capita GDP over time for Argentina, El Salvador, and Uruguay before 1990. Make the plot three different ways: first plot all three countries on the same plot, then use `facet_wrap()` to plot each country in its own subplot, then use `facet_grid()`. Comment on which plot settings you need for each plot, if there are any that differ between the two plots. Also comment on what happens if you omit the `facet_wrap` argument `scales = "free"`.
+
+3. Combine pivoting and `facet_grid()` to make a plot with 9 subplots in a 3x3 grid, where the columns are country (Japan, China, or South Korea), the rows are variables (life expectancy, population, or per-capita GDP), and the x-axis is time. Use `scales = "free_y"` as an argument to `facet_grid()`. Your plot should look something like this:
+
+![](images/multicountry_multivariable_plot.png){width=70%}
+
+Take your time with this. Break the problem down into steps. Identify at least one step you'll have to do, and then work backwards or forwards from there: What do I need to do in order to be able to do that step? What will I do once I have that step?
+
+If you have time, here are further extensions you can try with this plot:
+
+- Improve the axis labels, theme, and/or other features.
+- Scale the variables so that the y-axis scales are nicer or more easily readable.
+- What could you do to get the variables to be labeld in the plot as "Population", "LifeExpectancy", and "GDPperCapita"? (If you want, you can go further and try to make them "Population", "Life Expectancy", and "GDP per Capita" and even add units.)
+- Try using `scales = "free"` in `facet_grid`. Does it do what you expect? Try replacing `facet_grid(..., scales = "free")` with `ggh4x::facet_grid2(..., scales = "free_y", independent = "y")`, i.e. use the `facet_grid2()` function from the `ggh4x` package, and see how you like it.
+
+
