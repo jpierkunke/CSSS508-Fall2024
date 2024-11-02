@@ -318,6 +318,108 @@
     "text": "I’m interested in exploring a dataset from base R called iris. From its documentation I see that it is data about 50 flowers from each of 3 species of iris and their respective measurements of sepal length, sepal width, petal length, and petal width.\nI first want to take a look at a preview of the dataset by making a nice table.\n\n\n\n\n\n\n\n\n\nSepal.Length\nSepal.Width\nPetal.Length\nPetal.Width\nSpecies\n\n\n\n\n1\n5.1\n3.5\n1.4\n0.2\nsetosa\n\n\n2\n4.9\n3.0\n1.4\n0.2\nsetosa\n\n\n3\n4.7\n3.2\n1.3\n0.2\nsetosa\n\n\n4\n4.6\n3.1\n1.5\n0.2\nsetosa\n\n\n5\n5.0\n3.6\n1.4\n0.2\nsetosa\n\n\n6..145\n\n\n\n\n\n\n\n146\n6.7\n3.0\n5.2\n2.3\nvirginica\n\n\n147\n6.3\n2.5\n5.0\n1.9\nvirginica\n\n\n148\n6.5\n3.0\n5.2\n2.0\nvirginica\n\n\n149\n6.2\n3.4\n5.4\n2.3\nvirginica\n\n\n150\n5.9\n3.0\n5.1\n1.8\nvirginica\n\n\n\n\n\n\n\nThe mean petal length is 3.76 but its median petal length is 4.35. It’s range is 5.9 which additionally suggests a certain degree of spread.\nIt might be useful to look at the distribution to gain a better sense of the variation of this variable.\n\n\n\n\n\n\n\n\n\nThere seems to be a cluster of much smaller petals and then another cluster of average to bigger petals. I wonder how this varies by species…?\n\n\n\n\n\n\n\n\n\nWe can see from this plot that the overall mean and median of petal length is quite misleading! Only the verisicolor species of iris is close to those values while setosa is much mush smaller and virginica is a bit bigger.\nIs there a similar thing happening for sepal length and width? Let’s look at some basic descriptives of the dataset.\n\n\n\n\n\n\n\n\nSepal.Length\nSepal.Width\nPetal.Length\nPetal.Width\nSpecies\n\n\n\n\nMin. :4.300\nMin. :2.000\nMin. :1.000\nMin. :0.100\nsetosa :50\n\n\n1st Qu.:5.100\n1st Qu.:2.800\n1st Qu.:1.600\n1st Qu.:0.300\nversicolor:50\n\n\nMedian :5.800\nMedian :3.000\nMedian :4.350\nMedian :1.300\nvirginica :50\n\n\nMean :5.843\nMean :3.057\nMean :3.758\nMean :1.199\nNA\n\n\n3rd Qu.:6.400\n3rd Qu.:3.300\n3rd Qu.:5.100\n3rd Qu.:1.800\nNA\n\n\nMax. :7.900\nMax. :4.400\nMax. :6.900\nMax. :2.500\nNA\n\n\n\n\n\n\n\nIt’s interesting to note with the summary function that for numerical data it’ll calculate the classic 5 statistics used to construct a boxplot plus the mean but for a categorical variable like iris$Species it returns the frequency of each value of the variable.\nThe distribution of sepal length looks wider than sepal width, similar to how it was for those measurements of the petals. Let’s see how sepal length and width relate to one another graphically.\n\n\n\n\n\n\n\n\n\nThere are still clusters by each species type but for verisicolor and virginica there’s much more overlap. Overall, there’s tighter clustering by species for the petal length and width than there is for the sepal length and width."
   },
   {
+    "objectID": "Homework/homework4_followup.html",
+    "href": "Homework/homework4_followup.html",
+    "title": "HW4 follow-up: When does order matter?",
+    "section": "",
+    "text": "Let’s go over some findings from Homework 4, Part C. Here were the three cases we considered. In the first case, we considered whether order mattered when the two operations were (1) selecting the three columns/variables country, year, and pop, and (2) filtering to keep only the rows with pop less than 20 million.\n\nresult1 = gapminder %&gt;%\n  select(country, year, pop) %&gt;%\n  filter(pop &lt; 20000000)\n\nresult2 = gapminder %&gt;%\n  filter(pop &lt; 20000000) %&gt;%\n  select(country, year, pop)\n\nIn the second case, we considered whether order mattered when the two operations were (1) mutating the pop column to divide by a million, and (2) filtering to keep only the rows with pop less than 20 million.\n\nresult3 = gapminder %&gt;%\n  mutate(pop = pop/10^6) %&gt;%\n  filter(pop &lt; 20000000)\n\nresult4 = gapminder %&gt;%\n  filter(pop &lt; 20000000) %&gt;%\n  mutate(pop = pop/10^6)\n\nIn the third case, we considered whether order mattered when the two operations were (1) creating a new column called pop_millions which equals the pop column divided by a million, and (2) filtering to keep only the rows with pop less than 20 million.\n\nresult5 = gapminder %&gt;%\n  mutate(pop_millions = pop/10^6) %&gt;%\n  filter(pop &lt; 20000000)\n\nresult6 = gapminder %&gt;%\n  filter(pop &lt; 20000000) %&gt;%\n  mutate(pop_millions = pop/10^6)\n\nSo in which of these cases does order matter, and why?\nFirst let’s settle the answer: order matters in the second case only, not in the first and third cases. We can tell by running the code and checking the results, which I assume you did in HW4; it was not meant to be strictly a thought exercise. If you didn’t run the code in HW4, run it now and check out the results with me. If you run the code, you will notice that the number of rows is not the same for results 3 and 4, so the results cannot be the same. For the other two cases, we can toggle back and forth to see that they look the same, or we can be sure by using code to check whether the results are the same:\n\n# we can add up how many elements are different between results 1 and 2, or between 5 and 6\nsum(result1 != result2)\n\n[1] 0\n\nsum(result5 != result6)\n\n[1] 0\n\n# or we can use the identical function which checks if two objects are identical\nidentical(result1, result2)\n\n[1] TRUE\n\nidentical(result5, result6)\n\n[1] TRUE\n\n\nNow let’s think about why order matters for only the second case.\nIn the first case, one operation selects rows based on the value of the pop column, while the other operation selects three columns. These operations don’t affect each other. The final result in either case is going to be the subset of the data that have a population less than 20 million, and it’ll show only the three columns we selected for.\nIn the third case, again, one operation uses the pop column values to define a new column called pop_millions, and the other operation filters the dataset to keep just the rows in which the pop column meets some condition. Therefore, these two operations do not affect each other. If you do the filter operation first, you will only create the pop_millions column for the rows you’ll keep in the end. If you do the mutate operation first, you will create the pop_millions column for all the rows and then just keep the rows you’re interested in.\nHowever, in the second case, one operation rescales the pop column by dividing it by million, and the other operation filters for values that are less than 20,000,000. If you rescale first, a value of 20,000,000 in the pop column means a value of 20 trillion (20 million millions), not 20 million. No country has trillions of people, so this filtering operation won’t do anything. If instead you filter first, you will subset the data to countries with populations of fewer than 20 million people, and then you rescale the population.\nIn the second case, probably the coder meant to end up with a dataset that contained all countries with fewer than 20 million people, so they probably want result4, not result3. We can modify the code for result3 to get the same answer, though, by making one change to the filter function: what change? (Try it out!)",
+    "crumbs": [
+      "Homework",
+      "HW4 follow-up: When does order matter?"
+    ]
+  },
+  {
+    "objectID": "Homework/homework5.html",
+    "href": "Homework/homework5.html",
+    "title": "Homework 5",
+    "section": "",
+    "text": "Homework 5 has been posted on Canvas, and just as with Homework 4, you can download a Quarto document from the Homework 5 Canvas assignment that has the homework instructions/problems and spaces for you to add/modify text and code. You’ll upload that qmd file and its rendered html file as your homework submission. I’ve also posted the instructions here, and if you prefer, you can create a new Quarto document from scratch and answer these problems in it instead of the one provided on the Homework 5 Canvas assignment. In that case, you will submit that qmd file and the html file you get when you render it.\n\nModify this document to complete your homework for Homework 5.\nPost questions on Ed Discussion, discuss with each other, and get as far as you can on these problems.\nIf by the time the homework is due you have worked on a problem but did’t fully complete it, feel free to leave your work so far and write about where you’re stuck or what is going wrong or what your question is, and your peer evaluator might have some input.\nFeel free to change the format of this document in ways that you think make the output look nicer or easier to read, but keep the general structure (sections, questions, etc) so that your peer reviewer knows which part is which.",
+    "crumbs": [
+      "Homework",
+      "Homework 5"
+    ]
+  },
+  {
+    "objectID": "Homework/homework5.html#section-a-pivoting-with-the-gapminder-dataset",
+    "href": "Homework/homework5.html#section-a-pivoting-with-the-gapminder-dataset",
+    "title": "Homework 5",
+    "section": "Section A: Pivoting with the gapminder dataset",
+    "text": "Section A: Pivoting with the gapminder dataset\n\nWe saw in lecture how to pivot n_obs_by_year_cont wider:\n\n\nobs_by_year_cont_wider = n_obs_by_year_cont %&gt;%\n  pivot_wider(\n    # get the names for the new columns from the continent column\n    names_from = continent,\n    # get the values for the new columns from the n.obs column\n    values_from = n.obs\n  )\n\nWrite code to pivot obs_by_year_cont_wider longer and call the resulting table obs_by_year_cont_longer. You should find that obs_by_year_cont_longer is the same as n_obs_by_year_cont. Use kable() to display the two tables neatly in your rendered html file.\n\n# your code here\n\n\nFollowing the example from class using %in%, create a subset of the gapminder dataset that has just the data for Argentina, El Salvador, and Uruguay before 1990, and give this dataset an appropriate name. Then reformat the dataset so that each row is a country, each column is a year, and each cell of the table is the per-capita GDP. (If you would like a little extra challenge, make each cell of the table the total GDP by multiplying population and per-capita GDP.) Display the table in the rendered html file using kable().\n\n\n# your code here\n\n\nFor extra practice, work your way through some of the examples here for both pivoting longer and pivoting wider. These examples are designed to help you gradually learn about additional options you can set during pivoting and how to handle problems of varying complexity. I recommend trying the first couple examples in the pivoting longer section and the tidycensus example in the pivoting wider section. For each example you check out, I recommend first reading the section about it and the code that goes with it, then try it out yourself. For many of them you don’t have to install any new packages, but some like tidycensus will require that you install a package (such as tidycensus) first in order to access the dataset they use. Then explain (here, in text, below this problem and before Section B) one or two things you learned.",
+    "crumbs": [
+      "Homework",
+      "Homework 5"
+    ]
+  },
+  {
+    "objectID": "Homework/homework5.html#section-b-plots",
+    "href": "Homework/homework5.html#section-b-plots",
+    "title": "Homework 5",
+    "section": "Section B: Plots",
+    "text": "Section B: Plots\nIn this section, the code chunks are not created for you. Create a new code chunk below each problem and before the next to put your code for that problem. If the problem asks you questions that you should answer in words instead of code, write your answers in text below the problem rather than as comments in the code.\n\nPlot per-capita GDP versus life expectancy for Colombia as a line, points, or both. Give the plot appropriate axis labels and a title. Try out a few themes and use a theme you like. Set the color and transparency of the line/points.\nPlot per-capita GDP over time for Argentina, El Salvador, and Uruguay before 1990. Make the plot three different ways: first plot all three countries on the same plot, then use facet_wrap() to plot each country in its own subplot, then use facet_grid(). Comment on which plot settings you need for each plot, if there are any that differ between the two plots. Also comment on what happens if you omit the facet_wrap argument scales = \"free\".\nCombine pivoting and facet_grid() to make a plot with 9 subplots in a 3x3 grid, where the columns are country (Japan, China, or South Korea), the rows are variables (life expectancy, population, or per-capita GDP), and the x-axis is time. Use scales = \"free_y\" as an argument to facet_grid(). Your plot should look something like this:\n\n\nTake your time with this. Break the problem down into steps. Identify at least one step you’ll have to do, and then work backwards or forwards from there: What do I need to do in order to be able to do that step? What will I do once I have that step?\nIf you have time, here are further extensions you can try with this plot:\n\nImprove the axis labels, theme, and/or other features.\nScale the variables so that the y-axis scales are nicer or more easily readable.\nWhat could you do to get the variables to be labeld in the plot as “Population”, “LifeExpectancy”, and “GDPperCapita”? (If you want, you can go further and try to make them “Population”, “Life Expectancy”, and “GDP per Capita” and even add units.)\nTry using scales = \"free\" in facet_grid. Does it do what you expect? Try replacing facet_grid(..., scales = \"free\") with ggh4x::facet_grid2(..., scales = \"free_y\", independent = \"y\"), i.e. use the facet_grid2() function from the ggh4x package, and see how you like it.",
+    "crumbs": [
+      "Homework",
+      "Homework 5"
+    ]
+  },
+  {
+    "objectID": "Homework/homework1.html",
+    "href": "Homework/homework1.html",
+    "title": "Homework 1",
+    "section": "",
+    "text": "Instructions\nWrite up a .qmd file showing some exploratory analyses of the Swiss fertility data. Upload both the .qmd file and the .html file to Canvas. You must upload BOTH for credit.\nMix inline R calculations, R output, and plots with text describing the relationships you see. Include at least two plots and at least one instance of inline R code (e.g. functions like nrow(), mean(), sd(), cor(), median(), min()). You are encouraged to include more! You may not hard-code any numbers referenced in your text.\nYour document should be pleasant for a peer to look at, with some organization using sections or lists, and all plots labeled clearly. Use chunk options echo and output to limit the code/output you show in the .html. Discussion of specific values should be summarized in sentences in your text—not as printed code and output—and rounded so as not to be absurdly precise (e.g. round x with round(x, 2)).\n\n\nTemplate\nrendered html file • raw qmd file\n\n\nExample\nrendered html file • raw qmd file",
+    "crumbs": [
+      "Homework",
+      "Homework 1"
+    ]
+  },
+  {
+    "objectID": "Homework/homework2.html",
+    "href": "Homework/homework2.html",
+    "title": "Homework 2",
+    "section": "",
+    "text": "Instructions\nCreate a new Quarto document (.qmd file) for this new homework; always use a new Quarto document for each homework.\nIn your Homework 2 Quarto document, explore the gapminder dataset from the gapminder package. Later in class we will also read this dataset in from a file, but for this homework we will access the dataset from a package. If you have not used this package before on your computer, you’ll need to install it first and then load it with library() as we saw in class. Otherwise, you can just use library(gapminder) to load the package and data(gapminder) to load the dataset.\nUse your Quarto document to report on a brief exploration of the dataset. This might read like the dataset section of a paper. It doesn’t have to be longer than a page or two, and it does not have to be up to the standard of what you would expect in a paper; the purpose is to practice R, RStudio, and Quarto to do things that eventually you would find practically useful. Remember, the homework is just meant to be a chance to practice stuff from class.\nDo at least the following:\n\nStart by doing some exploratory analysis of the dataset in the Console, some/much of which will not make it into your final document. In your Quarto document, only include code that you will use for the final document you submit. For example, don’t include commands like ?gapminder, and also don’t include code like str(gapminder) or mean(gapminder$year) unless you use them in tables, figures, and/or inline code.\nUse text to summarize what the dataset is, where it comes from, what variables it includes and what they mean.\nComment on the range or distribution of one of the dataset variables. You could show a histogram and report some summary statistics of the variable in the text of the document using inline R code (when we use r code to print values directly into the text of the document).\nInclude at least one plot of one variable versus another and comment briefly on what you notice in the plot.\nMake a table of some subset of rows and columns of the dataset and comment briefly on what you notice.\nComment your code using some comments (lines that start with #), even if the code doesn’t show up in the final html document. You don’t have to comment every line, but comment at least some lines that you think should be explained to someone who is trying to understand your code. For example, suppose you sent your Quarto document to a colleague because they wanted to reproduce your analysis and play with the dataset themselves. They might find it useful to see a comment that explains what kable() does and what kind of table you are trying to make there.\nMost of all, just have some fun exploring this dataset and practicing what we did in class!\n\nYour document should be pleasant for a peer to look at, with some organization using section headings. Some attempt should be made to label and format plots and tables. Use chunk options to limit the code and raw output you show in the html file when you render your Quarto document. Don’t include a figure or table without commenting on it in the text with at least a sentence. Round any numbers you report to a reasonable precision.\nUpload to Canvas both the .qmd file and the .html file it generates when you render.",
+    "crumbs": [
+      "Homework",
+      "Homework 2"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "CSSS 508: Intro to R for Social Scientists",
+    "section": "",
+    "text": "Jess Kunke (she/they)\n\n\n\nTuesdays 4:30-6:20pm\nThomson Hall, Room 125\n\n\n\nAs of Oct 28th:\n\nMon 4-5pm (Zoom and Padelford B-221)\nFri 2-3pm (Zoom only)\nSee Canvas for Zoom links\n\nFor further course details, please see the syllabus.\nThank you Vic Sass for the fantastic website design!"
+  },
+  {
+    "objectID": "index.html#welcome",
+    "href": "index.html#welcome",
+    "title": "CSSS 508: Intro to R for Social Scientists",
+    "section": "",
+    "text": "Jess Kunke (she/they)\n\n\n\nTuesdays 4:30-6:20pm\nThomson Hall, Room 125\n\n\n\nAs of Oct 28th:\n\nMon 4-5pm (Zoom and Padelford B-221)\nFri 2-3pm (Zoom only)\nSee Canvas for Zoom links\n\nFor further course details, please see the syllabus.\nThank you Vic Sass for the fantastic website design!"
+  },
+  {
+    "objectID": "Homework/homework3.html",
+    "href": "Homework/homework3.html",
+    "title": "Homework 3",
+    "section": "",
+    "text": "Instructions\nCreate a new Quarto document (.qmd file) for this new homework; always use a new Quarto document for each homework.\nIn your Homework 3 Quarto document, continue to explore the gapminder dataset from the gapminder package, following the instructions below. Your document should be pleasant for a peer to look at, with some organization using section headings. Use chunk options to control which code and raw output you show in the html file when you render your Quarto document. When you’ve completed the assignment, upload to Canvas both the .qmd file and the .html file it generates when you render the .qmd file.\nDetailed instructions for HW3:\n\nOrganize your report in a few sections with appropriately named and Markdown-formatted section headings.\nUse an Introduction or Data section at the start of the report to summarize in sentences what the dataset is, where it comes from, what variables it includes and what they mean. Try to add one piece of information to what you wrote in your HW2.\nMake a table of some subset of rows and columns of the dataset (different from the one you made in HW2) two different ways, one using base R and one using tidyverse. In other words, you should have two chunks of code making the same table, and both chunks of code and both tables should show up in your rendered html file.\nThen use Markdown text (not just code comments) to summarize your approach to writing these two different chunks of code. Use code-style text formatting like this to make code references in your text look like code, just as in the lecture notes (e.g. when I write about mutate() and gapminder).\nCompute the number of Asian countries in the dataset two different ways, one using base R and one using tidyverse. Use chunk options to make sure your code for both approaches is displayed in your rendered html file, not hidden, and insert one of the two results (they should be the same as each other) into a text sentence using inline code.\nUsing either base R or tidyverse, compute the number of observations with at least 29 million people in 1952, and report your answer using inline code. Then pose a similar problem for the other student to try, and report the code and answer in your html file with a brief explanation of your solution!\nState one thing you didn’t do to your satisfaction in HW2 and how you have improved upon it in HW3. For instance, maybe you corrected some aspect of a table or of the Quarto html formatting in HW3 that wasn’t working in your HW2 submission.\nMost of all, have some fun practicing what we did in class and any other R/RStudio/Quarto features you might be discovering!",
+    "crumbs": [
+      "Homework",
+      "Homework 3"
+    ]
+  },
+  {
+    "objectID": "Homework/homework4.html",
+    "href": "Homework/homework4.html",
+    "title": "Homework 4",
+    "section": "",
+    "text": "Instructions\nHomework 4 has been posted on Canvas, and the instructions are posted there. Rather than reading instructions here for creating your own Quarto document, from the Canvas assignment you can download a Quarto file that has the homework instructions/problems and spaces for you to add/modify text and code. You’ll upload that qmd file and its rendered html file as your homework submission.\nHappy coding! I look forward to hearing how this homework goes for you.",
+    "crumbs": [
+      "Homework",
+      "Homework 4"
+    ]
+  },
+  {
     "objectID": "Homework/homework.html",
     "href": "Homework/homework.html",
     "title": "Overview",
@@ -359,97 +461,6 @@
     "crumbs": [
       "Homework",
       "Overview"
-    ]
-  },
-  {
-    "objectID": "Homework/homework4.html",
-    "href": "Homework/homework4.html",
-    "title": "Homework 4",
-    "section": "",
-    "text": "Instructions\nHomework 4 has been posted on Canvas, and the instructions are posted there. Rather than reading instructions here for creating your own Quarto document, from the Canvas assignment you can download a Quarto file that has the homework instructions/problems and spaces for you to add/modify text and code. You’ll upload that qmd file and its rendered html file as your homework submission.\nHappy coding! I look forward to hearing how this homework goes for you.",
-    "crumbs": [
-      "Homework",
-      "Homework 4"
-    ]
-  },
-  {
-    "objectID": "Homework/homework3.html",
-    "href": "Homework/homework3.html",
-    "title": "Homework 3",
-    "section": "",
-    "text": "Instructions\nCreate a new Quarto document (.qmd file) for this new homework; always use a new Quarto document for each homework.\nIn your Homework 3 Quarto document, continue to explore the gapminder dataset from the gapminder package, following the instructions below. Your document should be pleasant for a peer to look at, with some organization using section headings. Use chunk options to control which code and raw output you show in the html file when you render your Quarto document. When you’ve completed the assignment, upload to Canvas both the .qmd file and the .html file it generates when you render the .qmd file.\nDetailed instructions for HW3:\n\nOrganize your report in a few sections with appropriately named and Markdown-formatted section headings.\nUse an Introduction or Data section at the start of the report to summarize in sentences what the dataset is, where it comes from, what variables it includes and what they mean. Try to add one piece of information to what you wrote in your HW2.\nMake a table of some subset of rows and columns of the dataset (different from the one you made in HW2) two different ways, one using base R and one using tidyverse. In other words, you should have two chunks of code making the same table, and both chunks of code and both tables should show up in your rendered html file.\nThen use Markdown text (not just code comments) to summarize your approach to writing these two different chunks of code. Use code-style text formatting like this to make code references in your text look like code, just as in the lecture notes (e.g. when I write about mutate() and gapminder).\nCompute the number of Asian countries in the dataset two different ways, one using base R and one using tidyverse. Use chunk options to make sure your code for both approaches is displayed in your rendered html file, not hidden, and insert one of the two results (they should be the same as each other) into a text sentence using inline code.\nUsing either base R or tidyverse, compute the number of observations with at least 29 million people in 1952, and report your answer using inline code. Then pose a similar problem for the other student to try, and report the code and answer in your html file with a brief explanation of your solution!\nState one thing you didn’t do to your satisfaction in HW2 and how you have improved upon it in HW3. For instance, maybe you corrected some aspect of a table or of the Quarto html formatting in HW3 that wasn’t working in your HW2 submission.\nMost of all, have some fun practicing what we did in class and any other R/RStudio/Quarto features you might be discovering!",
-    "crumbs": [
-      "Homework",
-      "Homework 3"
-    ]
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "CSSS 508: Intro to R for Social Scientists",
-    "section": "",
-    "text": "Jess Kunke (she/they)\n\n\n\nTuesdays 4:30-6:20pm\nThomson Hall, Room 125\n\n\n\nAs of Oct 28th:\n\nMon 4-5pm (Zoom and Padelford B-221)\nFri 2-3pm (Zoom only)\nSee Canvas for Zoom links\n\nFor further course details, please see the syllabus.\nThank you Vic Sass for the fantastic website design!"
-  },
-  {
-    "objectID": "index.html#welcome",
-    "href": "index.html#welcome",
-    "title": "CSSS 508: Intro to R for Social Scientists",
-    "section": "",
-    "text": "Jess Kunke (she/they)\n\n\n\nTuesdays 4:30-6:20pm\nThomson Hall, Room 125\n\n\n\nAs of Oct 28th:\n\nMon 4-5pm (Zoom and Padelford B-221)\nFri 2-3pm (Zoom only)\nSee Canvas for Zoom links\n\nFor further course details, please see the syllabus.\nThank you Vic Sass for the fantastic website design!"
-  },
-  {
-    "objectID": "Homework/homework2.html",
-    "href": "Homework/homework2.html",
-    "title": "Homework 2",
-    "section": "",
-    "text": "Instructions\nCreate a new Quarto document (.qmd file) for this new homework; always use a new Quarto document for each homework.\nIn your Homework 2 Quarto document, explore the gapminder dataset from the gapminder package. Later in class we will also read this dataset in from a file, but for this homework we will access the dataset from a package. If you have not used this package before on your computer, you’ll need to install it first and then load it with library() as we saw in class. Otherwise, you can just use library(gapminder) to load the package and data(gapminder) to load the dataset.\nUse your Quarto document to report on a brief exploration of the dataset. This might read like the dataset section of a paper. It doesn’t have to be longer than a page or two, and it does not have to be up to the standard of what you would expect in a paper; the purpose is to practice R, RStudio, and Quarto to do things that eventually you would find practically useful. Remember, the homework is just meant to be a chance to practice stuff from class.\nDo at least the following:\n\nStart by doing some exploratory analysis of the dataset in the Console, some/much of which will not make it into your final document. In your Quarto document, only include code that you will use for the final document you submit. For example, don’t include commands like ?gapminder, and also don’t include code like str(gapminder) or mean(gapminder$year) unless you use them in tables, figures, and/or inline code.\nUse text to summarize what the dataset is, where it comes from, what variables it includes and what they mean.\nComment on the range or distribution of one of the dataset variables. You could show a histogram and report some summary statistics of the variable in the text of the document using inline R code (when we use r code to print values directly into the text of the document).\nInclude at least one plot of one variable versus another and comment briefly on what you notice in the plot.\nMake a table of some subset of rows and columns of the dataset and comment briefly on what you notice.\nComment your code using some comments (lines that start with #), even if the code doesn’t show up in the final html document. You don’t have to comment every line, but comment at least some lines that you think should be explained to someone who is trying to understand your code. For example, suppose you sent your Quarto document to a colleague because they wanted to reproduce your analysis and play with the dataset themselves. They might find it useful to see a comment that explains what kable() does and what kind of table you are trying to make there.\nMost of all, just have some fun exploring this dataset and practicing what we did in class!\n\nYour document should be pleasant for a peer to look at, with some organization using section headings. Some attempt should be made to label and format plots and tables. Use chunk options to limit the code and raw output you show in the html file when you render your Quarto document. Don’t include a figure or table without commenting on it in the text with at least a sentence. Round any numbers you report to a reasonable precision.\nUpload to Canvas both the .qmd file and the .html file it generates when you render.",
-    "crumbs": [
-      "Homework",
-      "Homework 2"
-    ]
-  },
-  {
-    "objectID": "Homework/homework1.html",
-    "href": "Homework/homework1.html",
-    "title": "Homework 1",
-    "section": "",
-    "text": "Instructions\nWrite up a .qmd file showing some exploratory analyses of the Swiss fertility data. Upload both the .qmd file and the .html file to Canvas. You must upload BOTH for credit.\nMix inline R calculations, R output, and plots with text describing the relationships you see. Include at least two plots and at least one instance of inline R code (e.g. functions like nrow(), mean(), sd(), cor(), median(), min()). You are encouraged to include more! You may not hard-code any numbers referenced in your text.\nYour document should be pleasant for a peer to look at, with some organization using sections or lists, and all plots labeled clearly. Use chunk options echo and output to limit the code/output you show in the .html. Discussion of specific values should be summarized in sentences in your text—not as printed code and output—and rounded so as not to be absurdly precise (e.g. round x with round(x, 2)).\n\n\nTemplate\nrendered html file • raw qmd file\n\n\nExample\nrendered html file • raw qmd file",
-    "crumbs": [
-      "Homework",
-      "Homework 1"
-    ]
-  },
-  {
-    "objectID": "Homework/homework5.html",
-    "href": "Homework/homework5.html",
-    "title": "Homework 5",
-    "section": "",
-    "text": "Homework 5 has been posted on Canvas, and just as with Homework 4, you can download a Quarto document from the Homework 5 Canvas assignment that has the homework instructions/problems and spaces for you to add/modify text and code. You’ll upload that qmd file and its rendered html file as your homework submission. I’ve also posted the instructions here, and if you prefer, you can create a new Quarto document from scratch and answer these problems in it instead of the one provided on the Homework 5 Canvas assignment. In that case, you will submit that qmd file and the html file you get when you render it.\n\nModify this document to complete your homework for Homework 5.\nPost questions on Ed Discussion, discuss with each other, and get as far as you can on these problems.\nIf by the time the homework is due you have worked on a problem but did’t fully complete it, feel free to leave your work so far and write about where you’re stuck or what is going wrong or what your question is, and your peer evaluator might have some input.\nFeel free to change the format of this document in ways that you think make the output look nicer or easier to read, but keep the general structure (sections, questions, etc) so that your peer reviewer knows which part is which.",
-    "crumbs": [
-      "Homework",
-      "Homework 5"
-    ]
-  },
-  {
-    "objectID": "Homework/homework5.html#section-a-pivoting-with-the-gapminder-dataset",
-    "href": "Homework/homework5.html#section-a-pivoting-with-the-gapminder-dataset",
-    "title": "Homework 5",
-    "section": "Section A: Pivoting with the gapminder dataset",
-    "text": "Section A: Pivoting with the gapminder dataset\n\nWe saw in lecture how to pivot n_obs_by_year_cont wider:\n\n\nobs_by_year_cont_wider = n_obs_by_year_cont %&gt;%\n  pivot_wider(\n    # get the names for the new columns from the continent column\n    names_from = continent,\n    # get the values for the new columns from the n.obs column\n    values_from = n.obs\n  )\n\nWrite code to pivot obs_by_year_cont_wider longer and call the resulting table obs_by_year_cont_longer. You should find that obs_by_year_cont_longer is the same as n_obs_by_year_cont. Use kable() to display the two tables neatly in your rendered html file.\n\n# your code here\n\n\nFollowing the example from class using %in%, create a subset of the gapminder dataset that has just the data for Argentina, El Salvador, and Uruguay before 1990, and give this dataset an appropriate name. Then reformat the dataset so that each row is a country, each column is a year, and each cell of the table is the per-capita GDP. (If you would like a little extra challenge, make each cell of the table the total GDP by multiplying population and per-capita GDP.) Display the table in the rendered html file using kable().\n\n\n# your code here\n\n\nFor extra practice, work your way through some of the examples here for both pivoting longer and pivoting wider. These examples are designed to help you gradually learn about additional options you can set during pivoting and how to handle problems of varying complexity. I recommend trying the first couple examples in the pivoting longer section and the tidycensus example in the pivoting wider section. For each example you check out, I recommend first reading the section about it and the code that goes with it, then try it out yourself. For many of them you don’t have to install any new packages, but some like tidycensus will require that you install a package (such as tidycensus) first in order to access the dataset they use. Then explain (here, in text, below this problem and before Section B) one or two things you learned.",
-    "crumbs": [
-      "Homework",
-      "Homework 5"
-    ]
-  },
-  {
-    "objectID": "Homework/homework5.html#section-b-plots",
-    "href": "Homework/homework5.html#section-b-plots",
-    "title": "Homework 5",
-    "section": "Section B: Plots",
-    "text": "Section B: Plots\nIn this section, the code chunks are not created for you. Create a new code chunk below each problem and before the next to put your code for that problem. If the problem asks you questions that you should answer in words instead of code, write your answers in text below the problem rather than as comments in the code.\n\nPlot per-capita GDP versus life expectancy for Colombia as a line, points, or both. Give the plot appropriate axis labels and a title. Try out a few themes and use a theme you like. Set the color and transparency of the line/points.\nPlot per-capita GDP over time for Argentina, El Salvador, and Uruguay before 1990. Make the plot three different ways: first plot all three countries on the same plot, then use facet_wrap() to plot each country in its own subplot, then use facet_grid(). Comment on which plot settings you need for each plot, if there are any that differ between the two plots. Also comment on what happens if you omit the facet_wrap argument scales = \"free\".\nCombine pivoting and facet_grid() to make a plot with 9 subplots in a 3x3 grid, where the columns are country (Japan, China, or South Korea), the rows are variables (life expectancy, population, or per-capita GDP), and the x-axis is time. Use scales = \"free_y\" as an argument to facet_grid(). Your plot should look something like this:\n\n\nTake your time with this. Break the problem down into steps. Identify at least one step you’ll have to do, and then work backwards or forwards from there: What do I need to do in order to be able to do that step? What will I do once I have that step?\nIf you have time, here are further extensions you can try with this plot:\n\nImprove the axis labels, theme, and/or other features.\nScale the variables so that the y-axis scales are nicer or more easily readable.\nWhat could you do to get the variables to be labeld in the plot as “Population”, “LifeExpectancy”, and “GDPperCapita”? (If you want, you can go further and try to make them “Population”, “Life Expectancy”, and “GDP per Capita” and even add units.)\nTry using scales = \"free\" in facet_grid. Does it do what you expect? Try replacing facet_grid(..., scales = \"free\") with ggh4x::facet_grid2(..., scales = \"free_y\", independent = \"y\"), i.e. use the facet_grid2() function from the ggh4x package, and see how you like it.",
-    "crumbs": [
-      "Homework",
-      "Homework 5"
     ]
   },
   {

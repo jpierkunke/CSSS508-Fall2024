@@ -1,0 +1,89 @@
+---
+title: "HW4 follow-up: When does order matter?"
+subtitle: "CSSS 508"
+author: "Jess Kunke"
+date: "Sat 2 Nov 2024"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number_sections: false
+    embed-resources: true
+execute:
+  message: false
+  warning: false
+lightbox: true
+---
+
+```{r}
+#| include: false
+library(gapminder)
+library(tidyverse)
+```
+
+Let's go over some findings from Homework 4, Part C. Here were the three cases we considered.  In the **first case**, we considered whether order mattered when the two operations were (1) selecting the three columns/variables `country`, `year`, and `pop`, and (2) filtering to keep only the rows with `pop` less than 20 million.
+
+```{r}
+result1 = gapminder %>%
+  select(country, year, pop) %>%
+  filter(pop < 20000000)
+
+result2 = gapminder %>%
+  filter(pop < 20000000) %>%
+  select(country, year, pop)
+```
+
+In the **second case**, we considered whether order mattered when the two operations were (1) mutating the `pop` column to divide by a million, and (2) filtering to keep only the rows with `pop` less than 20 million.
+
+```{r}
+result3 = gapminder %>%
+  mutate(pop = pop/10^6) %>%
+  filter(pop < 20000000)
+
+result4 = gapminder %>%
+  filter(pop < 20000000) %>%
+  mutate(pop = pop/10^6)
+```
+
+In the **third case**, we considered whether order mattered when the two operations were (1) creating a new column called `pop_millions` which equals the `pop` column divided by a million, and (2) filtering to keep only the rows with `pop` less than 20 million.
+
+```{r}
+result5 = gapminder %>%
+  mutate(pop_millions = pop/10^6) %>%
+  filter(pop < 20000000)
+
+result6 = gapminder %>%
+  filter(pop < 20000000) %>%
+  mutate(pop_millions = pop/10^6)
+```
+
+So in which of these cases does order matter, and why?
+
+First let's settle the answer: order matters in the second case only, not in the first and third cases. We can tell by running the code and checking the results, which I assume you did in HW4; it was not meant to be strictly a thought exercise. If you didn't run the code in HW4, run it now and check out the results with me. If you run the code, you will notice that the number of rows is not the same for results 3 and 4, so the results cannot be the same. For the other two cases, we can toggle back and forth to see that they look the same, or we can be sure by using code to check whether the results are the same:
+
+```{r}
+# we can add up how many elements are different between results 1 and 2, or between 5 and 6
+sum(result1 != result2)
+sum(result5 != result6)
+
+# or we can use the identical function which checks if two objects are identical
+identical(result1, result2)
+identical(result5, result6)
+```
+
+Now let's think about **why** order matters for only the second case.
+
+In the first case, one operation selects rows based on the value of the `pop` column, while the other operation selects three columns. These operations don't affect each other. The final result in either case is going to be the subset of the data that have a population less than 20 million, and it'll show only the three columns we selected for.
+
+In the third case, again, one operation uses the `pop` column values to define a new column called `pop_millions`, and the other operation filters the dataset to keep just the rows in which the `pop` column meets some condition. Therefore, these two operations do not affect each other. If you do the filter operation first, you will only create the `pop_millions` column for the rows you'll keep in the end. If you do the mutate operation first, you will create the `pop_millions` column for all the rows and then just keep the rows you're interested in.
+
+However, in the second case, one operation rescales the `pop` column by dividing it by million, and the other operation filters for values that are less than 20,000,000. If you rescale first, a value of 20,000,000 in the `pop` column means a value of 20 **trillion** (20 million millions), not 20 **million**. No country has trillions of people, so this filtering operation won't do anything. If instead you filter first, you will subset the data to countries with populations of fewer than 20 million people, and then you rescale the population.
+
+In the second case, probably the coder meant to end up with a dataset that contained all countries with fewer than 20 million people, so they probably want `result4`, not `result3`. We can modify the code for `result3` to get the same answer, though, by making one change to the filter function: **what change?** (Try it out!)
+
+
+
+
+
+
+

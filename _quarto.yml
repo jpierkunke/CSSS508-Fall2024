@@ -53,6 +53,8 @@ website:
           text: "Homework 3"
         - file: Homework/homework4.qmd
           text: "Homework 4"
+        - file: Homework/homework4_followup.qmd
+          text: "HW4 follow-up: When does order matter?"
         - file: Homework/homework5.qmd
           text: "Homework 5"
 
