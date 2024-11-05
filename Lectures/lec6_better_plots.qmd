@@ -1,5 +1,5 @@
 ---
-title: "Lecture 6: Better plots"
+title: "Lecture 6: Better plots and some terminology review"
 subtitle: "CSSS 508"
 author: "Jess Kunke"
 date: "Tue 5 Nov 2024"
@@ -31,41 +31,49 @@ library(tidyverse)
 
 # Outline for today
 
-- Overview of terminology and different data types
+- Review of terminology
+- Data types and object types
 - Better plots
-- Better tables
 
 # Terminology vocab list
 
 Here are some terms we've been using so far.
 
-R/coding Terminology:
+**R/coding Terminology:**
 
-- Function
-    - Argument (input)
-- Index
-- Object
-- Operator (extract operator `$` or multiplication operator `*`)
-- Operation
-- Assignment
-- Call (an object or function)
-- Object name
-- Filename vs. title
-- Code comments
-- Command line
-- Base R
-- Environment
-- Package: bundle of code/functions and data
-- Installing versus loading packages
+- **Operation**: a general term for something you do; can be conceptual steps or coding steps
+- **Operator**: a general term for a code construct to do a particular task/operation
+    - We've seen lots of these! e.g. the extract operator `$`, the multiplication operator `*`, the equality comparison operator `==`
+    - **Functions** like `select()` and `n()` are a type of operator that takes zero or more **arguments** (inputs) supplied within parentheses `()` and carries out one or more tasks/operations
+- **Index** (plural: indices): the position of an element in an order
+    - A row index tells you which row based on its order
+    - The indices in `gapminder[2,3]` specify the second row and the third column
+- **Object**: a general term for a specific something (essentially some set of data) that you have defined
+    - Objects are things/data, whereas functions and operations are instructions or recipes
+- **Assignment**: the process of storing an object under a name, such as in `japan_data = filter(gapminder, country == "Japan")`
+- **Call** (an object or function): to invoke/display (an object) or execute/"run" (a function); basically means to use it
+- **Object name** (e.g. `japan_data`) vs. **filename** (e.g. "gapminder.csv") vs. (document/plot/table) title (e.g. "CSSS 508 Homework 5")
+- **Comments**: parts of the code that are not run/executed
+    - In R, the comment character is `#`
+    - Therefore, in R, if there is a `#` somewhere on a particular line of code, everything on that line before the `#` will be run as code and everything on that line after the `#` will not be run as code
+- **Command line**: a simple interface with a text prompt where commands can be entered
+    - This is the kind of interface we see in both the Console and the Terminal in RStudio; the Console is an interface for running R code within RStudio, while the Terminal is an interface for running shell scripting commands (different language than R) on your computer terminal
+- **Base R**: the set of code and data that come with an R installation
+- **Environment**: a virtual space that includes the set of all objects, variables, and functions that are defined within it
+    - Your **working environment** is the space in which you are currently working; for instance, if you are running commands in the Console and looking at data in the Environment tab, your working environment is the **global environment**, whereas when you render a Quarto document, a fresh R environment is created in the background for that process.
+    - Objects you define and packages you load in the Console (affecting your global environment) will not affect how your Quarto document renders.
+    - Objects and packages in your Quarto document will not affect your global environment unless you run those commands outside of rendering (such as by clicking "Run", using the keyboard shortcut command/control-return, or copying and pasting commands into the Console).
+- **Package**: a bundle of code/functions and data
+    - **Installing** versus **loading** packages
 
-Quarto/Markdown terminology:
+**Quarto/Markdown terminology:**
 
-- Markdown language
-- YAML
-- YAML header
-- Code chunks
-- Chunk options
-- Inline R code
+- **Markup language**: a text-encoding system which specifies the structure and formatting of a document
+- **YAML**: a specific type of markup language, and the kind that you use in Quarto to set options
+- **YAML header**: the section of settings at the top of a Quarto document, delineated with `---`
+- **Code chunks**: sections of a Quarto document that will be interpreted as code when the document is rendered
+- **Chunk options**: YAML settings at the start of a code chunk that determine something about how the chunk runs or appears in the final rendered document
+- **Inline R code**: R code surrounded by backticks \` and nestled directly into the text of a Quarto document; it is interpreted (and run) as code instead of text when the document is rendered
 
 
 # Data types
