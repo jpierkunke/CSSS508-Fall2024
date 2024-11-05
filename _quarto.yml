@@ -41,6 +41,8 @@ website:
           text: "Lecture 4: Debugging and review"
         - file: Lectures/lec5_data_viz.qmd
           text: "Lecture 5: Data visualization"
+        - file: Lectures/lec6_better_plots.qmd
+          text: "Lecture 6: Better plots"
 
     - title: "Homework"
       contents: 

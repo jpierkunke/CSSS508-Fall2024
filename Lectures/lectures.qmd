@@ -11,7 +11,7 @@ title: "Lecture schedule"
 |    3    | 15 Oct 2024 | Data Manipulation with **tidyverse**     |
 |    4    | 22 Oct 2024 | Debugging and review                     |
 |    5    | 29 Oct 2024 | Intro to data viz with **tidyverse**     |
-|    6    | 05 Nov 2024 | Better plots and tables                  |
+|    6    | 05 Nov 2024 | Better plots                             |
 |    7    | 12 Nov 2024 | Importing, Exporting, and Cleaning Data  |
 |    8    | 19 Nov 2024 | Working with text data/objects in R      |
 |    9    | 26 Nov 2024 | Regression in R                          |
