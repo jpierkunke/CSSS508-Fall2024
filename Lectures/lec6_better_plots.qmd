@@ -66,14 +66,14 @@ Here are some terms we've been using so far.
 - **Package**: a bundle of code/functions and data
     - **Installing** versus **loading** packages
 
-**Quarto/Markdown terminology:**
+**Quarto terminology:**
 
 - **Markup language**: a text-encoding system which specifies the structure and formatting of a document
 - **YAML**: a specific type of markup language, and the kind that you use in Quarto to set options
 - **YAML header**: the section of settings at the top of a Quarto document, delineated with `---`
 - **Code chunks**: sections of a Quarto document that will be interpreted as code when the document is rendered
 - **Chunk options**: YAML settings at the start of a code chunk that determine something about how the chunk runs or appears in the final rendered document
-- **Inline R code**: R code surrounded by backticks \` and nestled directly into the text of a Quarto document; it is interpreted (and run) as code instead of text when the document is rendered
+- **Inline R code**: R code surrounded by backticks \`\` and nestled directly into the text of a Quarto document; it is interpreted (and run) as code instead of text when the document is rendered
 
 
 # Data types
@@ -105,7 +105,10 @@ class(x < 3)
 class(as.character(x))
 ```
 
+Some more examples you can run yourself and check out:
+
 ```{r}
+#| eval: false
 str(1)
 str(1L)
 str("1")
@@ -114,7 +117,10 @@ str(1 < 5)
 str(gapminder$year)
 str(gapminder$country)
 str(gapminder) # shows you the type of each variable all at once
+```
 
+```{r}
+#| eval: false
 class(1)
 class(1L)
 class("1")
@@ -125,10 +131,10 @@ class(gapminder$country)
 class(gapminder)
 ```
 
-
 You can change datatypes using `as.integer`, `as.logical`, and so on.
 
 ```{r}
+#| eval: false
 identical(1.3, as.numeric("1.3"))
 identical(1L, as.integer("1"))
 identical("1", as.character(1))
