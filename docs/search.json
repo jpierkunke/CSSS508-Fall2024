@@ -262,64 +262,6 @@
     ]
   },
   {
-    "objectID": "Homework/homework4.html",
-    "href": "Homework/homework4.html",
-    "title": "Homework 4",
-    "section": "",
-    "text": "Instructions\nHomework 4 has been posted on Canvas, and the instructions are posted there. Rather than reading instructions here for creating your own Quarto document, from the Canvas assignment you can download a Quarto file that has the homework instructions/problems and spaces for you to add/modify text and code. You’ll upload that qmd file and its rendered html file as your homework submission.\nHappy coding! I look forward to hearing how this homework goes for you.",
-    "crumbs": [
-      "Homework",
-      "Homework 4"
-    ]
-  },
-  {
-    "objectID": "Homework/homework3.html",
-    "href": "Homework/homework3.html",
-    "title": "Homework 3",
-    "section": "",
-    "text": "Instructions\nCreate a new Quarto document (.qmd file) for this new homework; always use a new Quarto document for each homework.\nIn your Homework 3 Quarto document, continue to explore the gapminder dataset from the gapminder package, following the instructions below. Your document should be pleasant for a peer to look at, with some organization using section headings. Use chunk options to control which code and raw output you show in the html file when you render your Quarto document. When you’ve completed the assignment, upload to Canvas both the .qmd file and the .html file it generates when you render the .qmd file.\nDetailed instructions for HW3:\n\nOrganize your report in a few sections with appropriately named and Markdown-formatted section headings.\nUse an Introduction or Data section at the start of the report to summarize in sentences what the dataset is, where it comes from, what variables it includes and what they mean. Try to add one piece of information to what you wrote in your HW2.\nMake a table of some subset of rows and columns of the dataset (different from the one you made in HW2) two different ways, one using base R and one using tidyverse. In other words, you should have two chunks of code making the same table, and both chunks of code and both tables should show up in your rendered html file.\nThen use Markdown text (not just code comments) to summarize your approach to writing these two different chunks of code. Use code-style text formatting like this to make code references in your text look like code, just as in the lecture notes (e.g. when I write about mutate() and gapminder).\nCompute the number of Asian countries in the dataset two different ways, one using base R and one using tidyverse. Use chunk options to make sure your code for both approaches is displayed in your rendered html file, not hidden, and insert one of the two results (they should be the same as each other) into a text sentence using inline code.\nUsing either base R or tidyverse, compute the number of observations with at least 29 million people in 1952, and report your answer using inline code. Then pose a similar problem for the other student to try, and report the code and answer in your html file with a brief explanation of your solution!\nState one thing you didn’t do to your satisfaction in HW2 and how you have improved upon it in HW3. For instance, maybe you corrected some aspect of a table or of the Quarto html formatting in HW3 that wasn’t working in your HW2 submission.\nMost of all, have some fun practicing what we did in class and any other R/RStudio/Quarto features you might be discovering!",
-    "crumbs": [
-      "Homework",
-      "Homework 3"
-    ]
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "CSSS 508: Intro to R for Social Scientists",
-    "section": "",
-    "text": "Jess Kunke (she/they)\n\n\n\nTuesdays 4:30-6:20pm\nThomson Hall, Room 125\n\n\n\nAs of Oct 28th:\n\nMon 4-5pm (Zoom and Padelford B-221)\nFri 2-3pm (Zoom only)\nSee Canvas for Zoom links\n\nFor further course details, please see the syllabus.\nThank you Vic Sass for the fantastic website design!"
-  },
-  {
-    "objectID": "index.html#welcome",
-    "href": "index.html#welcome",
-    "title": "CSSS 508: Intro to R for Social Scientists",
-    "section": "",
-    "text": "Jess Kunke (she/they)\n\n\n\nTuesdays 4:30-6:20pm\nThomson Hall, Room 125\n\n\n\nAs of Oct 28th:\n\nMon 4-5pm (Zoom and Padelford B-221)\nFri 2-3pm (Zoom only)\nSee Canvas for Zoom links\n\nFor further course details, please see the syllabus.\nThank you Vic Sass for the fantastic website design!"
-  },
-  {
-    "objectID": "Homework/homework2.html",
-    "href": "Homework/homework2.html",
-    "title": "Homework 2",
-    "section": "",
-    "text": "Instructions\nCreate a new Quarto document (.qmd file) for this new homework; always use a new Quarto document for each homework.\nIn your Homework 2 Quarto document, explore the gapminder dataset from the gapminder package. Later in class we will also read this dataset in from a file, but for this homework we will access the dataset from a package. If you have not used this package before on your computer, you’ll need to install it first and then load it with library() as we saw in class. Otherwise, you can just use library(gapminder) to load the package and data(gapminder) to load the dataset.\nUse your Quarto document to report on a brief exploration of the dataset. This might read like the dataset section of a paper. It doesn’t have to be longer than a page or two, and it does not have to be up to the standard of what you would expect in a paper; the purpose is to practice R, RStudio, and Quarto to do things that eventually you would find practically useful. Remember, the homework is just meant to be a chance to practice stuff from class.\nDo at least the following:\n\nStart by doing some exploratory analysis of the dataset in the Console, some/much of which will not make it into your final document. In your Quarto document, only include code that you will use for the final document you submit. For example, don’t include commands like ?gapminder, and also don’t include code like str(gapminder) or mean(gapminder$year) unless you use them in tables, figures, and/or inline code.\nUse text to summarize what the dataset is, where it comes from, what variables it includes and what they mean.\nComment on the range or distribution of one of the dataset variables. You could show a histogram and report some summary statistics of the variable in the text of the document using inline R code (when we use r code to print values directly into the text of the document).\nInclude at least one plot of one variable versus another and comment briefly on what you notice in the plot.\nMake a table of some subset of rows and columns of the dataset and comment briefly on what you notice.\nComment your code using some comments (lines that start with #), even if the code doesn’t show up in the final html document. You don’t have to comment every line, but comment at least some lines that you think should be explained to someone who is trying to understand your code. For example, suppose you sent your Quarto document to a colleague because they wanted to reproduce your analysis and play with the dataset themselves. They might find it useful to see a comment that explains what kable() does and what kind of table you are trying to make there.\nMost of all, just have some fun exploring this dataset and practicing what we did in class!\n\nYour document should be pleasant for a peer to look at, with some organization using section headings. Some attempt should be made to label and format plots and tables. Use chunk options to limit the code and raw output you show in the html file when you render your Quarto document. Don’t include a figure or table without commenting on it in the text with at least a sentence. Round any numbers you report to a reasonable precision.\nUpload to Canvas both the .qmd file and the .html file it generates when you render.",
-    "crumbs": [
-      "Homework",
-      "Homework 2"
-    ]
-  },
-  {
-    "objectID": "Homework/homework1.html",
-    "href": "Homework/homework1.html",
-    "title": "Homework 1",
-    "section": "",
-    "text": "Instructions\nWrite up a .qmd file showing some exploratory analyses of the Swiss fertility data. Upload both the .qmd file and the .html file to Canvas. You must upload BOTH for credit.\nMix inline R calculations, R output, and plots with text describing the relationships you see. Include at least two plots and at least one instance of inline R code (e.g. functions like nrow(), mean(), sd(), cor(), median(), min()). You are encouraged to include more! You may not hard-code any numbers referenced in your text.\nYour document should be pleasant for a peer to look at, with some organization using sections or lists, and all plots labeled clearly. Use chunk options echo and output to limit the code/output you show in the .html. Discussion of specific values should be summarized in sentences in your text—not as printed code and output—and rounded so as not to be absurdly precise (e.g. round x with round(x, 2)).\n\n\nTemplate\nrendered html file • raw qmd file\n\n\nExample\nrendered html file • raw qmd file",
-    "crumbs": [
-      "Homework",
-      "Homework 1"
-    ]
-  },
-  {
     "objectID": "Homework/homework5.html",
     "href": "Homework/homework5.html",
     "title": "Homework 5",
@@ -350,6 +292,108 @@
     "crumbs": [
       "Homework",
       "Homework 5"
+    ]
+  },
+  {
+    "objectID": "Homework/homework1.html",
+    "href": "Homework/homework1.html",
+    "title": "Homework 1",
+    "section": "",
+    "text": "Instructions\nWrite up a .qmd file showing some exploratory analyses of the Swiss fertility data. Upload both the .qmd file and the .html file to Canvas. You must upload BOTH for credit.\nMix inline R calculations, R output, and plots with text describing the relationships you see. Include at least two plots and at least one instance of inline R code (e.g. functions like nrow(), mean(), sd(), cor(), median(), min()). You are encouraged to include more! You may not hard-code any numbers referenced in your text.\nYour document should be pleasant for a peer to look at, with some organization using sections or lists, and all plots labeled clearly. Use chunk options echo and output to limit the code/output you show in the .html. Discussion of specific values should be summarized in sentences in your text—not as printed code and output—and rounded so as not to be absurdly precise (e.g. round x with round(x, 2)).\n\n\nTemplate\nrendered html file • raw qmd file\n\n\nExample\nrendered html file • raw qmd file",
+    "crumbs": [
+      "Homework",
+      "Homework 1"
+    ]
+  },
+  {
+    "objectID": "Homework/homework2.html",
+    "href": "Homework/homework2.html",
+    "title": "Homework 2",
+    "section": "",
+    "text": "Instructions\nCreate a new Quarto document (.qmd file) for this new homework; always use a new Quarto document for each homework.\nIn your Homework 2 Quarto document, explore the gapminder dataset from the gapminder package. Later in class we will also read this dataset in from a file, but for this homework we will access the dataset from a package. If you have not used this package before on your computer, you’ll need to install it first and then load it with library() as we saw in class. Otherwise, you can just use library(gapminder) to load the package and data(gapminder) to load the dataset.\nUse your Quarto document to report on a brief exploration of the dataset. This might read like the dataset section of a paper. It doesn’t have to be longer than a page or two, and it does not have to be up to the standard of what you would expect in a paper; the purpose is to practice R, RStudio, and Quarto to do things that eventually you would find practically useful. Remember, the homework is just meant to be a chance to practice stuff from class.\nDo at least the following:\n\nStart by doing some exploratory analysis of the dataset in the Console, some/much of which will not make it into your final document. In your Quarto document, only include code that you will use for the final document you submit. For example, don’t include commands like ?gapminder, and also don’t include code like str(gapminder) or mean(gapminder$year) unless you use them in tables, figures, and/or inline code.\nUse text to summarize what the dataset is, where it comes from, what variables it includes and what they mean.\nComment on the range or distribution of one of the dataset variables. You could show a histogram and report some summary statistics of the variable in the text of the document using inline R code (when we use r code to print values directly into the text of the document).\nInclude at least one plot of one variable versus another and comment briefly on what you notice in the plot.\nMake a table of some subset of rows and columns of the dataset and comment briefly on what you notice.\nComment your code using some comments (lines that start with #), even if the code doesn’t show up in the final html document. You don’t have to comment every line, but comment at least some lines that you think should be explained to someone who is trying to understand your code. For example, suppose you sent your Quarto document to a colleague because they wanted to reproduce your analysis and play with the dataset themselves. They might find it useful to see a comment that explains what kable() does and what kind of table you are trying to make there.\nMost of all, just have some fun exploring this dataset and practicing what we did in class!\n\nYour document should be pleasant for a peer to look at, with some organization using section headings. Some attempt should be made to label and format plots and tables. Use chunk options to limit the code and raw output you show in the html file when you render your Quarto document. Don’t include a figure or table without commenting on it in the text with at least a sentence. Round any numbers you report to a reasonable precision.\nUpload to Canvas both the .qmd file and the .html file it generates when you render.",
+    "crumbs": [
+      "Homework",
+      "Homework 2"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "CSSS 508: Intro to R for Social Scientists",
+    "section": "",
+    "text": "Jess Kunke (she/they)\n\n\n\nTuesdays 4:30-6:20pm\nThomson Hall, Room 125\n\n\n\nAs of Oct 28th:\n\nMon 4-5pm (Zoom and Padelford B-221)\nFri 2-3pm (Zoom only)\nSee Canvas for Zoom links\n\nFor further course details, please see the syllabus.\nThank you Vic Sass for the fantastic website design!"
+  },
+  {
+    "objectID": "index.html#welcome",
+    "href": "index.html#welcome",
+    "title": "CSSS 508: Intro to R for Social Scientists",
+    "section": "",
+    "text": "Jess Kunke (she/they)\n\n\n\nTuesdays 4:30-6:20pm\nThomson Hall, Room 125\n\n\n\nAs of Oct 28th:\n\nMon 4-5pm (Zoom and Padelford B-221)\nFri 2-3pm (Zoom only)\nSee Canvas for Zoom links\n\nFor further course details, please see the syllabus.\nThank you Vic Sass for the fantastic website design!"
+  },
+  {
+    "objectID": "Homework/homework3.html",
+    "href": "Homework/homework3.html",
+    "title": "Homework 3",
+    "section": "",
+    "text": "Instructions\nCreate a new Quarto document (.qmd file) for this new homework; always use a new Quarto document for each homework.\nIn your Homework 3 Quarto document, continue to explore the gapminder dataset from the gapminder package, following the instructions below. Your document should be pleasant for a peer to look at, with some organization using section headings. Use chunk options to control which code and raw output you show in the html file when you render your Quarto document. When you’ve completed the assignment, upload to Canvas both the .qmd file and the .html file it generates when you render the .qmd file.\nDetailed instructions for HW3:\n\nOrganize your report in a few sections with appropriately named and Markdown-formatted section headings.\nUse an Introduction or Data section at the start of the report to summarize in sentences what the dataset is, where it comes from, what variables it includes and what they mean. Try to add one piece of information to what you wrote in your HW2.\nMake a table of some subset of rows and columns of the dataset (different from the one you made in HW2) two different ways, one using base R and one using tidyverse. In other words, you should have two chunks of code making the same table, and both chunks of code and both tables should show up in your rendered html file.\nThen use Markdown text (not just code comments) to summarize your approach to writing these two different chunks of code. Use code-style text formatting like this to make code references in your text look like code, just as in the lecture notes (e.g. when I write about mutate() and gapminder).\nCompute the number of Asian countries in the dataset two different ways, one using base R and one using tidyverse. Use chunk options to make sure your code for both approaches is displayed in your rendered html file, not hidden, and insert one of the two results (they should be the same as each other) into a text sentence using inline code.\nUsing either base R or tidyverse, compute the number of observations with at least 29 million people in 1952, and report your answer using inline code. Then pose a similar problem for the other student to try, and report the code and answer in your html file with a brief explanation of your solution!\nState one thing you didn’t do to your satisfaction in HW2 and how you have improved upon it in HW3. For instance, maybe you corrected some aspect of a table or of the Quarto html formatting in HW3 that wasn’t working in your HW2 submission.\nMost of all, have some fun practicing what we did in class and any other R/RStudio/Quarto features you might be discovering!",
+    "crumbs": [
+      "Homework",
+      "Homework 3"
+    ]
+  },
+  {
+    "objectID": "Homework/homework4.html",
+    "href": "Homework/homework4.html",
+    "title": "Homework 4",
+    "section": "",
+    "text": "Instructions\nHomework 4 has been posted on Canvas, and the instructions are posted there. Rather than reading instructions here for creating your own Quarto document, from the Canvas assignment you can download a Quarto file that has the homework instructions/problems and spaces for you to add/modify text and code. You’ll upload that qmd file and its rendered html file as your homework submission.\nHappy coding! I look forward to hearing how this homework goes for you.",
+    "crumbs": [
+      "Homework",
+      "Homework 4"
+    ]
+  },
+  {
+    "objectID": "Homework/homework6.html",
+    "href": "Homework/homework6.html",
+    "title": "Homework 6",
+    "section": "",
+    "text": "Homework 6 has been posted on Canvas; you can download the qmd file there. I’ve also posted the instructions here.\n\nI have set eval: false because the code in this document is not yet complete (the assignment is to fill it in). In order for you to be able to render the template even before you add any code, I either had to set eval: false in the YAML header or within certain code chunks. You can change the evaluation settings however you like for your own workflow. If you have trouble, please post on Ed Discussion or come to office hours; setting these options and rendering Quarto documents is something we’re still practicing, so this is an extra chance to practice with it.\nFor problems with coding, if a code chunk is not provided, insert one or more code chunks below that problem and before the next problem to include your code.\n\nTip: name your code chunks as we saw in class and as you can see below. This will help you identify where an error occurred in the event that rendering your document doesn’t complete without errors.\n\nModify this document to complete your homework for Homework 6.\nPost questions on Ed Discussion, discuss with each other, and get as far as you can on these problems.\nIf by the time the homework is due you have worked on a problem but did’t fully complete it, feel free to leave your work so far and write about where you’re stuck or what is going wrong or what your question is, and your peer evaluator might have some input.\nFeel free to change the format of this document in ways that you think make the output look nicer or easier to read, but keep the general structure (sections, questions, etc) so that your peer reviewer knows which part is which.",
+    "crumbs": [
+      "Homework",
+      "Homework 6"
+    ]
+  },
+  {
+    "objectID": "Homework/homework6.html#section-a-object-types",
+    "href": "Homework/homework6.html#section-a-object-types",
+    "title": "Homework 6",
+    "section": "Section A: Object types",
+    "text": "Section A: Object types\n\nProblem 1: Vectors\nHere are examples of three different ways we have seen to construct vectors:\n\nvector_c = c(\"bananas\", \"apples\", \"grapes\", \"kumquats\")\nvector_colon = 11:22\nvector_seq = seq(50, 100, 20)\n\nLet’s use these to understand a few things about making and using vectors.\nPart a. What is the data type of each of these three vectors?\nyour answer\nPart b. How many elements are in each vector?\nyour answer\nPart c. What do “c” and “seq” stand for? (You can find these in the lecture notes, in the R help documentation with ?, or online.)\nyour answer\nPart d. Write out what the elements of vector_seq are. In other words, write out each value in that vector, separated by commas. Does it include 50, 100, and/or 20? Why/why not?\nyour answer\n\n\nProblem 2: Making a list\nLet’s make a small list for practice. First, create a vector called numbers of the numbers 1, 2, 3, …, 100. Create a character-type object called my_favorite_food that equals a single value, the name of (one of) your favorite foods. Then make a list called example_list that has three named elements: these two items, as well as the swiss dataset.\n\n\nProblem 3: Using a list\nI’ve written comments describing code I’d like you to write. Please fill in the code. I completed one as an example. For each of these lines of code, make sure to use the list.\n\n# call/access the favorite food from your list\nexample_list$my_favorite_food\n\n# call/access the 17th value of numbers from your list\n\n# call/access the swiss dataset from your list\n\n# call/access the education value for Delemont in the swiss dataset from your list",
+    "crumbs": [
+      "Homework",
+      "Homework 6"
+    ]
+  },
+  {
+    "objectID": "Homework/homework6.html#section-b-factors",
+    "href": "Homework/homework6.html#section-b-factors",
+    "title": "Homework 6",
+    "section": "Section B: Factors",
+    "text": "Section B: Factors\nThis section doesn’t require new code or answers; instead, please read this section and run the code as you read, looking at the results yourself. The goal here is to get you started with factors, and we’ll continue with this in class next time. This section is drawn partly from R for Data Science.\nConsider a vector of months:\n\nx = c(\"Dec\", \"Apr\", \"Jan\", \"Mar\")\n\nHandling this as character-type data has at least two disadvantages: (1) you might have typos or multiple formats like “January” or “01” or “Jam” instead of “Jan”, even though there should only be 12 possible values since there are 12 months, and (2) sorting the vector sorts it alphabetically, not in the order of months. For instance, try this out:\n\nsort(x)\n\nWe can address these problems by making the variable a factor. First, we create a list of the levels (possible values) in order:\n\nmonth_levels = c(\n  \"Jan\", \"Feb\", \"Mar\", \"Apr\", \"May\", \"Jun\", \n  \"Jul\", \"Aug\", \"Sep\", \"Oct\", \"Nov\", \"Dec\"\n)\n\nThen we make our variable a factor:\n\nx = factor(x, levels = month_levels)\n\nTake a look at the vector now by calling it and trying to sort it:\n\n# call x\nx\n# sort x\nsort(x)\n\nIf you have typos or different formats, they’ll be converted to NA, in which case you can look back at the original data to see what those values were and handle them accordingly. For example:\n\n# here the last two values should be counted as the same month\nx_oops = c(\"Dec\", \"Apr\", \"January\", \"Jan\")\nx_oops_factor = factor(x_oops, levels = month_levels)\n# but they're not\nx_oops_factor\n# which value didn't match our 12 values?\nx_oops[is.na(x_oops_factor)]\n# ahh, that should be Jan, so let's change it using logical indices\n# - this code says, \"set every element of x_oops whose value is 'January' to 'Jan'\"\nx_oops[x_oops == \"January\"] = \"Jan\"\n\nWe’ll keep working with this when we cover data cleaning!",
+    "crumbs": [
+      "Homework",
+      "Homework 6"
+    ]
+  },
+  {
+    "objectID": "Homework/homework6.html#section-c-plots",
+    "href": "Homework/homework6.html#section-c-plots",
+    "title": "Homework 6",
+    "section": "Section C: Plots",
+    "text": "Section C: Plots\nBelow is the final plot code we ended up with in class. Make the following changes, listed below. Show the code and plot for each change, one at a time, and state what change you’re making in that step. (I recommend having a separate code chunk for each change.) The first three changes listed are things we saw how to do either in Lecture 5 or 6. For the last three changes, you probably need to google how to do them. See the Lecture 6 recording and past lecture notes for tips on how to do this effectively. Feel free to trade tips on Ed Discussion!\n\nMake the continent average line a little transparent so that you can see the other lines through it.\nRename the legend “Continent”.\nPut all the continents in a single row instead of having the current two-row plot arrangement. (You might or might not decide to make other adjustments to make the plot look nice in a single row; use your discretion and comment on any other changes you make.)\nChange the way you set the legend position so that you address the warning about numerical settings with legend.position being deprecated.\nChange the font size.\nSet the panel.spacing using a different unit than lines.\n\n\nggplot(data = gapminder, \n       aes(x = year, y = lifeExp, group = country, color = continent)) +\n  geom_line() +\n  geom_line(stat = \"smooth\", \n            aes(group = continent),\n            color = \"black\", linewidth = 1) +\n  facet_wrap(~ continent, nrow = 2) +\n  labs(x = \"\", \n       y = \"Life Expectancy (Years)\",\n       title = \"Life Expectancy, 1952-2007\", \n       subtitle = \"By continent and country\") +\n  scale_x_continuous(limits = c(1950, 2010), breaks = seq(1950, 2010, 20)) +\n  scale_color_manual(\n    name = \"Which continent are\\nwe looking at?\", # \\n adds a line break \n    values = c(\"Africa\" = \"#4e79a7\", \"Americas\" = \"#f28e2c\", \n               \"Asia\" = \"#e15759\", \"Europe\" = \"#76b7b2\", \"Oceania\" = \"#59a14f\")) +\n  theme_minimal() +\n  theme(panel.spacing = unit(2, \"lines\"),\n        legend.position = c(0.8, 0.2)) # or \"bottom\" or many other options",
+    "crumbs": [
+      "Homework",
+      "Homework 6"
     ]
   },
   {

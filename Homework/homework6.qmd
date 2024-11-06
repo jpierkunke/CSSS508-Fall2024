@@ -1,0 +1,189 @@
+---
+title: "Homework 6"
+highlight-style: a11y-dark
+embed-resources: true
+execute: 
+  eval: false
+---
+
+### Instructions
+
+Homework 6 has been posted on Canvas; you can download the qmd file there. I've also posted the instructions here.
+
+- I have set `eval: false` because the code in this document is not yet complete (the assignment is to fill it in). In order for you to be able to render the template even before you add any code, I either had to set `eval: false` in the YAML header or within certain code chunks. You can change the evaluation settings however you like for your own workflow. If you have trouble, please post on Ed Discussion or come to office hours; setting these options and rendering Quarto documents is something we're still practicing, so this is an extra chance to practice with it.
+- For problems with coding, if a code chunk is not provided, insert one or more code chunks below that problem and before the next problem to include your code.
+    - Tip: name your code chunks as we saw in class and as you can see below.  This will help you identify where an error occurred in the event that rendering your document doesn't complete without errors.
+- Modify this document to complete your homework for Homework 6.
+- Post questions on Ed Discussion, discuss with each other, and get as far as you can on these problems.
+- If by the time the homework is due you have worked on a problem but did't fully complete it, feel free to leave your work so far and write about where you're stuck or what is going wrong or what your question is, and your peer evaluator might have some input.
+- Feel free to change the format of this document in ways that you think make the output look nicer or easier to read, but keep the general structure (sections, questions, etc) so that your peer reviewer knows which part is which.
+
+```{r}
+#| label: load-packages
+#| include: false
+#| eval: true
+# load here any packages you need
+```
+
+
+
+## Section A: Object types
+
+### Problem 1: Vectors
+
+Here are examples of three different ways we have seen to construct vectors:
+
+```{r}
+#| label: section-A-problem-1
+vector_c = c("bananas", "apples", "grapes", "kumquats")
+vector_colon = 11:22
+vector_seq = seq(50, 100, 20)
+```
+
+Let's use these to understand a few things about making and using vectors.
+
+**Part a.** What is the data type of each of these three vectors?
+
+*your answer*
+
+**Part b.** How many elements are in each vector?
+
+*your answer*
+
+**Part c.** What do "c" and "seq" stand for? (You can find these in the lecture notes, in the R help documentation with `?`, or online.)
+
+*your answer*
+
+**Part d.** Write out what the elements of vector_seq are. In other words, write out each value in that vector, separated by commas. Does it include 50, 100, and/or 20? Why/why not?
+
+*your answer*
+
+
+
+### Problem 2: Making a list
+
+Let's make a small list for practice. First, create a vector called `numbers` of the numbers 1, 2, 3, ..., 100. Create a character-type object called `my_favorite_food` that equals a single value, the name of (one of) your favorite foods. Then make a list called `example_list` that has three named elements: these two items, as well as the `swiss` dataset.
+
+
+### Problem 3: Using a list
+
+I've written comments describing code I'd like you to write. Please fill in the code. I completed one as an example. For each of these lines of code, make sure to use the list.
+
+```{r}
+#| label: section-A-problem-3
+# call/access the favorite food from your list
+example_list$my_favorite_food
+
+# call/access the 17th value of numbers from your list
+
+# call/access the swiss dataset from your list
+
+# call/access the education value for Delemont in the swiss dataset from your list
+
+```
+
+
+
+
+
+## Section B: Factors
+
+This section doesn't require new code or answers; instead, please read this section and run the code as you read, looking at the results yourself. The goal here is to get you started with factors, and we'll continue with this in class next time. This section is drawn partly from [R for Data Science](https://r4ds.had.co.nz/factors.html).
+
+Consider a vector of months:
+
+```{r}
+x = c("Dec", "Apr", "Jan", "Mar")
+```
+
+Handling this as character-type data has at least two disadvantages: (1) you might have typos or multiple formats like "January" or "01" or "Jam" instead of "Jan", even though there should only be 12 possible values since there are 12 months, and (2) sorting the vector sorts it alphabetically, not in the order of months. For instance, try this out:
+
+```{r}
+sort(x)
+```
+
+We can address these problems by making the variable a factor. First, we create a list of the levels (possible values) in order:
+
+```{r}
+month_levels = c(
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+)
+```
+
+Then we make our variable a factor:
+
+```{r}
+x = factor(x, levels = month_levels)
+```
+
+Take a look at the vector now by calling it and trying to sort it:
+
+```{r}
+# call x
+x
+# sort x
+sort(x)
+```
+
+If you have typos or different formats, they'll be converted to NA, in which case you can look back at the original data to see what those values were and handle them accordingly. For example:
+
+```{r}
+# here the last two values should be counted as the same month
+x_oops = c("Dec", "Apr", "January", "Jan")
+x_oops_factor = factor(x_oops, levels = month_levels)
+# but they're not
+x_oops_factor
+# which value didn't match our 12 values?
+x_oops[is.na(x_oops_factor)]
+# ahh, that should be Jan, so let's change it using logical indices
+# - this code says, "set every element of x_oops whose value is 'January' to 'Jan'"
+x_oops[x_oops == "January"] = "Jan"
+```
+
+We'll keep working with this when we cover data cleaning!
+
+
+
+
+
+## Section C: Plots
+
+Below is the final plot code we ended up with in class. Make the following changes, listed below. Show the code and plot for each change, one at a time, and state what change you're making in that step. (I recommend having a separate code chunk for each change.) The first three changes listed are things we saw how to do either in Lecture 5 or 6. For the last three changes, you probably need to google how to do them. See the Lecture 6 recording and past lecture notes for tips on how to do this effectively. Feel free to trade tips on Ed Discussion!
+
+- Make the continent average line a little transparent so that you can see the other lines through it.
+- Rename the legend “Continent”.
+- Put all the continents in a single row instead of having the current two-row plot arrangement. (You might or might not decide to make other adjustments to make the plot look nice in a single row; use your discretion and comment on any other changes you make.)
+- Change the way you set the legend position so that you address the warning about numerical settings with `legend.position` being deprecated.
+- Change the font size.
+- Set the `panel.spacing` using a different unit than lines.
+
+```{r}
+#| label: plot-code-lecture-6
+ggplot(data = gapminder, 
+       aes(x = year, y = lifeExp, group = country, color = continent)) +
+  geom_line() +
+  geom_line(stat = "smooth", 
+            aes(group = continent),
+            color = "black", linewidth = 1) +
+  facet_wrap(~ continent, nrow = 2) +
+  labs(x = "", 
+       y = "Life Expectancy (Years)",
+       title = "Life Expectancy, 1952-2007", 
+       subtitle = "By continent and country") +
+  scale_x_continuous(limits = c(1950, 2010), breaks = seq(1950, 2010, 20)) +
+  scale_color_manual(
+    name = "Which continent are\nwe looking at?", # \n adds a line break 
+    values = c("Africa" = "#4e79a7", "Americas" = "#f28e2c", 
+               "Asia" = "#e15759", "Europe" = "#76b7b2", "Oceania" = "#59a14f")) +
+  theme_minimal() +
+  theme(panel.spacing = unit(2, "lines"),
+        legend.position = c(0.8, 0.2)) # or "bottom" or many other options
+```
+
+
+
+
+
+
+
