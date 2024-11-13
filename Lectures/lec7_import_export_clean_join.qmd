@@ -353,6 +353,189 @@ By the end of this exercise, you should have made the following changes:
 - Any typos should be corrected so that there are no missing values in this column in either dataset.
 :::
 
+:::{.callout-note collapse=true}
+## Solutions
+
+### Problem 1
+
+Comparing the names of the variables in the two datasets, we see that `carrier` is the only shared column. (Tip: Since `airlines` only has two columns, just look for those names in `flights`.)
+
+```{r}
+names(airlines)
+names(flights)
+```
+
+A nice way to figure that out without having to visually scan the list of names yourself is to use the `%in%` operator. **Question for HW7: Try out the following code to get a sense for how `%in%` works, then identify the line of code you'd use in this case. Explain how that line of code works, piece by piece, to help someone understand how they would come up with that line of code themselves.**
+
+```{r}
+names(airlines) %in% names(flights)
+names(flights) %in% names(airlines)
+names(airlines)[names(airlines) %in% names(flights)]
+```
+
+They each have 16 unique values:
+
+```{r}
+n_distinct(airlines$carrier)
+n_distinct(flights$carrier)
+```
+
+Since `airlines` has 16 rows, that means every row has a unique value for the `carrier` column. Since `flights` has over 300,000 rows, there certainly must be repeats of at least some of the 16 unique carriers.
+
+Note that if you check which values they are, though, they are not the same 16 values:
+
+```{r}
+unique(airlines$carrier)
+unique(flights$carrier)
+```
+
+That should already tip you off that you will have to consider what to do about those values. For now, we'll reserve that for later.
+
+### Problem 2a
+
+A table like airlines, that lists each carrier by a short two-character ID and a full name, is often called a **lookup table**. Its purpose is to match every unique identifier, sometimes called a **key** (here, the carrier ID), with some other information about that variable (such as the full name in this case) which may or may not be unique for every value of the unique identifier. Usually lookup tables have every possible value for the unique identifier in them and have exactly one row for each value. Therefore, we might reasonably figure that the 16 values in the `carrier` column of the `airlines` dataset are meant to be the set of possible carrier IDs, not just the 16 values that happen to be in that dataset.
+
+Here there is probably no particular inherent order to the different carrier IDs. Perhaps alphabetical makes sense, and that's the order that R will pick by default. Therefore, we will make the `carrier` variable of the `airlines` dataset a factor without specifying the levels and their order:
+
+```{r}
+# do one of the following:
+# base R
+airlines$carrier = factor(airlines$carrier)
+# tidyverse
+airlines = airlines %>%
+  mutate(carrier = factor(carrier))
+```
+
+When might you handle this differently?
+
+- For one, if `airlines` is not a lookup table but, say, a sample of 16 carriers from the ones you care about, then you might want to set the levels to include all possible carriers that you care about for your analysis, whether or not they appear in `airlines`.
+- Also, if the carriers do not appear in alphabetical order in the column of your lookup table and you want the levels to reflect the order in the lookup table, you can set the levels using the column itself. Remember that a column is a vector, and the order in which the values appear in the column is the order they appear in `airlines$carrier`, so if you use that to set your levels, that will be the order of the levels for the factor variable. So if you sort those values, they will be sorted in that order. In this case it doesn't matter because `airlines$carrier` is already in alphabetical order, but that may not be true in another dataset.
+
+```{r}
+# for the second option (ordering the levels in the order they appear in airlines$carrier),
+# do one of the following:
+# base R
+airlines$carrier = factor(airlines$carrier, levels = levels(airlines$carrier))
+# tidyverse
+airlines = airlines %>%
+  mutate(carrier = factor(carrier, levels = levels(airlines$carrier)))
+
+# again, this will give you the same result as the previous code that didn't set the levels,
+# because airlines$carrier is already in alphabetical order
+```
+
+However you set up your factor variable, take a look at the result:
+
+```{r}
+# the first row of output from this command shows the values as they appear in airlines$carrier
+# the second row shows the possible levels, in the order you set them (or the default alphabetic order otherwise)
+airlines$carrier
+
+# the first row of output from this command shows the values as they appear in head(airlines$carrier)
+# the second row shows the possible levels, in the order you set them (or the default alphabetic order otherwise)
+head(airlines$carrier)
+
+# the output says it's a factor variable with 16 levels, and lists the first few possible levels in order
+# then after the colon (:), it says the first few values of airlines$carrier,
+# but instead of listing them by the character value ("9E", "AA", etc.), it lists
+# them by their order: 1 for the first level ("9E"), 2 for the second level ("AA"), etc.
+str(airlines$carrier)
+
+# not surprisingly, each value appears once in the dataset
+# (why is this not surprising?)
+summary(airlines$carrier)
+```
+
+
+
+
+### Problem 2b
+
+Now let's make `flights$carrier` a factor variable using the same levels (same possible values in the same order) as `airlines$carrier`:
+
+```{r}
+# do one of the following:
+# base R
+flights$carrier = factor(flights$carrier, levels = levels(airlines$carrier))
+# tidyverse
+flights = flights %>%
+  mutate(carrier = factor(carrier, levels = levels(airlines$carrier)))
+```
+
+Then take a look at the result using any or all of the following code:
+
+```{r}
+# I didn't call flights$carrier because it's so long (>300,000 rows!)
+# instead, I start with head(flights$carrier)
+
+# just as before,
+# the first row of output from this command shows the values as they appear in head(flights$carrier)
+# the second row shows the possible levels, in the order you set them (or the default alphabetic order otherwise)
+head(flights$carrier)
+
+# same as before,
+# except that now the numbers after the colon say 12 12 2 4 5 ... instead of 1 2 3 4 5 ...
+# why is that? because the first five values of the flights$carrier column
+# are UA UA AA B6 DL, and UA is the 12th level, AA is the 2nd, and so on
+str(flights$carrier)
+
+# uh oh, 692 NAs!
+summary(flights$carrier)
+```
+
+The fact that there are NAs means that there must have been some values of `flights$carrier` that are not in the possible levels we used when we defined it as a factor variable. Therefore, when we made it a factor variable, it set those values to NA because they didn't match any of the 16 possible levels.
+
+There are multiple ways to see what those original values were that got replaced with NA. Since we overwrote the original `flights$carrier` column with the factor version, to see the original values we'll have to reload the original data from the file first:
+
+```{r}
+# read the data in again from the file
+flights = read_csv(paste0(data_path, "flights.csv"))
+
+# look at the unique values
+unique(flights$carrier)
+
+# compare to airlines$carrier
+unique(airlines$carrier)
+```
+
+We see that `flights` has an extra carrier that `airlines` doesn't ("00") and `airlines` has an extra carrier that `flights` doesn't ("VX"). The "00" values will not match one of the levels if we're setting the levels using `airlines$carrier`, so the "00" values will be converted to NAs.
+
+Is that it, or are there other differences? How could we verify that all the values were originally "00"? Here are two good ways to check. One approach is to see how many values are "00". If that's the same as the number of NAs we got (692), then that supports our conclusion. Another approach is to create the factor column, but this time make it a separate column instead of overwriting the original `carrier` column so that we can compare them. Let's try both these approaches, starting with the first.
+
+```{r}
+# use one of these ways to see how many "00" values you have
+table(flights$carrier)
+```
+
+Hmm, only 7 values are "00", so that's part of the story but not the whole story. Looking closely, we see that there's another difference between the unique values of the two datasets: `flights` has "F8" while `airlines` has "F9". As a result, they both have 16 unique values, but they aren't the same sets of 16 values. Indeed, there are 685 F8 values, and $685+7 = 692$. So maybe it's the "00" and the "F8" values that account for all the NAs we got.
+
+To be sure, let's do the second approach: let's create the factor column, but this time make it a separate column instead of overwriting the original `carrier` column so that we can compare them.
+
+```{r}
+# do one of the following:
+# base R
+flights$carrier_factor = factor(flights$carrier, levels = levels(airlines$carrier))
+# tidyverse
+flights = flights %>%
+  mutate(carrier_factor = factor(carrier, levels = levels(airlines$carrier)))
+```
+
+There are many ways you can compare these columns now, but there are a lot of rows. In rows without an NA, the two columns should match, so really we only care about rows in which `carrier_factor` is NA. Also, what we care about is seeing what values the `carrier` column has in those rows. So let's do this:
+
+```{r}
+flights_compare = flights %>%
+  filter(is.na(carrier_factor))
+
+unique(flights_compare$carrier)
+```
+
+What is this code doing, and why does it help us get the answer we want?
+
+### Problem 2c
+
+This solution will be provided after HW7 is due. See HW7 for a discussion of this part of the problem.
+:::
+
 # Join two datasets
 
 As our next step, we're going to join the two datasets using this shared column. To understand conceptually how a general join works, let's consider this diagram:

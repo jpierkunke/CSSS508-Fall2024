@@ -1,0 +1,122 @@
+---
+title: "Homework 7"
+highlight-style: a11y-dark
+embed-resources: true
+execute: 
+  eval: false
+---
+
+### Instructions
+
+Homework 7 has been posted on Canvas; you can download the qmd file there. I've also posted the instructions here.
+
+Instructions from HW 6 still apply here; refer back to those if needed.
+
+Let's unpack the practice problems at the end of Lecture 7 in more detail. Refer back to "Your Turn: Applying this to today’s data" in Lecture 7 as needed.
+
+To start, put this .qmd file in the R project you made for the flights data in Lecture 7. Then the file paths below should work for reading the data into R.
+
+```{r}
+#| label: load-packages
+# load here any packages you need
+library(tidyverse)
+
+# set the relative file path to the folder where your data is stored
+data_path = "Data/"
+
+# read in your data files
+airlines = read_csv(paste0(data_path, "airlines.csv"))
+flights = read_csv(paste0(data_path, "flights.csv"))
+```
+
+## Problem 1: Comparing the variable sets of two datasets
+
+Read through the Problem 1 solution on the Lecture 7 page, and try out the code yourself. Then explain here to your peer reviewer how the `%in%` operator works and address the bolded question in the Problem 1 solution on the Lecture 7 page. Include the line of code you choose here.
+
+```{r}
+# which line of code did you choose? delete the other two below
+names(airlines) %in% names(flights)
+names(flights) %in% names(airlines)
+names(airlines)[names(airlines) %in% names(flights)]
+```
+
+
+## Problem 2a-b: Setting the levels of your factor variable
+
+Read through the Problem 2a and 2b solutions on the Lecture 7 page, and try out the code yourself. Then try your hand at these questions.
+
+Run the following code to make a version of `airlines` that is sorted alphabetically by `name` instead of `carrier`:
+
+```{r}
+airlines_byname = airlines %>% arrange(name)
+```
+
+Now make `carrier` a factor in the `airlines_byname` dataset three different ways:
+
+```{r}
+airlines_byname = airlines_byname %>%
+  mutate(carrier_factor1 = factor(carrier),
+         carrier_factor2 = factor(carrier, levels = airlines_byname$carrier),
+         carrier_factor3 = factor(carrier, levels = c("9E", "AA", "AS", "B6", "DL", "EV", "F9", 
+                                                      "FL", "HA", "MQ", "OO", "UA", "US", "VX", 
+                                                      "WN", "YV", "ZZ", "BB", "DD", "EE", "UU")))
+```
+
+Then run the code below, and explain what the differences are in a way that would help someone understand the output of these nine lines of code. For example, why do some of these variables (`carrier_factor1`, `carrier_factor2`, `carrier_factor3`) sort one way and others sort a different way? Why do some lines with `str()` say "1 2 3 4 5 6 7 8 9 10" in the output and others say "8 3 2 5 1 10 6 7 9 4"?
+
+```{r}
+airlines_byname$carrier_factor1
+sort(airlines_byname$carrier_factor1)
+str(airlines_byname$carrier_factor1)
+
+airlines_byname$carrier_factor2
+sort(airlines_byname$carrier_factor2)
+str(airlines_byname$carrier_factor2)
+
+airlines_byname$carrier_factor3
+sort(airlines_byname$carrier_factor3)
+str(airlines_byname$carrier_factor3)
+```
+
+
+
+### Problem 2b: Identifying discrepancies in the data
+
+Read through the Problem 2b solution on the Lecture 7 page, and try out the code yourself. Then try your hand at these questions.
+
+To make sure you have your code restored to the version we want to examine, run the following code and add some comments to the above code to summarize what each step is doing. (To help yourself see what each step is doing, I recommend running one step at a time and taking a look at the results before you run the next line.)
+
+```{r}
+flights = read_csv(paste0(data_path, "flights.csv"))
+
+airlines = airlines %>%
+  mutate(carrier = factor(carrier))
+
+flights = flights %>%
+  mutate(carrier_factor = factor(carrier, levels = levels(airlines$carrier)))
+```
+
+There are many ways you can compare these columns now, but there are a lot of rows. In rows without an NA, the two columns should match, so really we only care about rows in which `carrier_factor` is NA. Also, what we care about is seeing what values the `carrier` column has in those rows. So let's do this:
+
+```{r}
+flights_compare = flights %>%
+  filter(is.na(carrier_factor))
+
+unique(flights_compare$carrier)
+```
+
+What is this code doing, and why does it help us get the answer we want? Add comments to the code and write a short explanation below.
+
+
+
+### Problem 2c: Handling the NAs
+
+Now that you have identified the carrier IDs in `flights` that didn't match those in `airlines`, we have to decide what to do about it. There are lots of possibilities. We might not know whether the carrier IDs that differ are typos or truly different values. We might be interested in all the carrier IDs that appear in both datasets, or we might only be interested in those that appear in `airlines`. For our context here, we might suspect that "00" was a typo for "OO" (perhaps these were manually entered from paper files at some point) and that "F8" and "F9" are supposed to be the same code. Hopefully we would have a way to verify this from area knowledge or from records. Sometimes we just don't know, and we have to make assumptions and document our assumptions.
+
+For now let's assume that we can be confident that these are typos: "00" was supposed to be "OO" and "F8" was supposed to be "F9". Go ahead and change all "00" values to "OO" and all "F8" values to "F9" in the `flights$carrier` column, then make it a factor using the same levels as `airlines$carrier`. Try this out, and then verify that there are no more NAs in `flights$carrier`. Write your code below and include a brief explanation of your code.
+
+
+
+
+
+
