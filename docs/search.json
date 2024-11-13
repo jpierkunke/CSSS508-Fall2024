@@ -25,481 +25,36 @@
     ]
   },
   {
-    "objectID": "Lectures/lec4_debugging_review.html",
-    "href": "Lectures/lec4_debugging_review.html",
-    "title": "Lecture 4: Debugging and review",
+    "objectID": "Lectures/lec3_data_manip_tidyverse.html",
+    "href": "Lectures/lec3_data_manip_tidyverse.html",
+    "title": "Lecture 3: Tidyverse!",
     "section": "",
-    "text": "Homework and peer reviews (including for HW2) will be graded for completion\n\nThis is a one-credit course and I want the focus to be on practice, not points\n\nReminder: this week’s office hour is in Thomson, not Padelford (see website for details)\n\nDoes the office hour time work for people?",
+    "text": "How I feel about R, over time. Illustration credit: Allison Horst.",
     "crumbs": [
       "Lectures",
-      "Lecture 4: Debugging and review"
+      "Lecture 3: Data manipulation with tidyverse"
     ]
   },
   {
-    "objectID": "Lectures/lec4_debugging_review.html#code-chunk-options",
-    "href": "Lectures/lec4_debugging_review.html#code-chunk-options",
-    "title": "Lecture 4: Debugging and review",
-    "section": "Code chunk options",
-    "text": "Code chunk options\nThere are several code chunk options, including echo, include, and eval. You can review them in the Quarto documentation here.\n\nWhich chunk option do we use…\n\nto show/hide the code in the rendered html document?\nto run/not run the code?\nto run the code but not show any output or messages from it?\n\nWhich chunk option(s) should we use when we load packages at the beginning of the Quarto document?\nWhich chunk option(s) should we use if we want to show the code we used to make a graph, but we don’t want to actually run it (we might do this in a tutorial, like to show how to install a package)?",
+    "objectID": "Lectures/lec3_data_manip_tidyverse.html#summary-statistics",
+    "href": "Lectures/lec3_data_manip_tidyverse.html#summary-statistics",
+    "title": "Lecture 3: Tidyverse!",
+    "section": "Summary statistics",
+    "text": "Summary statistics\nHow many data points do we have for each continent? Here’s how we could use tidyverse to find out:\n\ngapminder %&gt;%\n  group_by(continent) %&gt;%\n  summarize(n.obs = n())\n\nWhat about other summary statistics, like the minimum, average, and maximum country population on each continent?\n\ngapminder %&gt;%\n  group_by(continent) %&gt;%\n  summarize(\n    min_pop = min(pop),\n    mean_pop = mean(pop),\n    max_pop = max(pop)\n  )\n\nAs always, if you want to store the results as an object in R so you can do other stuff with it later, you can do that by assignment:\n\ncontinent_stats = gapminder %&gt;%\n  group_by(continent) %&gt;%\n  summarize(\n    min_pop = min(pop),\n    mean_pop = mean(pop),\n    max_pop = max(pop)\n  )\n\nWe can also group by more than one thing if we want to define groups by more than one variable. For example, how many data points do we have for each continent and each year?\n\nn_obs_by_cont_year &lt;- gapminder %&gt;%\n  group_by(continent, year) %&gt;%\n  summarize(n.obs = n())\n\nWhat happens if we switch the order of the grouping variables?\n\nn_obs_by_year_cont &lt;- gapminder %&gt;%\n  group_by(year, continent) %&gt;%\n  summarize(n.obs = n())\n\nNotice that the table structure is not ideal; we’ll address this when we cover pivoting! We’ll also find that useful for plots.\n\n\n\n\n\n\nYour Turn\n\n\n\n\nLet’s return to our earlier question: Does each country has data for the same years, or are the years represented in the data different for some countries? Use tidyverse to figure this out.\nFilter the gapminder dataset for only the data on Italy, then compute the average per-capita GDP for each year in that Italy dataset.\n\n\n\n\n\n\n\n\n\nSolutions\n\n\n\n\n\nThere may be multiple approaches, but here are some:\n\n\n\n\ngapminder %&gt;%\n  group_by(country, year) %&gt;%\n  summarize(nobs = n())\n\n\n\n\n\ngapminder %&gt;%\n  filter(country == \"Italy\") %&gt;%\n  group_by(year) %&gt;%\n  summarize(avg_gdp = mean(gdpPercap))",
     "crumbs": [
       "Lectures",
-      "Lecture 4: Debugging and review"
+      "Lecture 3: Data manipulation with tidyverse"
     ]
   },
   {
-    "objectID": "Lectures/lec4_debugging_review.html#formatting-text-to-look-like-code",
-    "href": "Lectures/lec4_debugging_review.html#formatting-text-to-look-like-code",
-    "title": "Lecture 4: Debugging and review",
-    "section": "Formatting text to look like code",
-    "text": "Formatting text to look like code\nTo do this, surround the text with backticks (`): `mutate()` will become mutate().",
+    "objectID": "Lectures/lec3_data_manip_tidyverse.html#footnotes",
+    "href": "Lectures/lec3_data_manip_tidyverse.html#footnotes",
+    "title": "Lecture 3: Tidyverse!",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nYou’ll also usually need to reinstall the packages you use with install.packages() if you update R.↩︎",
     "crumbs": [
       "Lectures",
-      "Lecture 4: Debugging and review"
-    ]
-  },
-  {
-    "objectID": "Lectures/lec4_debugging_review.html#how-to-read-a-quarto-rendering-error-message",
-    "href": "Lectures/lec4_debugging_review.html#how-to-read-a-quarto-rendering-error-message",
-    "title": "Lecture 4: Debugging and review",
-    "section": "How to read a Quarto rendering error message",
-    "text": "How to read a Quarto rendering error message\nWhen you try to render a Quarto document and it fails, you get an error message something like this:\n\nLet’s break this down.\n\nThe thing with the arrow ==&gt; at the top is the command that RStudio runs when you click the Render button.\nThen it says it’s processing your file, and it shows some of the progress it made through rendering\n\nThe “unnamed-chunk-2” refers to a code chunk in your code\nIt says unnamed because we didn’t name the chunk (we hadn’t talked about how to do that anyway). If you had named it, the name would appear there instead of “unnamed-chunk-2”.\n\nThe actual error message starts with “Quitting from ….”\n\nThe part that tells you something about what’s happening is the error message itself: object 'true' not found. This suggests that somewhere you typed a “true” where it doesn’t know what to do with it.",
-    "crumbs": [
-      "Lectures",
-      "Lecture 4: Debugging and review"
-    ]
-  },
-  {
-    "objectID": "Lectures/lec4_debugging_review.html#naming-chunks",
-    "href": "Lectures/lec4_debugging_review.html#naming-chunks",
-    "title": "Lecture 4: Debugging and review",
-    "section": "Naming chunks",
-    "text": "Naming chunks\nIf I render the following Quarto document:\n\nI get the following error message:\n\nIf I take the same Quarto document and just name my code chunks like so:\n\nThen I get somewhat more helpful output about the progress before the error:\n\n\n\n\n\n\n\nYour turn\n\n\n\nMake a Quarto document that looks like the second one above, with the named chunks.\nThen identify and fix the error(s) to get it rendering successfully.",
-    "crumbs": [
-      "Lectures",
-      "Lecture 4: Debugging and review"
-    ]
-  },
-  {
-    "objectID": "Lectures/lec4_debugging_review.html#render-frequently",
-    "href": "Lectures/lec4_debugging_review.html#render-frequently",
-    "title": "Lecture 4: Debugging and review",
-    "section": "Render frequently!",
-    "text": "Render frequently!\nRule number 1: render frequently! But of course sometimes you forget, or you have other reasons that you add a lot of code or make a lot of code before rendering. Let’s talk about how to troubleshoot in that case: sequentially cut out code and try rendering again.\n\nCut (as in cut and paste, not as in delete) everything after the first code chunk.\nTry to render the document again.\n\nIf it doesn’t render successfully, you know that at least the first issue is in the small document you just tried to render: the YAML header, some Markdown text/formatting, or the first code chunk.\nIf it renders without errors, then the issue must be happening somewhere in the part that you cut. Paste it back, and now repeat step 1 but cut everything after the second code chunk. And so on.\n\n\nOnce you identify what line is triggering the error message, then you can work on figuring out what caused the error. Remember: this is not necessarily the code you want to edit. The part of the code you modify to fix the issue could be in an earlier line of code or an earlier code chunk.\n\n\n\n\n\n\nYour turn\n\n\n\nIn fact let’s practice that right now! In the qmd file below,\n\nWhich line is generating the error message? (To which line is the error message referring?)\nWhere would you edit the code to fix the error?",
-    "crumbs": [
-      "Lectures",
-      "Lecture 4: Debugging and review"
-    ]
-  },
-  {
-    "objectID": "Lectures/lec2_data_manip.html",
-    "href": "Lectures/lec2_data_manip.html",
-    "title": "Lecture 2: Manipulating and summarizing data",
-    "section": "",
-    "text": "(a) The experience I think some people had this week\n\n\n\n\n\n\n\n\n\n\n\n(b) The experience I want to help people have\n\n\n\n\n\n\n\nFigure 1: Two very different experiences with coding. (Illustration credit: Allison Horst)\nThere’s a certain amount of confusion and struggle that is a natural part of learning new skills and concepts, and that’s a great albeit uncomfortable thing. I didn’t mean to introduce additional barriers, though, and I’m sorry.\nLet’s get from Figure 1 (a) to Figure 1 (b) together today!",
-    "crumbs": [
-      "Lectures",
-      "Lecture 2: Data manipulation with base R"
-    ]
-  },
-  {
-    "objectID": "Lectures/lec2_data_manip.html#different-working-modes",
-    "href": "Lectures/lec2_data_manip.html#different-working-modes",
-    "title": "Lecture 2: Manipulating and summarizing data",
-    "section": "Different working modes",
-    "text": "Different working modes\nWe saw two different ways to write and organize R code last time: in the Console and in a Quarto document. A third mode is to make an R script, and we can demo that briefly here. What’s the difference, and when might you use one mode or another?\n\nConsole\n\nInteractive\nGreat for exploratory analysis\nGreat for trying out different commands and developing your code\nNot really meant for recording your steps for later\nNot meant for sharing with other people\nOrder matters: for example, you have to define a variable (height = 60) before you use it (height + 4) or modify it (height = height + 4)\n\nBut if you mix up the order, you get an error, and you can type new code to fix it\n\n\nR script (.R file type)\n\nGreat for organizing a final analysis or set of code\nOrder matters: runs from start to finish\nMake notes for yourself/readers in the comments\n\nQuarto document (.qmd file type)\n\nIncorporate text, code, tables, plots, etc. together in one document\nGreat for making a report, website, etc.\nOrder matters: runs from start to finish\n\n\nNote: when you render a Quarto document, it actually creates an html file on your computer in the same directory as your qmd file and with the same name. For example, if you render myHW1.qmd it will create myHW1.html in the same folder. It might be an unfamiliar file type, but it’s a file just like a pdf or a Word document or an R script. It is this html file which it opens for you in your browser or in RStudio, and after you render it you can always open that file at any time by double-clicking the html file with the same name as your qmd file. So when it comes time to submit your qmd and html files, you’ll want to submit the html file that’s already on your computer and in the same folder as the qmd file.",
-    "crumbs": [
-      "Lectures",
-      "Lecture 2: Data manipulation with base R"
-    ]
-  },
-  {
-    "objectID": "Lectures/lec2_data_manip.html#working-environments",
-    "href": "Lectures/lec2_data_manip.html#working-environments",
-    "title": "Lecture 2: Manipulating and summarizing data",
-    "section": "Working environments",
-    "text": "Working environments\nWhen you run height = 4 or read in data using the Console, you see these objects appear in the Environment tab. The reason it’s called the Environment tab is that it shows you what is in your current global environment. You can think of this like your work desk in R Studio. It’s the stuff you have defined already, that you can work with. If you run the code x + 4 in the console but you haven’t yet defined an object called x, you’ll get an error because that object is not defined in your global environment.\nWhen you open a script or a Quarto document and put code there, it doesn’t get run until you run it. So just because you have defined an object in your script or Quarto document does not mean it has actually been created anywhere yet. Similarly, the order in which you run your code matters.\nWhen you render a Quarto document, it actually creates a fresh environment behind the scenes and runs the code in the document start to finish. So if you defined some object height in your global environment (you see it in your Environment tab) but you never defined it in your Quarto document, and the code in your Quarto document tries to use it (like smaller_height = height - 4), you’ll get an error like “object height does not exist”.\nAll of this is important when it comes to troubleshooting errors yourself and when you ask for help in troubleshooting them.\nAlso, there are a few commands we learned that are useful when you work interactively in the Console but won’t work if you try to put them in a Quarto file and render it. The View() command and the ? command are both commands intended for use in the console only because they produce changes in the interactive RStudio window that can’t be reproduced in an html file when you try to render the Quarto file. Basically, commands that just print stuff or make plots/tables are fine, but commands that pull up viewing windows, help pages, etc probably won’t work. So if you get an error when you try to render the qmd file, and you have View and ? commands such as the following in your Quarto file, remove them and try rendering again:\n\nView(swiss)\n?swiss\n?mean",
-    "crumbs": [
-      "Lectures",
-      "Lecture 2: Data manipulation with base R"
-    ]
-  },
-  {
-    "objectID": "Lectures/lec2_data_manip.html#workflow-tips-and-time-savers",
-    "href": "Lectures/lec2_data_manip.html#workflow-tips-and-time-savers",
-    "title": "Lecture 2: Manipulating and summarizing data",
-    "section": "Workflow tips and time savers",
-    "text": "Workflow tips and time savers\nFor your homework as well as for coding in general, here are some key tips to make your life easier:\n\nRender your Quarto document frequently\n\nIf an error occurs, you know it was something you just changed and not anywhere in the whole document\nMakes errors more interpretable and easier to troubleshoot\n\nExplore and develop your code in the Console, and as you work out parts of your code that you want to include in the final document, put them in your Quarto document or R script (for homework, we’re using Quarto documents) in the order that it needs to be run\nUse RStudio’s autocomplete to help you type less and avoid typos\n\nIf you type the first 3-4 characters of the name of a dataset or a function in R, a little menu will appear and allow you to autocomplete the rest of the name\nIf it’s a function name you’re typing, it will give you a quick summary of the function’s purpose and format\nAs we will see today, if it’s a dataset, once you enter the name and type $ it will list all the variables of the dataset and you can autocomplete the name of the variable you want\n\nIf you already typed some code and you want to type similar code, copy and paste, then modify\nUse and practice keyboard shortcuts\n\nShift-Command-C (or Shift-Control-C on a PC) to comment/uncomment a line\nCommand-Return (or Control-Return on a PC) to run a line of code or a highlighted chunk of code\nOption-Command-I to insert a code chunk in a Quarto document",
-    "crumbs": [
-      "Lectures",
-      "Lecture 2: Data manipulation with base R"
-    ]
-  },
-  {
-    "objectID": "Lectures/lec2_data_manip.html#commenting-your-code",
-    "href": "Lectures/lec2_data_manip.html#commenting-your-code",
-    "title": "Lecture 2: Manipulating and summarizing data",
-    "section": "Commenting your code",
-    "text": "Commenting your code\nMany languages have a comment character that allows you to “comment out” parts of your code so that R will not run them. In R, that comment character is the hashtag #.\nWhy would I ever want to do that? One big reason: you can (and should! please!) use this to write comments to yourself and others who read your code, to explain what you’re doing or why. You can see examples of this above; for example, with the logical vectors, I used comments to tell you what each line of code did.\nThe second big reason: you can use this to temporarily not run certain lines, like if you’re troubleshooting code and you want to run the whole script start to finish but you want to skip some parts without deleting them. Let’s test this out. What value does x have after this code chunk? Why?\n\nx = 9\nx = x + 2\nx = x - 5\n\nWhat about after this code chunk, which is the same except the middle line is commented out? Why?\nRemember that to toggle back and forth between making the line commented and uncommented, you can use the keyboard shortcuts shift-control-C or shift-command-C.\n\nx = 9\n# x = x + 2\nx = x - 5",
-    "crumbs": [
-      "Lectures",
-      "Lecture 2: Data manipulation with base R"
-    ]
-  },
-  {
-    "objectID": "Lectures/lec2_data_manip.html#extracting-multiple-rowscolumns",
-    "href": "Lectures/lec2_data_manip.html#extracting-multiple-rowscolumns",
-    "title": "Lecture 2: Manipulating and summarizing data",
-    "section": "Extracting multiple rows/columns",
-    "text": "Extracting multiple rows/columns\nYou can also extract multiple rows and/or columns by specifying a vector of row/column indices or names instead of just a single one:\n\n# some different types of vectors:\n16:20\nc(2, 4, 5)\nc(\"Conthey\", \"Herens\", \"Sion\", \"Boudry\")\nswiss$Education\n\n# using vectors to extract more complex subsets of the data\nswiss[16:20, 2:3]\nswiss[c(\"Conthey\", \"Herens\", \"Sion\", \"Boudry\"), 2:4]\nswiss$Education[2:4]\n\nA very useful kind of vector for indexing and subsetting is a logical-valued vector, meaning its elements are all either true or false.\n\nswiss$Education\nswiss$Education &gt; 20\nswiss$Education == 53\nswiss$Education != 53\n!(swiss$Education == 53)\n\nNow let’s use these logical vectors to do even more powerful subsetting:\n\n# get the values of Education that are greater than 20\nswiss$Education[swiss$Education &gt; 20]\n# get the values of Fertility for provinces in which Education is greater than 20\nswiss$Fertility[swiss$Education &gt; 20]\n# get the indices of the Education column for which the value is greater than 20\nwhich(swiss$Education &gt; 20)",
-    "crumbs": [
-      "Lectures",
-      "Lecture 2: Data manipulation with base R"
-    ]
-  },
-  {
-    "objectID": "Lectures/lec2_data_manip.html#other-uses-of-logical-variables",
-    "href": "Lectures/lec2_data_manip.html#other-uses-of-logical-variables",
-    "title": "Lecture 2: Manipulating and summarizing data",
-    "section": "Other uses of logical variables",
-    "text": "Other uses of logical variables\nHow many of the provinces have Agriculture lower than 35%? 5%? 1%?\n\nsum(swiss$Agriculture &lt; 35)\nsum(swiss$Agriculture &lt; 5)\nsum(swiss$Agriculture &lt; 1)\n\nWhat percentage of provinces have Agriculture lower than 35%?\n\nmean(swiss$Agriculture &lt; 35)\n\n\n\n\n\n\n\nYour Turn\n\n\n\n\nWrite three different lines of code that will extract the Fertility variable of the swiss dataset.\nWhat does each of these lines do? Which of these lines work and which don’t? Which ones don’t work the way you expect? Why do you think that is?\n\n\nswiss[2,4]\nswiss[Courtelary,]\nswiss[\"Courtelary\"]\nswiss$Fertility[1,4]\nswiss$Fertility[1]\n\n\nUsing kable, make a table of just the Agriculture and Catholic variables of the swiss dataset.\nModify your answer to part 3 by showing just rows 5 through 10 in the table.",
-    "crumbs": [
-      "Lectures",
-      "Lecture 2: Data manipulation with base R"
-    ]
-  },
-  {
-    "objectID": "Lectures/lec2_data_manip.html#file-paths",
-    "href": "Lectures/lec2_data_manip.html#file-paths",
-    "title": "Lecture 2: Manipulating and summarizing data",
-    "section": "File paths",
-    "text": "File paths\nA file path is the path to a folder (directory) or file on your computer. File paths are specified in reference to a root directory or a home directory. So for example, on my computer, the file path “~/Documents/CSSS-math-camp-2024/gapminder.csv” means that in my home directory (signified by “~”), there should be a “Documents” folder, and in there should be a “CSSS-math-camp-2024” folder, and in there should be a file called “gapminder.csv”. This path may or may not exist; it’s an address, and a file may or may not actually live there, and one of those folders might not actually be in the folder it’s supposed to be in, etc.\nFile paths can be absolute or relative. An absolute file path is defined with reference to the root directory. For example, “/Users/jessicakunke/Documents/CSSS-math-camp-2024/gapminder.csv” is an absolute file path. On a Windows machine, the root directory is usually “C:\\”, and the slashes in the path are all backward slashes “\\” instead of forward slashes “/”. On Mac and Linux machines, the root directory is usually “/”.\n\n\n\n\n\n\nAn important note for Windows users\n\n\n\n\n\ntl;dr: use a double backslash instead of a single backslash throughout your Windows file paths.\nThe deets:\nUnfortunately, R and other languages use backslashes as an “escape character”. What does that mean? Consider how character values have to be surrounded by double quotes to indicate it’s a character value instead of a variable/object/function name. Then what do you do if your character string includes double quotes? You “escape” the quotes with a backslash:\n\n# these two lines won't work if you uncomment them\n# print(\"He said \"whooooaaa\"\")\n# cat(\"He said \"whooooaaa\"\")\n\n# but these work; note the different output of print and cat\nprint('He said \\\"whooooaaa\\\"')\ncat('He said \\\"whooooaaa\\\"')\n\nAs a result, if you want to include a backslash as a character, you need to escape it with another backslash:\n\n# these two lines won't work if you uncomment them\n#   specifically, they expect you to type more (they think the commands aren't \n#   complete) because the \\\" is interpreted as part of the character string and\n#   it's expecting another \" to end the character string\n# print(\"C:\\User\\Desktop\\\")\n# cat(\"C:\\User\\Desktop\\\")\n\n# but these work\nprint(\"C:\\\\User\\\\Desktop\\\\\")\ncat(\"C:\\\\User\\\\Desktop\\\\\")\n\n\n\n\nA relative file path is defined with reference to an arbitrary location. For example, “data/gapminder.csv” means, look in your current directory for a folder called “data”, and in there, look for a file called “gapminder.csv”.\nReading in the data with gapminder &lt;- read_csv(\"gapminder.csv\") will work if RStudio knows to look in the directory that contains our dataset. You can use the command getwd() (for “get working directory”) to see the folder where RStudio is currently looking for your files; this location or folder is called your current working directory. Any relative file paths you use are relative to this folder. So when you say the file you want is “gapminder.csv”, you’re looking for that file in this folder.\nYou can organize your R projects using absolute paths, but this is not what I recommend if you are sharing your code or collaborating with others. Instead, see the next section on R projects!\n\n\n\n\n\n\nExpand for tips on using absolute file paths\n\n\n\n\n\n\nCheck out setwd() and getwd()\nIn the RStudio Files pane, navigate to the data set you want, click the gear, select “Copy folder path to clipboard”, then paste that file path wherever you want the file path (e.g. inside read_csv()).",
-    "crumbs": [
-      "Lectures",
-      "Lecture 2: Data manipulation with base R"
-    ]
-  },
-  {
-    "objectID": "Lectures/lec2_data_manip.html#organizing-your-work-with-r-projects",
-    "href": "Lectures/lec2_data_manip.html#organizing-your-work-with-r-projects",
-    "title": "Lecture 2: Manipulating and summarizing data",
-    "section": "Organizing your work with R projects",
-    "text": "Organizing your work with R projects\nA fairly painless and straightforward way to handle these file path challenges is to create an R Project. This R project will be associated with a folder where you put most or all of the code and data needed for the project. When you open the project in RStudio, it will tell RStudio to use that folder as “home base”. Then you specify all your file paths relative to that folder.\nLet’s try this approach. Create an R Project (File &gt; New Project) and select either New Directory or Existing Directory.\nOnce your new project opens, let’s see where the current working directory is (it should be the folder that you made the project in):\n\n# get working directory (getwd)\ngetwd()\n\nMake sure that gapminder.csv is in this directory, then try loading the file again as before:\n\ngapminder &lt;- read_csv(\"gapminder.csv\")\n\nTa-da!\nNotice this command is kind of noisy, printing out a bunch of stuff we don’t need. As the message says, we can make it “quieter” by setting another argument of the read_csv() function:\n\ngapminder &lt;- read_csv(\"gapminder.csv\", show_col_types = FALSE)",
-    "crumbs": [
-      "Lectures",
-      "Lecture 2: Data manipulation with base R"
-    ]
-  },
-  {
-    "objectID": "syllabus.html",
-    "href": "syllabus.html",
-    "title": "Syllabus",
-    "section": "",
-    "text": "Welcome! I look forward to working with you this quarter.\nThis syllabus is subject to change. All changes will be announced in class and via Canvas announcements.\n\nOverview\nThis course is intended to give students a foundational understanding of programming in the statistical language R. This knowledge is intended to be broadly useful wherever you encounter data in your education and career.\nThis course has no prerequisites; we do not assume you have any prior programming experience with R or any other language. We will also cover almost no statistics, but this course should help prepare you for CSSS, STAT, or other departments’ methods courses so that you can focus on the methods they cover more than the coding itself. Additionally, the basic concepts you learn will be applicable to other programming languages and research in general, such as logic and algorithmic thinking.\n\n\nLearning objectives\nBy the end of the course, students will be able to…\n\nDevelop more confidence in their programming skills and their understanding of computation more broadly\nBe familiar with the RStudio application and the syntax of the R language\nOrganize and document coding projects for reproducibility and efficient workflow\nRead in data from a file and explore the data\nManipulate and reformat data for quality control, summary statistics, and other purposes\nCombine multiple data sets from different sources and of different types\nCreate beautiful, clear, and informative data visualizations\nCombine text, code, and output into reports using Quarto\nGain confidence troubleshooting, debugging, and learning how to do new things in R\n\n\n\nStructure\nThis course consists of a hands-on lecture and drop-in office hours, each once a week for two hours.\nIn person or remote? This course is intended to be primarily in person, but I recognize that life happens, so I will plan to hold lectures and office hours in a hybrid fashion in case you need to join remotely sometimes. This way we can also post lecture recordings in case you want to review something from class.\n\nLectures\nFor a schedule of lecture topics, please see the Lectures page. Note that the course will not meet during final exam week.\nPlease bring a laptop to class each week; I will spend a lot of class “live coding”, meaning I will move at a pace and in a sequence that is intended for you to code along with me and ask questions as they come up. I will also have some practice problems for you to work on during class. If you do not have a laptop you can bring to class and are not sure how to borrow one, please let me know in advance.\n\n\nOffice hours\nOffice hours are optional/drop-in and are a great space for asking questions, getting advice, or continuing discussions from class.\n\n\n\nResources\nThis course has no required text. I will guide you through content during lecture, and the lecture notes will all be here on this website. There are also many helpful resources available for free online if you would like further references along the way or after this class ends, and here is just a selection that you might find useful:\n\nR for Data Science by Hadley Wickham, Mine Çetinkaya-Rundel, & Garrett Grolemund.\n\n\n\nClass communication\n\nCourse content (lecture notes) and homework instructions will be posted here on this course website.\nYou will be submitting your assignments and peer reviews through Canvas.\nCheck your Canvas notification settings and make sure you get our course announcements! This is how I will send out homework clarifications, schedule changes, and other important information.\nPlease use Ed Discussion to post your questions to peers and provide some advice to others! I will also keep an eye on the discussions and step in as needed, but the primary goal is to encourage collaboration and discussion among members of the class.\nPlease also make good use of my office hours to address your questions and get extra practice with the material.\nWhen asking questions, please provide the code you ran and the error you gave, be specific and concrete, and try to provide a minimal reproducible example. This helps me and your fellow students give you the most helpful feedback!\n\n\n\nAnonymous feedback\nThroughout the course, I welcome your feedback through this short anonymous feedback survey on what’s working for you about the class environment or format, what’s not, and any suggestions or ideas you have.\n\n\nGrading\nThis course is graded as credit/no credit. To pass you need to receive at least 60% of the available points. There will be 9 graded homework assignments, assigned weekly for the first 9 weeks of instruction. There are 4 points possible for each week that features a homework.\n\nHomework (75%; 3 points): These must be turned in as rendered Markdown documents which we will learn to create and for which templates are provided. They will be graded for completion (3 points if submitted, 0 otherwise). These are designed first and foremost to develop skills rather than “prove” you have learned concepts. I encourage you to communicate and work together, so long as you write and explain your code yourself and do not copy work. You can learn a lot from replicating others’ code, but you will learn nothing if you copy it without knowing how it works! In other words, you’re not really going to learn unless you do the coding yourself!\nPeer Review (25%; 1 point): Each week an assignment is due, students will be randomly assigned to provide constructive feedback on another student’s submission. Reading others’ code is an important skill and you will write better code knowing others will see it. These reviews will be due 5 days after homework is due. Each peer review is worth 1 point and will be graded for completion.\nSchedule: We have a 2-hour interactive lecture/lab session on Tuesdays. Office Hours will be be held on Wednesdays. Homeworks will be due before class each Tuesday and peer reviews will be due 5 days later, by end-of-day on Sundays. Make sure to check the Homework page or Canvas for all due dates!\n\n\n\nClassroom Environment\nI’m committed to fostering a friendly and inclusive classroom environment in which all students have an equal opportunity to learn and succeed. This course is an attempt to make an often difficult and frustrating experience (learning R for the first time) less obfuscating, daunting, and stressful. That said, learning happens in different ways at at a different pace for everyone. Learning is also a collaborative and creative process and my aim is to create an environment in which you all feel comfortable asking questions of me and each other. Treat your peers and yourself with empathy and respect as you all approach this topic from a range of backgrounds and experiences (in programming and in life).\n\nNames & Pronouns: Everyone deserves to be addressed respectfully and correctly. You are welcome to send me your preferred name and correct gender pronouns at any time.\nGetting Help: If at any point during the quarter you find yourself struggling to keep up, please let me know! I am here to help. A great place to start this process is by chatting after class, coming to office hours, or sending me an email.\nDiversity: Diverse backgrounds, embodiments, and experiences are essential to the critical thinking endeavor at the heart of university education. Therefore, I expect you to follow the UW Student Conduct Code in your interactions with your colleagues and me in this course by respecting the many social and cultural differences among us, which may include, but are not limited to: age, cultural background, disability, ethnicity, family status, gender identity and presentation, body size/shape, citizenship and immigration status, national origin, race, religious and political beliefs, sex, sexual orientation, socioeconomic status, and veteran status.\nAccessibility & Accommodations: Your experience in this class is important to me. If you have already established accommodations with Disability Resources for Students (DRS), please communicate your approved accommodations to me at your earliest convenience so we can discuss your needs in this course. If you have not yet established services through DRS, but have a temporary health condition or permanent disability that requires accommodations (conditions include but not limited to; mental health, attention-related, learning, vision, hearing, physical or health impacts), you are welcome to contact DRS at 206-543-8924, uwdrs@uw.edu, or through their website. DRS offers resources and coordinates reasonable accommodations for students with disabilities and/or temporary health conditions. Reasonable accommodations are established through an interactive process between you, me (your instructor), and DRS. It is the policy and practice of the University of Washington to create inclusive and accessible learning environments consistent with federal and state law.\nAcademic Integrity: Academic integrity is essential to this course and to your learning. In this course, violations of the academic integrity policy include but are not limited to: copying from a peer, copying from an online resource, or using resources from a previous iteration of the course. That said, I hope you will collaborate with peers on assignments, and use Internet resources when questions arise to help solve issues. The key is that you ultimately submit your own work. Anything found in violation of this policy will be automatically given a score of 0 with no exceptions. If the situation merits, it will also be reported to the UW Student Conduct Office, at which point it is out of my hands. If you have any questions about this policy, please do not hesitate to reach out and ask.\nReligious Accommodations: Washington state law requires that UW develop a policy for accommodation of student absences or significant hardship due to reasons of faith or conscience, or for organized religious activities. The UW’s policy, including more information about how to request an accommodation, is available at Religious Accommodations Policy. Accommodations must be requested within the first two weeks of this course using the Religious Accommodations Request form."
-  },
-  {
-    "objectID": "Homework/CSSS508_HW1_Template.html",
-    "href": "Homework/CSSS508_HW1_Template.html",
-    "title": "Homework 1",
-    "section": "",
-    "text": "This basic R markdown file has some text, inline code, and code chunks!"
-  },
-  {
-    "objectID": "Homework/CSSS508_HW1_Template.html#code-chunks",
-    "href": "Homework/CSSS508_HW1_Template.html#code-chunks",
-    "title": "Homework 1",
-    "section": "Code Chunks",
-    "text": "Code Chunks\n\nset.seed(1)\nnorm &lt;- rnorm(100)\nhist(x = norm, \n     xlab = \"X Axis Name\", \n     ylab = \"Count\", \n     main = \"Histogram of 100 observations from a Standard Normal\")\n\n\n\n\n\n\n\n\nUnless you include the chunk option #| echo: false, your code chunk will be displayed in your final document."
-  },
-  {
-    "objectID": "Homework/CSSS508_HW1_Template.html#text-and-inline-text",
-    "href": "Homework/CSSS508_HW1_Template.html#text-and-inline-text",
-    "title": "Homework 1",
-    "section": "Text and Inline Text",
-    "text": "Text and Inline Text\nThe sample mean of the data plotted above (rounded to 3 decimal points) is 0.109 and the variance is 0.807.\nWhat’s the relationship between standard deviation and variance?\n\\[ \\text{Standard Deviation}(X) = \\sqrt{\\text{Variance}(X)} \\]\nThe standard deviation of the data plotted above is 0.898."
-  },
-  {
-    "objectID": "Homework/homework.html",
-    "href": "Homework/homework.html",
-    "title": "Overview",
-    "section": "",
-    "text": "This page contains general instructions for assignments and peer reviews. For homework-specific instructions and templates go to the specific assignment listed on the left.\nAll assignments should be created using Quarto and uploaded to Canvas as both html and qmd files. Your document should be pleasant for a peer to look at and follow all instructions. Use sections for organization, label figures/tables, and use code chunks.\nThis is a one-credit pass/fail course intended to help you learn R. The focus is on learning and practice, not on points. Assignments and peer reviews will be graded for completion, but the points are not the point: they are key opportunities to practice R/RStudio/Quarto and to learn from each other. Feel free to work together, discussion questions on Ed Discussion, trade ideas and tips.",
-    "crumbs": [
-      "Homework",
-      "Overview"
-    ]
-  },
-  {
-    "objectID": "Homework/homework.html#peer-review",
-    "href": "Homework/homework.html#peer-review",
-    "title": "Overview",
-    "section": "Peer Review",
-    "text": "Peer Review\nYou are required to examine and provide feedback on a peer’s homework submission each week. Reading and evaluating the work of others is useful and important! Good programmers realize that most problems have been solved by others; the trick is figuring out how to apply existing code to new problems. You will develop this skill by reading others’ code, seeing how other people approached the problems, providing suggestions, and pointing out when you learned something new. Please give constructive, polite, and insightful comments that encourage your classmate and help them learn from you.",
-    "crumbs": [
-      "Homework",
-      "Overview"
-    ]
-  },
-  {
-    "objectID": "Homework/homework.html#a-note-about-rendering-your-html-documents",
-    "href": "Homework/homework.html#a-note-about-rendering-your-html-documents",
-    "title": "Overview",
-    "section": "A Note About Rendering Your HTML documents",
-    "text": "A Note About Rendering Your HTML documents\nYou need to include embed-resources: true in your YAML header in order for your HTML documents to include any plot output when you upload them to Canvas. It should look something like the following:\n\nYou can read more about this option here but basically, whenever you render a .qmd file to HTML, all output created goes into a separate, associated folder, which is referenced when displaying the page in your web browser. However, when you upload the HTML file separately from that folder (e.g. to Canvas or through email), it doesn’t have the specific output images to reference, so they won’t appear. When you specify in your YAML header that you want to embed resources, you’re explicitly adding the output created by your code to the HTML file so that a separate output folder is longer created and you can send your HTML file with all its output as one entity.",
-    "crumbs": [
-      "Homework",
-      "Overview"
-    ]
-  },
-  {
-    "objectID": "Homework/homework.html#assignment-due-dates",
-    "href": "Homework/homework.html#assignment-due-dates",
-    "title": "Overview",
-    "section": "Assignment Due Dates",
-    "text": "Assignment Due Dates\n\n\n\n\n\n\n\n\n#\nHomework Due\nPeer Review Due\n\n\n\n\n1\n08 October\n13 October\n\n\n2\n15 October\n20 October\n\n\n3\n22 October\n27 October\n\n\n4\n29 October\n03 November\n\n\n5\n05 November\n10 November\n\n\n6\n12 November\n17 November\n\n\n7\n19 November\n24 November\n\n\n8\n26 November\n01 December\n\n\n9\n03 December\n08 December",
-    "crumbs": [
-      "Homework",
-      "Overview"
-    ]
-  },
-  {
-    "objectID": "Homework/homework5.html",
-    "href": "Homework/homework5.html",
-    "title": "Homework 5",
-    "section": "",
-    "text": "Homework 5 has been posted on Canvas, and just as with Homework 4, you can download a Quarto document from the Homework 5 Canvas assignment that has the homework instructions/problems and spaces for you to add/modify text and code. You’ll upload that qmd file and its rendered html file as your homework submission. I’ve also posted the instructions here, and if you prefer, you can create a new Quarto document from scratch and answer these problems in it instead of the one provided on the Homework 5 Canvas assignment. In that case, you will submit that qmd file and the html file you get when you render it.\n\nModify this document to complete your homework for Homework 5.\nPost questions on Ed Discussion, discuss with each other, and get as far as you can on these problems.\nIf by the time the homework is due you have worked on a problem but did’t fully complete it, feel free to leave your work so far and write about where you’re stuck or what is going wrong or what your question is, and your peer evaluator might have some input.\nFeel free to change the format of this document in ways that you think make the output look nicer or easier to read, but keep the general structure (sections, questions, etc) so that your peer reviewer knows which part is which.",
-    "crumbs": [
-      "Homework",
-      "Homework 5"
-    ]
-  },
-  {
-    "objectID": "Homework/homework5.html#section-a-pivoting-with-the-gapminder-dataset",
-    "href": "Homework/homework5.html#section-a-pivoting-with-the-gapminder-dataset",
-    "title": "Homework 5",
-    "section": "Section A: Pivoting with the gapminder dataset",
-    "text": "Section A: Pivoting with the gapminder dataset\n\nWe saw in lecture how to pivot n_obs_by_year_cont wider:\n\n\nobs_by_year_cont_wider = n_obs_by_year_cont %&gt;%\n  pivot_wider(\n    # get the names for the new columns from the continent column\n    names_from = continent,\n    # get the values for the new columns from the n.obs column\n    values_from = n.obs\n  )\n\nWrite code to pivot obs_by_year_cont_wider longer and call the resulting table obs_by_year_cont_longer. You should find that obs_by_year_cont_longer is the same as n_obs_by_year_cont. Use kable() to display the two tables neatly in your rendered html file.\n\n# your code here\n\n\nFollowing the example from class using %in%, create a subset of the gapminder dataset that has just the data for Argentina, El Salvador, and Uruguay before 1990, and give this dataset an appropriate name. Then reformat the dataset so that each row is a country, each column is a year, and each cell of the table is the per-capita GDP. (If you would like a little extra challenge, make each cell of the table the total GDP by multiplying population and per-capita GDP.) Display the table in the rendered html file using kable().\n\n\n# your code here\n\n\nFor extra practice, work your way through some of the examples here for both pivoting longer and pivoting wider. These examples are designed to help you gradually learn about additional options you can set during pivoting and how to handle problems of varying complexity. I recommend trying the first couple examples in the pivoting longer section and the tidycensus example in the pivoting wider section. For each example you check out, I recommend first reading the section about it and the code that goes with it, then try it out yourself. For many of them you don’t have to install any new packages, but some like tidycensus will require that you install a package (such as tidycensus) first in order to access the dataset they use. Then explain (here, in text, below this problem and before Section B) one or two things you learned.",
-    "crumbs": [
-      "Homework",
-      "Homework 5"
-    ]
-  },
-  {
-    "objectID": "Homework/homework5.html#section-b-plots",
-    "href": "Homework/homework5.html#section-b-plots",
-    "title": "Homework 5",
-    "section": "Section B: Plots",
-    "text": "Section B: Plots\nIn this section, the code chunks are not created for you. Create a new code chunk below each problem and before the next to put your code for that problem. If the problem asks you questions that you should answer in words instead of code, write your answers in text below the problem rather than as comments in the code.\n\nPlot per-capita GDP versus life expectancy for Colombia as a line, points, or both. Give the plot appropriate axis labels and a title. Try out a few themes and use a theme you like. Set the color and transparency of the line/points.\nPlot per-capita GDP over time for Argentina, El Salvador, and Uruguay before 1990. Make the plot three different ways: first plot all three countries on the same plot, then use facet_wrap() to plot each country in its own subplot, then use facet_grid(). Comment on which plot settings you need for each plot, if there are any that differ between the two plots. Also comment on what happens if you omit the facet_wrap argument scales = \"free\".\nCombine pivoting and facet_grid() to make a plot with 9 subplots in a 3x3 grid, where the columns are country (Japan, China, or South Korea), the rows are variables (life expectancy, population, or per-capita GDP), and the x-axis is time. Use scales = \"free_y\" as an argument to facet_grid(). Your plot should look something like this:\n\n\nTake your time with this. Break the problem down into steps. Identify at least one step you’ll have to do, and then work backwards or forwards from there: What do I need to do in order to be able to do that step? What will I do once I have that step?\nIf you have time, here are further extensions you can try with this plot:\n\nImprove the axis labels, theme, and/or other features.\nScale the variables so that the y-axis scales are nicer or more easily readable.\nWhat could you do to get the variables to be labeld in the plot as “Population”, “LifeExpectancy”, and “GDPperCapita”? (If you want, you can go further and try to make them “Population”, “Life Expectancy”, and “GDP per Capita” and even add units.)\nTry using scales = \"free\" in facet_grid. Does it do what you expect? Try replacing facet_grid(..., scales = \"free\") with ggh4x::facet_grid2(..., scales = \"free_y\", independent = \"y\"), i.e. use the facet_grid2() function from the ggh4x package, and see how you like it.",
-    "crumbs": [
-      "Homework",
-      "Homework 5"
-    ]
-  },
-  {
-    "objectID": "Homework/homework1.html",
-    "href": "Homework/homework1.html",
-    "title": "Homework 1",
-    "section": "",
-    "text": "Instructions\nWrite up a .qmd file showing some exploratory analyses of the Swiss fertility data. Upload both the .qmd file and the .html file to Canvas. You must upload BOTH for credit.\nMix inline R calculations, R output, and plots with text describing the relationships you see. Include at least two plots and at least one instance of inline R code (e.g. functions like nrow(), mean(), sd(), cor(), median(), min()). You are encouraged to include more! You may not hard-code any numbers referenced in your text.\nYour document should be pleasant for a peer to look at, with some organization using sections or lists, and all plots labeled clearly. Use chunk options echo and output to limit the code/output you show in the .html. Discussion of specific values should be summarized in sentences in your text—not as printed code and output—and rounded so as not to be absurdly precise (e.g. round x with round(x, 2)).\n\n\nTemplate\nrendered html file • raw qmd file\n\n\nExample\nrendered html file • raw qmd file",
-    "crumbs": [
-      "Homework",
-      "Homework 1"
-    ]
-  },
-  {
-    "objectID": "Homework/homework2.html",
-    "href": "Homework/homework2.html",
-    "title": "Homework 2",
-    "section": "",
-    "text": "Instructions\nCreate a new Quarto document (.qmd file) for this new homework; always use a new Quarto document for each homework.\nIn your Homework 2 Quarto document, explore the gapminder dataset from the gapminder package. Later in class we will also read this dataset in from a file, but for this homework we will access the dataset from a package. If you have not used this package before on your computer, you’ll need to install it first and then load it with library() as we saw in class. Otherwise, you can just use library(gapminder) to load the package and data(gapminder) to load the dataset.\nUse your Quarto document to report on a brief exploration of the dataset. This might read like the dataset section of a paper. It doesn’t have to be longer than a page or two, and it does not have to be up to the standard of what you would expect in a paper; the purpose is to practice R, RStudio, and Quarto to do things that eventually you would find practically useful. Remember, the homework is just meant to be a chance to practice stuff from class.\nDo at least the following:\n\nStart by doing some exploratory analysis of the dataset in the Console, some/much of which will not make it into your final document. In your Quarto document, only include code that you will use for the final document you submit. For example, don’t include commands like ?gapminder, and also don’t include code like str(gapminder) or mean(gapminder$year) unless you use them in tables, figures, and/or inline code.\nUse text to summarize what the dataset is, where it comes from, what variables it includes and what they mean.\nComment on the range or distribution of one of the dataset variables. You could show a histogram and report some summary statistics of the variable in the text of the document using inline R code (when we use r code to print values directly into the text of the document).\nInclude at least one plot of one variable versus another and comment briefly on what you notice in the plot.\nMake a table of some subset of rows and columns of the dataset and comment briefly on what you notice.\nComment your code using some comments (lines that start with #), even if the code doesn’t show up in the final html document. You don’t have to comment every line, but comment at least some lines that you think should be explained to someone who is trying to understand your code. For example, suppose you sent your Quarto document to a colleague because they wanted to reproduce your analysis and play with the dataset themselves. They might find it useful to see a comment that explains what kable() does and what kind of table you are trying to make there.\nMost of all, just have some fun exploring this dataset and practicing what we did in class!\n\nYour document should be pleasant for a peer to look at, with some organization using section headings. Some attempt should be made to label and format plots and tables. Use chunk options to limit the code and raw output you show in the html file when you render your Quarto document. Don’t include a figure or table without commenting on it in the text with at least a sentence. Round any numbers you report to a reasonable precision.\nUpload to Canvas both the .qmd file and the .html file it generates when you render.",
-    "crumbs": [
-      "Homework",
-      "Homework 2"
-    ]
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "CSSS 508: Intro to R for Social Scientists",
-    "section": "",
-    "text": "Jess Kunke (she/they)\n\n\n\nTuesdays 4:30-6:20pm\nThomson Hall, Room 125\n\n\n\nAs of Oct 28th:\n\nMon 4-5pm (Zoom and Padelford B-221)\nFri 2-3pm (Zoom only)\nSee Canvas for Zoom links\n\nFor further course details, please see the syllabus.\nThank you Vic Sass for the fantastic website design!"
-  },
-  {
-    "objectID": "index.html#welcome",
-    "href": "index.html#welcome",
-    "title": "CSSS 508: Intro to R for Social Scientists",
-    "section": "",
-    "text": "Jess Kunke (she/they)\n\n\n\nTuesdays 4:30-6:20pm\nThomson Hall, Room 125\n\n\n\nAs of Oct 28th:\n\nMon 4-5pm (Zoom and Padelford B-221)\nFri 2-3pm (Zoom only)\nSee Canvas for Zoom links\n\nFor further course details, please see the syllabus.\nThank you Vic Sass for the fantastic website design!"
-  },
-  {
-    "objectID": "Homework/homework3.html",
-    "href": "Homework/homework3.html",
-    "title": "Homework 3",
-    "section": "",
-    "text": "Instructions\nCreate a new Quarto document (.qmd file) for this new homework; always use a new Quarto document for each homework.\nIn your Homework 3 Quarto document, continue to explore the gapminder dataset from the gapminder package, following the instructions below. Your document should be pleasant for a peer to look at, with some organization using section headings. Use chunk options to control which code and raw output you show in the html file when you render your Quarto document. When you’ve completed the assignment, upload to Canvas both the .qmd file and the .html file it generates when you render the .qmd file.\nDetailed instructions for HW3:\n\nOrganize your report in a few sections with appropriately named and Markdown-formatted section headings.\nUse an Introduction or Data section at the start of the report to summarize in sentences what the dataset is, where it comes from, what variables it includes and what they mean. Try to add one piece of information to what you wrote in your HW2.\nMake a table of some subset of rows and columns of the dataset (different from the one you made in HW2) two different ways, one using base R and one using tidyverse. In other words, you should have two chunks of code making the same table, and both chunks of code and both tables should show up in your rendered html file.\nThen use Markdown text (not just code comments) to summarize your approach to writing these two different chunks of code. Use code-style text formatting like this to make code references in your text look like code, just as in the lecture notes (e.g. when I write about mutate() and gapminder).\nCompute the number of Asian countries in the dataset two different ways, one using base R and one using tidyverse. Use chunk options to make sure your code for both approaches is displayed in your rendered html file, not hidden, and insert one of the two results (they should be the same as each other) into a text sentence using inline code.\nUsing either base R or tidyverse, compute the number of observations with at least 29 million people in 1952, and report your answer using inline code. Then pose a similar problem for the other student to try, and report the code and answer in your html file with a brief explanation of your solution!\nState one thing you didn’t do to your satisfaction in HW2 and how you have improved upon it in HW3. For instance, maybe you corrected some aspect of a table or of the Quarto html formatting in HW3 that wasn’t working in your HW2 submission.\nMost of all, have some fun practicing what we did in class and any other R/RStudio/Quarto features you might be discovering!",
-    "crumbs": [
-      "Homework",
-      "Homework 3"
-    ]
-  },
-  {
-    "objectID": "Homework/homework4.html",
-    "href": "Homework/homework4.html",
-    "title": "Homework 4",
-    "section": "",
-    "text": "Instructions\nHomework 4 has been posted on Canvas, and the instructions are posted there. Rather than reading instructions here for creating your own Quarto document, from the Canvas assignment you can download a Quarto file that has the homework instructions/problems and spaces for you to add/modify text and code. You’ll upload that qmd file and its rendered html file as your homework submission.\nHappy coding! I look forward to hearing how this homework goes for you.",
-    "crumbs": [
-      "Homework",
-      "Homework 4"
-    ]
-  },
-  {
-    "objectID": "Homework/homework6.html",
-    "href": "Homework/homework6.html",
-    "title": "Homework 6",
-    "section": "",
-    "text": "Homework 6 has been posted on Canvas; you can download the qmd file there. I’ve also posted the instructions here.\n\nI have set eval: false because the code in this document is not yet complete (the assignment is to fill it in). In order for you to be able to render the template even before you add any code, I either had to set eval: false in the YAML header or within certain code chunks. You can change the evaluation settings however you like for your own workflow. If you have trouble, please post on Ed Discussion or come to office hours; setting these options and rendering Quarto documents is something we’re still practicing, so this is an extra chance to practice with it.\nFor problems with coding, if a code chunk is not provided, insert one or more code chunks below that problem and before the next problem to include your code.\n\nTip: name your code chunks as we saw in class and as you can see below. This will help you identify where an error occurred in the event that rendering your document doesn’t complete without errors.\n\nModify this document to complete your homework for Homework 6.\nPost questions on Ed Discussion, discuss with each other, and get as far as you can on these problems.\nIf by the time the homework is due you have worked on a problem but did’t fully complete it, feel free to leave your work so far and write about where you’re stuck or what is going wrong or what your question is, and your peer evaluator might have some input.\nFeel free to change the format of this document in ways that you think make the output look nicer or easier to read, but keep the general structure (sections, questions, etc) so that your peer reviewer knows which part is which.",
-    "crumbs": [
-      "Homework",
-      "Homework 6"
-    ]
-  },
-  {
-    "objectID": "Homework/homework6.html#section-a-object-types",
-    "href": "Homework/homework6.html#section-a-object-types",
-    "title": "Homework 6",
-    "section": "Section A: Object types",
-    "text": "Section A: Object types\n\nProblem 1: Vectors\nHere are examples of three different ways we have seen to construct vectors:\n\nvector_c = c(\"bananas\", \"apples\", \"grapes\", \"kumquats\")\nvector_colon = 11:22\nvector_seq = seq(50, 100, 20)\n\nLet’s use these to understand a few things about making and using vectors.\nPart a. What is the data type of each of these three vectors?\nyour answer\nPart b. How many elements are in each vector?\nyour answer\nPart c. What do “c” and “seq” stand for? (You can find these in the lecture notes, in the R help documentation with ?, or online.)\nyour answer\nPart d. Write out what the elements of vector_seq are. In other words, write out each value in that vector, separated by commas. Does it include 50, 100, and/or 20? Why/why not?\nyour answer\n\n\nProblem 2: Making a list\nLet’s make a small list for practice. First, create a vector called numbers of the numbers 1, 2, 3, …, 100. Create a character-type object called my_favorite_food that equals a single value, the name of (one of) your favorite foods. Then make a list called example_list that has three named elements: these two items, as well as the swiss dataset.\n\n\nProblem 3: Using a list\nI’ve written comments describing code I’d like you to write. Please fill in the code. I completed one as an example. For each of these lines of code, make sure to use the list.\n\n# call/access the favorite food from your list\nexample_list$my_favorite_food\n\n# call/access the 17th value of numbers from your list\n\n# call/access the swiss dataset from your list\n\n# call/access the education value for Delemont in the swiss dataset from your list",
-    "crumbs": [
-      "Homework",
-      "Homework 6"
-    ]
-  },
-  {
-    "objectID": "Homework/homework6.html#section-b-factors",
-    "href": "Homework/homework6.html#section-b-factors",
-    "title": "Homework 6",
-    "section": "Section B: Factors",
-    "text": "Section B: Factors\nThis section doesn’t require new code or answers; instead, please read this section and run the code as you read, looking at the results yourself. The goal here is to get you started with factors, and we’ll continue with this in class next time. This section is drawn partly from R for Data Science.\nConsider a vector of months:\n\nx = c(\"Dec\", \"Apr\", \"Jan\", \"Mar\")\n\nHandling this as character-type data has at least two disadvantages: (1) you might have typos or multiple formats like “January” or “01” or “Jam” instead of “Jan”, even though there should only be 12 possible values since there are 12 months, and (2) sorting the vector sorts it alphabetically, not in the order of months. For instance, try this out:\n\nsort(x)\n\nWe can address these problems by making the variable a factor. First, we create a list of the levels (possible values) in order:\n\nmonth_levels = c(\n  \"Jan\", \"Feb\", \"Mar\", \"Apr\", \"May\", \"Jun\", \n  \"Jul\", \"Aug\", \"Sep\", \"Oct\", \"Nov\", \"Dec\"\n)\n\nThen we make our variable a factor:\n\nx = factor(x, levels = month_levels)\n\nTake a look at the vector now by calling it and trying to sort it:\n\n# call x\nx\n# sort x\nsort(x)\n\nIf you have typos or different formats, they’ll be converted to NA, in which case you can look back at the original data to see what those values were and handle them accordingly. For example:\n\n# here the last two values should be counted as the same month\nx_oops = c(\"Dec\", \"Apr\", \"January\", \"Jan\")\nx_oops_factor = factor(x_oops, levels = month_levels)\n# but they're not\nx_oops_factor\n# which value didn't match our 12 values?\nx_oops[is.na(x_oops_factor)]\n# ahh, that should be Jan, so let's change it using logical indices\n# - this code says, \"set every element of x_oops whose value is 'January' to 'Jan'\"\nx_oops[x_oops == \"January\"] = \"Jan\"\n\nWe’ll keep working with this when we cover data cleaning!",
-    "crumbs": [
-      "Homework",
-      "Homework 6"
-    ]
-  },
-  {
-    "objectID": "Homework/homework6.html#section-c-plots",
-    "href": "Homework/homework6.html#section-c-plots",
-    "title": "Homework 6",
-    "section": "Section C: Plots",
-    "text": "Section C: Plots\nBelow is the final plot code we ended up with in class. Make the following changes, listed below. Show the code and plot for each change, one at a time, and state what change you’re making in that step. (I recommend having a separate code chunk for each change.) The first three changes listed are things we saw how to do either in Lecture 5 or 6. For the last three changes, you probably need to google how to do them. See the Lecture 6 recording and past lecture notes for tips on how to do this effectively. Feel free to trade tips on Ed Discussion!\n\nMake the continent average line a little transparent so that you can see the other lines through it.\nRename the legend “Continent”.\nPut all the continents in a single row instead of having the current two-row plot arrangement. (You might or might not decide to make other adjustments to make the plot look nice in a single row; use your discretion and comment on any other changes you make.)\nChange the way you set the legend position so that you address the warning about numerical settings with legend.position being deprecated.\nChange the font size.\nSet the panel.spacing using a different unit than lines.\n\n\nggplot(data = gapminder, \n       aes(x = year, y = lifeExp, group = country, color = continent)) +\n  geom_line() +\n  geom_line(stat = \"smooth\", \n            aes(group = continent),\n            color = \"black\", linewidth = 1) +\n  facet_wrap(~ continent, nrow = 2) +\n  labs(x = \"\", \n       y = \"Life Expectancy (Years)\",\n       title = \"Life Expectancy, 1952-2007\", \n       subtitle = \"By continent and country\") +\n  scale_x_continuous(limits = c(1950, 2010), breaks = seq(1950, 2010, 20)) +\n  scale_color_manual(\n    name = \"Which continent are\\nwe looking at?\", # \\n adds a line break \n    values = c(\"Africa\" = \"#4e79a7\", \"Americas\" = \"#f28e2c\", \n               \"Asia\" = \"#e15759\", \"Europe\" = \"#76b7b2\", \"Oceania\" = \"#59a14f\")) +\n  theme_minimal() +\n  theme(panel.spacing = unit(2, \"lines\"),\n        legend.position = c(0.8, 0.2)) # or \"bottom\" or many other options",
-    "crumbs": [
-      "Homework",
-      "Homework 6"
-    ]
-  },
-  {
-    "objectID": "Homework/homework4_followup.html",
-    "href": "Homework/homework4_followup.html",
-    "title": "HW4 follow-up: When does order matter?",
-    "section": "",
-    "text": "Let’s go over some findings from Homework 4, Part C. Here were the three cases we considered. In the first case, we considered whether order mattered when the two operations were (1) selecting the three columns/variables country, year, and pop, and (2) filtering to keep only the rows with pop less than 20 million.\n\nresult1 = gapminder %&gt;%\n  select(country, year, pop) %&gt;%\n  filter(pop &lt; 20000000)\n\nresult2 = gapminder %&gt;%\n  filter(pop &lt; 20000000) %&gt;%\n  select(country, year, pop)\n\nIn the second case, we considered whether order mattered when the two operations were (1) mutating the pop column to divide by a million, and (2) filtering to keep only the rows with pop less than 20 million.\n\nresult3 = gapminder %&gt;%\n  mutate(pop = pop/10^6) %&gt;%\n  filter(pop &lt; 20000000)\n\nresult4 = gapminder %&gt;%\n  filter(pop &lt; 20000000) %&gt;%\n  mutate(pop = pop/10^6)\n\nIn the third case, we considered whether order mattered when the two operations were (1) creating a new column called pop_millions which equals the pop column divided by a million, and (2) filtering to keep only the rows with pop less than 20 million.\n\nresult5 = gapminder %&gt;%\n  mutate(pop_millions = pop/10^6) %&gt;%\n  filter(pop &lt; 20000000)\n\nresult6 = gapminder %&gt;%\n  filter(pop &lt; 20000000) %&gt;%\n  mutate(pop_millions = pop/10^6)\n\nSo in which of these cases does order matter, and why?\nFirst let’s settle the answer: order matters in the second case only, not in the first and third cases. We can tell by running the code and checking the results, which I assume you did in HW4; it was not meant to be strictly a thought exercise. If you didn’t run the code in HW4, run it now and check out the results with me. If you run the code, you will notice that the number of rows is not the same for results 3 and 4, so the results cannot be the same. For the other two cases, we can toggle back and forth to see that they look the same, or we can be sure by using code to check whether the results are the same:\n\n# we can add up how many elements are different between results 1 and 2, or between 5 and 6\nsum(result1 != result2)\n\n[1] 0\n\nsum(result5 != result6)\n\n[1] 0\n\n# or we can use the identical function which checks if two objects are identical\nidentical(result1, result2)\n\n[1] TRUE\n\nidentical(result5, result6)\n\n[1] TRUE\n\n\nNow let’s think about why order matters for only the second case.\nIn the first case, one operation selects rows based on the value of the pop column, while the other operation selects three columns. These operations don’t affect each other. The final result in either case is going to be the subset of the data that have a population less than 20 million, and it’ll show only the three columns we selected for.\nIn the third case, again, one operation uses the pop column values to define a new column called pop_millions, and the other operation filters the dataset to keep just the rows in which the pop column meets some condition. Therefore, these two operations do not affect each other. If you do the filter operation first, you will only create the pop_millions column for the rows you’ll keep in the end. If you do the mutate operation first, you will create the pop_millions column for all the rows and then just keep the rows you’re interested in.\nHowever, in the second case, one operation rescales the pop column by dividing it by million, and the other operation filters for values that are less than 20,000,000. If you rescale first, a value of 20,000,000 in the pop column means a value of 20 trillion (20 million millions), not 20 million. No country has trillions of people, so this filtering operation won’t do anything. If instead you filter first, you will subset the data to countries with populations of fewer than 20 million people, and then you rescale the population.\nIn the second case, probably the coder meant to end up with a dataset that contained all countries with fewer than 20 million people, so they probably want result4, not result3. We can modify the code for result3 to get the same answer, though, by making one change to the filter function: what change? (Try it out!)",
-    "crumbs": [
-      "Homework",
-      "HW4 follow-up: When does order matter?"
-    ]
-  },
-  {
-    "objectID": "Homework/CSSS508_HW1_Example.html",
-    "href": "Homework/CSSS508_HW1_Example.html",
-    "title": "CSSS508 Homework 1 Example",
-    "section": "",
-    "text": "I’m interested in exploring a dataset from base R called iris. From its documentation I see that it is data about 50 flowers from each of 3 species of iris and their respective measurements of sepal length, sepal width, petal length, and petal width.\nI first want to take a look at a preview of the dataset by making a nice table.\n\n\n\n\n\n\n\n\n\nSepal.Length\nSepal.Width\nPetal.Length\nPetal.Width\nSpecies\n\n\n\n\n1\n5.1\n3.5\n1.4\n0.2\nsetosa\n\n\n2\n4.9\n3.0\n1.4\n0.2\nsetosa\n\n\n3\n4.7\n3.2\n1.3\n0.2\nsetosa\n\n\n4\n4.6\n3.1\n1.5\n0.2\nsetosa\n\n\n5\n5.0\n3.6\n1.4\n0.2\nsetosa\n\n\n6..145\n\n\n\n\n\n\n\n146\n6.7\n3.0\n5.2\n2.3\nvirginica\n\n\n147\n6.3\n2.5\n5.0\n1.9\nvirginica\n\n\n148\n6.5\n3.0\n5.2\n2.0\nvirginica\n\n\n149\n6.2\n3.4\n5.4\n2.3\nvirginica\n\n\n150\n5.9\n3.0\n5.1\n1.8\nvirginica\n\n\n\n\n\n\n\nThe mean petal length is 3.76 but its median petal length is 4.35. It’s range is 5.9 which additionally suggests a certain degree of spread.\nIt might be useful to look at the distribution to gain a better sense of the variation of this variable.\n\n\n\n\n\n\n\n\n\nThere seems to be a cluster of much smaller petals and then another cluster of average to bigger petals. I wonder how this varies by species…?\n\n\n\n\n\n\n\n\n\nWe can see from this plot that the overall mean and median of petal length is quite misleading! Only the verisicolor species of iris is close to those values while setosa is much mush smaller and virginica is a bit bigger.\nIs there a similar thing happening for sepal length and width? Let’s look at some basic descriptives of the dataset.\n\n\n\n\n\n\n\n\nSepal.Length\nSepal.Width\nPetal.Length\nPetal.Width\nSpecies\n\n\n\n\nMin. :4.300\nMin. :2.000\nMin. :1.000\nMin. :0.100\nsetosa :50\n\n\n1st Qu.:5.100\n1st Qu.:2.800\n1st Qu.:1.600\n1st Qu.:0.300\nversicolor:50\n\n\nMedian :5.800\nMedian :3.000\nMedian :4.350\nMedian :1.300\nvirginica :50\n\n\nMean :5.843\nMean :3.057\nMean :3.758\nMean :1.199\nNA\n\n\n3rd Qu.:6.400\n3rd Qu.:3.300\n3rd Qu.:5.100\n3rd Qu.:1.800\nNA\n\n\nMax. :7.900\nMax. :4.400\nMax. :6.900\nMax. :2.500\nNA\n\n\n\n\n\n\n\nIt’s interesting to note with the summary function that for numerical data it’ll calculate the classic 5 statistics used to construct a boxplot plus the mean but for a categorical variable like iris$Species it returns the frequency of each value of the variable.\nThe distribution of sepal length looks wider than sepal width, similar to how it was for those measurements of the petals. Let’s see how sepal length and width relate to one another graphically.\n\n\n\n\n\n\n\n\n\nThere are still clusters by each species type but for verisicolor and virginica there’s much more overlap. Overall, there’s tighter clustering by species for the petal length and width than there is for the sepal length and width."
-  },
-  {
-    "objectID": "Lectures/lec5_data_viz.html",
-    "href": "Lectures/lec5_data_viz.html",
-    "title": "Lecture 5: Data visualization with tidyverse!",
-    "section": "",
-    "text": "ggplot gives you lots of flexibility in making beautiful plots! Illustration by Allison Horst.",
-    "crumbs": [
-      "Lectures",
-      "Lecture 5: Data visualization"
-    ]
-  },
-  {
-    "objectID": "Lectures/lec5_data_viz.html#getting-started-with-ggplot",
-    "href": "Lectures/lec5_data_viz.html#getting-started-with-ggplot",
-    "title": "Lecture 5: Data visualization with tidyverse!",
-    "section": "Getting started with ggplot()",
-    "text": "Getting started with ggplot()\nLet’s make a plot of population over time for the country of Japan.\nFirst, review: how do you get the subset of the gapminder dataset that consists of just the Japan data, and store it in R as an object called japan_data?\nCool, now let’s plot population versus time with ggplot():\n\nggplot(japan_data, aes(x = year, y = pop))\n\n\n\n\n\n\n\n\nWeird, what do you notice? ggplot() is funny in that the first line which actually has the ggplot function only declares the initial plot area; it doesn’t make the full plot. To do that, we add a + at the end of the ggplot() line and add additional lines of code. For example, “geoms” (geometry layers) add the actual lines, points, bars, etc.:\n\nggplot(japan_data, aes(x = year, y = pop)) +\n  geom_line()\n\n\n\n\n\n\n\n\nWe can combine multiple layers too as long as they make sense for the data structure:\n\nggplot(japan_data, aes(x = year, y = pop)) +\n  geom_line() +\n  geom_point()\n\n\n\n\n\n\n\n\nWe can make things a lot prettier and more customized too. Here are just a few examples of things we can do:\n\nggplot(japan_data, aes(x = year, y = pop/1e6)) +\n  geom_line(color = \"maroon\", alpha = 0.7) +\n  geom_point(color = \"maroon\", alpha = 0.7) +\n  xlab(\"Year\") + ylab(\"Population (millions of people)\") +\n  ggtitle(\"Japan's population over time\") +\n  theme_bw()\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nYour turn\n\n\n\nStart with a simple ggplot plot of population versus life expectancy for the Japan data; by simple, I mean just do the bare minimum to make the plot without adding additional features. Then let’s add/change some things:\n\nRename the axis labels so that they look more polished.\nAdd a title to your plot.\nChange the theme.\nChange the color of the line.\nWhat does changing the value of alpha to 0.1 or 1 do?",
-    "crumbs": [
-      "Lectures",
-      "Lecture 5: Data visualization"
-    ]
-  },
-  {
-    "objectID": "Lectures/lec5_data_viz.html#plotting-multiple-countries",
-    "href": "Lectures/lec5_data_viz.html#plotting-multiple-countries",
-    "title": "Lecture 5: Data visualization with tidyverse!",
-    "section": "Plotting multiple countries",
-    "text": "Plotting multiple countries\nWhat if we want to compare several countries on the same plot? We might try the following code, but it looks bonkers. Try it and see:\n\nmulti_country_data = filter(gapminder, country %in% c(\"Japan\", \"Nigeria\", \"Argentina\", \"New Zealand\"))\n\nggplot(multi_country_data, aes(x = year, y = pop)) +\n  geom_line()\n\n\n\n\n\n\n\n\nWhy does the plot look like that, and how can we fix it? As part of troubleshooting, we might check what a scatterplot looks like (without connecting the lines):\n\nggplot(multi_country_data, aes(x = year, y = pop)) +\n  geom_point()\n\n\n\n\n\n\n\n\nNotice that looks reasonable. So what do you think is the issue with the line plot?\n\n\n\n\n\n\nExpand this for a solution\n\n\n\n\n\nThe issue is that the multi_country_data dataset has both multiple countries and multiple years, and currently ggplot does not know to group the time series data by country when it is deciding how to connect the points with lines. It is treating it as data to plot as a single line, when we would like a separate line for each country.\nTo fix this, we will specify a grouping variable using the group argument to the aes() function:\n\nmulti_country_data = filter(gapminder, country %in% c(\"Japan\", \"Nigeria\", \"Argentina\", \"New Zealand\"))\n\nggplot(multi_country_data, aes(x = year, y = pop, group = country)) +\n  geom_line()\n\n\n\n\n\n\n\n\nWe probably also want to distinguish and label the lines somehow by what country they represent:\n\nmulti_country_data = filter(gapminder, country %in% c(\"Japan\", \"Nigeria\", \"Argentina\", \"New Zealand\"))\n\nggplot(multi_country_data, aes(x = year, y = pop, group = country, color = country)) +\n  geom_line()",
-    "crumbs": [
-      "Lectures",
-      "Lecture 5: Data visualization"
-    ]
-  },
-  {
-    "objectID": "Lectures/lec5_data_viz.html#facets-subplots",
-    "href": "Lectures/lec5_data_viz.html#facets-subplots",
-    "title": "Lecture 5: Data visualization with tidyverse!",
-    "section": "Facets (subplots)",
-    "text": "Facets (subplots)\nWhat if we want to plot each country in a different subplot so that we can see each curve on its own scale? We can use facet_wrap():\n\nggplot(multi_country_data, aes(x = year, y = pop, group = country)) +\n  geom_line() +\n  facet_wrap(~ country, scales = \"free\")\n\n\n\n\n\n\n\n\nIn fact, we no longer need the group = country argument because we’re going to put each country in its own plot/panel anyway:\n\nggplot(multi_country_data, aes(x = year, y = pop)) +\n  geom_line() +\n  facet_wrap(~ country, scales = \"free\")\n\n\n\n\n\n\n\n\nNote that since they all share an x-axis (years), it might make sense to plot them vertically stacked so that the years line up. For this, we can use facet_grid() which allows us to arrange the plots specifically in a row or a column:\n\nggplot(multi_country_data, aes(x = year, y = pop, group = country)) +\n  geom_line() +\n  # make countries the rows\n  facet_grid(country ~ ., scales = \"free\")",
-    "crumbs": [
-      "Lectures",
-      "Lecture 5: Data visualization"
-    ]
-  },
-  {
-    "objectID": "Lectures/lec5_data_viz.html#pivoting-for-plots",
-    "href": "Lectures/lec5_data_viz.html#pivoting-for-plots",
-    "title": "Lecture 5: Data visualization with tidyverse!",
-    "section": "Pivoting for plots",
-    "text": "Pivoting for plots\nWhat if we want to plot one country over time but we want to plot three different variables for it: lifeExp, pop, and gdpPercap? We’d basically like to group by variable, but to do that with ggplot, it has to be a column of the dataset. As in we need a column whose values are “lifeExp”, “pop”, and “gdpPercap” (or some other names for these three quantities) and another column whose value is the value of that variable.\nTo see this, start thinking how you would construct this plot. You might want the first line to look something like this (this is pseudocode):\n\n# ggplot(japan_data, aes(x = year, y = value of one of the variables, group = variable))\n\n# or if they're on separate panels/subplots:\n\n# ggplot(japan_data, aes(x = year, y = value of one of the variables)) + facet_wrap(...on variable)\n\nTo do this… yes, we will pivot the data longer!\n\njapan_wide = japan_data %&gt;%\n  pivot_longer(\n    cols = lifeExp:gdpPercap,\n    names_to = \"variable\",\n    values_to = \"value\"\n  )\n\nggplot(japan_wide, aes(x = year, y = value)) +\n  geom_line() +\n  facet_wrap(~ variable, scales = \"free\")\n\n\n\n\n\n\n\n\nAgain, we can use facet_grid() to stack the plots so they align by year:\n\nggplot(japan_wide, aes(x = year, y = value)) +\n  geom_line() +\n  facet_grid(variable ~ ., scales = \"free\")\n\n\n\n\n\n\n\n\nTo see what else you can do with ggplot, check out further documentation online such as the ggplot gallery and the ggplot vignettes or “articles”. Happy exploring!",
-    "crumbs": [
-      "Lectures",
-      "Lecture 5: Data visualization"
-    ]
-  },
-  {
-    "objectID": "Lectures/lec5_data_viz.html#naming-code-chunks",
-    "href": "Lectures/lec5_data_viz.html#naming-code-chunks",
-    "title": "Lecture 5: Data visualization with tidyverse!",
-    "section": "Naming code chunks",
-    "text": "Naming code chunks\nIf I render the following Quarto document:\n\nI get the following error message:\n\nIf I take the same Quarto document and just name my code chunks like so:\n\nThen I get somewhat more helpful output about the progress before the error:\n\n\n\n\n\n\n\nYour turn\n\n\n\nMake a Quarto document that looks like the second one above, with the named chunks.\nThen identify and fix the error(s) to get it rendering successfully.",
-    "crumbs": [
-      "Lectures",
-      "Lecture 5: Data visualization"
-    ]
-  },
-  {
-    "objectID": "Lectures/lec5_data_viz.html#identifying-where-you-want-to-edit-the-code",
-    "href": "Lectures/lec5_data_viz.html#identifying-where-you-want-to-edit-the-code",
-    "title": "Lecture 5: Data visualization with tidyverse!",
-    "section": "Identifying where you want to edit the code",
-    "text": "Identifying where you want to edit the code\nOnce you identify what line is triggering the error message, then you can work on figuring out what caused the error. Remember: this is not necessarily the code you want to edit. The part of the code you modify to fix the issue could be in an earlier line of code or an earlier code chunk.\n\n\n\n\n\n\nYour turn\n\n\n\nIn fact let’s practice that right now! In the qmd file below,\n\nWhich line is generating the error message? (To which line is the error message referring?)\nWhere would you edit the code to fix the error?",
-    "crumbs": [
-      "Lectures",
-      "Lecture 5: Data visualization"
-    ]
-  },
-  {
-    "objectID": "Lectures/lec5_data_viz.html#how-to-locate-an-error-when-youve-rendered-too-much-at-once",
-    "href": "Lectures/lec5_data_viz.html#how-to-locate-an-error-when-youve-rendered-too-much-at-once",
-    "title": "Lecture 5: Data visualization with tidyverse!",
-    "section": "How to locate an error when you’ve rendered too much at once",
-    "text": "How to locate an error when you’ve rendered too much at once\nRule number 1: render frequently! But of course sometimes you forget, or you have other reasons that you add a lot of code or make a lot of code before rendering. Let’s talk about how to troubleshoot in that case if you haven’t named your code chunks: sequentially cut out code and try rendering again.\n\nCut (as in cut and paste, not as in delete) everything after the first code chunk.\nTry to render the document again.\n\nIf it doesn’t render successfully, you know that at least the first issue is in the small document you just tried to render: the YAML header, some Markdown text/formatting, or the first code chunk.\nIf it renders without errors, then the issue must be happening somewhere in the part that you cut. Paste it back, and now repeat step 1 but cut everything after the second code chunk. And so on.",
-    "crumbs": [
-      "Lectures",
-      "Lecture 5: Data visualization"
+      "Lecture 3: Data manipulation with tidyverse"
     ]
   },
   {
@@ -679,37 +234,510 @@
     ]
   },
   {
-    "objectID": "Lectures/lec3_data_manip_tidyverse.html",
-    "href": "Lectures/lec3_data_manip_tidyverse.html",
-    "title": "Lecture 3: Tidyverse!",
+    "objectID": "Lectures/lec5_data_viz.html",
+    "href": "Lectures/lec5_data_viz.html",
+    "title": "Lecture 5: Data visualization with tidyverse!",
     "section": "",
-    "text": "How I feel about R, over time. Illustration credit: Allison Horst.",
+    "text": "ggplot gives you lots of flexibility in making beautiful plots! Illustration by Allison Horst.",
     "crumbs": [
       "Lectures",
-      "Lecture 3: Data manipulation with tidyverse"
+      "Lecture 5: Data visualization"
     ]
   },
   {
-    "objectID": "Lectures/lec3_data_manip_tidyverse.html#summary-statistics",
-    "href": "Lectures/lec3_data_manip_tidyverse.html#summary-statistics",
-    "title": "Lecture 3: Tidyverse!",
-    "section": "Summary statistics",
-    "text": "Summary statistics\nHow many data points do we have for each continent? Here’s how we could use tidyverse to find out:\n\ngapminder %&gt;%\n  group_by(continent) %&gt;%\n  summarize(n.obs = n())\n\nWhat about other summary statistics, like the minimum, average, and maximum country population on each continent?\n\ngapminder %&gt;%\n  group_by(continent) %&gt;%\n  summarize(\n    min_pop = min(pop),\n    mean_pop = mean(pop),\n    max_pop = max(pop)\n  )\n\nAs always, if you want to store the results as an object in R so you can do other stuff with it later, you can do that by assignment:\n\ncontinent_stats = gapminder %&gt;%\n  group_by(continent) %&gt;%\n  summarize(\n    min_pop = min(pop),\n    mean_pop = mean(pop),\n    max_pop = max(pop)\n  )\n\nWe can also group by more than one thing if we want to define groups by more than one variable. For example, how many data points do we have for each continent and each year?\n\nn_obs_by_cont_year &lt;- gapminder %&gt;%\n  group_by(continent, year) %&gt;%\n  summarize(n.obs = n())\n\nWhat happens if we switch the order of the grouping variables?\n\nn_obs_by_year_cont &lt;- gapminder %&gt;%\n  group_by(year, continent) %&gt;%\n  summarize(n.obs = n())\n\nNotice that the table structure is not ideal; we’ll address this when we cover pivoting! We’ll also find that useful for plots.\n\n\n\n\n\n\nYour Turn\n\n\n\n\nLet’s return to our earlier question: Does each country has data for the same years, or are the years represented in the data different for some countries? Use tidyverse to figure this out.\nFilter the gapminder dataset for only the data on Italy, then compute the average per-capita GDP for each year in that Italy dataset.\n\n\n\n\n\n\n\n\n\nSolutions\n\n\n\n\n\nThere may be multiple approaches, but here are some:\n\n\n\n\ngapminder %&gt;%\n  group_by(country, year) %&gt;%\n  summarize(nobs = n())\n\n\n\n\n\ngapminder %&gt;%\n  filter(country == \"Italy\") %&gt;%\n  group_by(year) %&gt;%\n  summarize(avg_gdp = mean(gdpPercap))",
+    "objectID": "Lectures/lec5_data_viz.html#getting-started-with-ggplot",
+    "href": "Lectures/lec5_data_viz.html#getting-started-with-ggplot",
+    "title": "Lecture 5: Data visualization with tidyverse!",
+    "section": "Getting started with ggplot()",
+    "text": "Getting started with ggplot()\nLet’s make a plot of population over time for the country of Japan.\nFirst, review: how do you get the subset of the gapminder dataset that consists of just the Japan data, and store it in R as an object called japan_data?\nCool, now let’s plot population versus time with ggplot():\n\nggplot(japan_data, aes(x = year, y = pop))\n\n\n\n\n\n\n\n\nWeird, what do you notice? ggplot() is funny in that the first line which actually has the ggplot function only declares the initial plot area; it doesn’t make the full plot. To do that, we add a + at the end of the ggplot() line and add additional lines of code. For example, “geoms” (geometry layers) add the actual lines, points, bars, etc.:\n\nggplot(japan_data, aes(x = year, y = pop)) +\n  geom_line()\n\n\n\n\n\n\n\n\nWe can combine multiple layers too as long as they make sense for the data structure:\n\nggplot(japan_data, aes(x = year, y = pop)) +\n  geom_line() +\n  geom_point()\n\n\n\n\n\n\n\n\nWe can make things a lot prettier and more customized too. Here are just a few examples of things we can do:\n\nggplot(japan_data, aes(x = year, y = pop/1e6)) +\n  geom_line(color = \"maroon\", alpha = 0.7) +\n  geom_point(color = \"maroon\", alpha = 0.7) +\n  xlab(\"Year\") + ylab(\"Population (millions of people)\") +\n  ggtitle(\"Japan's population over time\") +\n  theme_bw()\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nYour turn\n\n\n\nStart with a simple ggplot plot of population versus life expectancy for the Japan data; by simple, I mean just do the bare minimum to make the plot without adding additional features. Then let’s add/change some things:\n\nRename the axis labels so that they look more polished.\nAdd a title to your plot.\nChange the theme.\nChange the color of the line.\nWhat does changing the value of alpha to 0.1 or 1 do?",
     "crumbs": [
       "Lectures",
-      "Lecture 3: Data manipulation with tidyverse"
+      "Lecture 5: Data visualization"
     ]
   },
   {
-    "objectID": "Lectures/lec3_data_manip_tidyverse.html#footnotes",
-    "href": "Lectures/lec3_data_manip_tidyverse.html#footnotes",
-    "title": "Lecture 3: Tidyverse!",
-    "section": "Footnotes",
-    "text": "Footnotes\n\n\nYou’ll also usually need to reinstall the packages you use with install.packages() if you update R.↩︎",
+    "objectID": "Lectures/lec5_data_viz.html#plotting-multiple-countries",
+    "href": "Lectures/lec5_data_viz.html#plotting-multiple-countries",
+    "title": "Lecture 5: Data visualization with tidyverse!",
+    "section": "Plotting multiple countries",
+    "text": "Plotting multiple countries\nWhat if we want to compare several countries on the same plot? We might try the following code, but it looks bonkers. Try it and see:\n\nmulti_country_data = filter(gapminder, country %in% c(\"Japan\", \"Nigeria\", \"Argentina\", \"New Zealand\"))\n\nggplot(multi_country_data, aes(x = year, y = pop)) +\n  geom_line()\n\n\n\n\n\n\n\n\nWhy does the plot look like that, and how can we fix it? As part of troubleshooting, we might check what a scatterplot looks like (without connecting the lines):\n\nggplot(multi_country_data, aes(x = year, y = pop)) +\n  geom_point()\n\n\n\n\n\n\n\n\nNotice that looks reasonable. So what do you think is the issue with the line plot?\n\n\n\n\n\n\nExpand this for a solution\n\n\n\n\n\nThe issue is that the multi_country_data dataset has both multiple countries and multiple years, and currently ggplot does not know to group the time series data by country when it is deciding how to connect the points with lines. It is treating it as data to plot as a single line, when we would like a separate line for each country.\nTo fix this, we will specify a grouping variable using the group argument to the aes() function:\n\nmulti_country_data = filter(gapminder, country %in% c(\"Japan\", \"Nigeria\", \"Argentina\", \"New Zealand\"))\n\nggplot(multi_country_data, aes(x = year, y = pop, group = country)) +\n  geom_line()\n\n\n\n\n\n\n\n\nWe probably also want to distinguish and label the lines somehow by what country they represent:\n\nmulti_country_data = filter(gapminder, country %in% c(\"Japan\", \"Nigeria\", \"Argentina\", \"New Zealand\"))\n\nggplot(multi_country_data, aes(x = year, y = pop, group = country, color = country)) +\n  geom_line()",
     "crumbs": [
       "Lectures",
-      "Lecture 3: Data manipulation with tidyverse"
+      "Lecture 5: Data visualization"
     ]
+  },
+  {
+    "objectID": "Lectures/lec5_data_viz.html#facets-subplots",
+    "href": "Lectures/lec5_data_viz.html#facets-subplots",
+    "title": "Lecture 5: Data visualization with tidyverse!",
+    "section": "Facets (subplots)",
+    "text": "Facets (subplots)\nWhat if we want to plot each country in a different subplot so that we can see each curve on its own scale? We can use facet_wrap():\n\nggplot(multi_country_data, aes(x = year, y = pop, group = country)) +\n  geom_line() +\n  facet_wrap(~ country, scales = \"free\")\n\n\n\n\n\n\n\n\nIn fact, we no longer need the group = country argument because we’re going to put each country in its own plot/panel anyway:\n\nggplot(multi_country_data, aes(x = year, y = pop)) +\n  geom_line() +\n  facet_wrap(~ country, scales = \"free\")\n\n\n\n\n\n\n\n\nNote that since they all share an x-axis (years), it might make sense to plot them vertically stacked so that the years line up. For this, we can use facet_grid() which allows us to arrange the plots specifically in a row or a column:\n\nggplot(multi_country_data, aes(x = year, y = pop, group = country)) +\n  geom_line() +\n  # make countries the rows\n  facet_grid(country ~ ., scales = \"free\")",
+    "crumbs": [
+      "Lectures",
+      "Lecture 5: Data visualization"
+    ]
+  },
+  {
+    "objectID": "Lectures/lec5_data_viz.html#pivoting-for-plots",
+    "href": "Lectures/lec5_data_viz.html#pivoting-for-plots",
+    "title": "Lecture 5: Data visualization with tidyverse!",
+    "section": "Pivoting for plots",
+    "text": "Pivoting for plots\nWhat if we want to plot one country over time but we want to plot three different variables for it: lifeExp, pop, and gdpPercap? We’d basically like to group by variable, but to do that with ggplot, it has to be a column of the dataset. As in we need a column whose values are “lifeExp”, “pop”, and “gdpPercap” (or some other names for these three quantities) and another column whose value is the value of that variable.\nTo see this, start thinking how you would construct this plot. You might want the first line to look something like this (this is pseudocode):\n\n# ggplot(japan_data, aes(x = year, y = value of one of the variables, group = variable))\n\n# or if they're on separate panels/subplots:\n\n# ggplot(japan_data, aes(x = year, y = value of one of the variables)) + facet_wrap(...on variable)\n\nTo do this… yes, we will pivot the data longer!\n\njapan_wide = japan_data %&gt;%\n  pivot_longer(\n    cols = lifeExp:gdpPercap,\n    names_to = \"variable\",\n    values_to = \"value\"\n  )\n\nggplot(japan_wide, aes(x = year, y = value)) +\n  geom_line() +\n  facet_wrap(~ variable, scales = \"free\")\n\n\n\n\n\n\n\n\nAgain, we can use facet_grid() to stack the plots so they align by year:\n\nggplot(japan_wide, aes(x = year, y = value)) +\n  geom_line() +\n  facet_grid(variable ~ ., scales = \"free\")\n\n\n\n\n\n\n\n\nTo see what else you can do with ggplot, check out further documentation online such as the ggplot gallery and the ggplot vignettes or “articles”. Happy exploring!",
+    "crumbs": [
+      "Lectures",
+      "Lecture 5: Data visualization"
+    ]
+  },
+  {
+    "objectID": "Lectures/lec5_data_viz.html#naming-code-chunks",
+    "href": "Lectures/lec5_data_viz.html#naming-code-chunks",
+    "title": "Lecture 5: Data visualization with tidyverse!",
+    "section": "Naming code chunks",
+    "text": "Naming code chunks\nIf I render the following Quarto document:\n\nI get the following error message:\n\nIf I take the same Quarto document and just name my code chunks like so:\n\nThen I get somewhat more helpful output about the progress before the error:\n\n\n\n\n\n\n\nYour turn\n\n\n\nMake a Quarto document that looks like the second one above, with the named chunks.\nThen identify and fix the error(s) to get it rendering successfully.",
+    "crumbs": [
+      "Lectures",
+      "Lecture 5: Data visualization"
+    ]
+  },
+  {
+    "objectID": "Lectures/lec5_data_viz.html#identifying-where-you-want-to-edit-the-code",
+    "href": "Lectures/lec5_data_viz.html#identifying-where-you-want-to-edit-the-code",
+    "title": "Lecture 5: Data visualization with tidyverse!",
+    "section": "Identifying where you want to edit the code",
+    "text": "Identifying where you want to edit the code\nOnce you identify what line is triggering the error message, then you can work on figuring out what caused the error. Remember: this is not necessarily the code you want to edit. The part of the code you modify to fix the issue could be in an earlier line of code or an earlier code chunk.\n\n\n\n\n\n\nYour turn\n\n\n\nIn fact let’s practice that right now! In the qmd file below,\n\nWhich line is generating the error message? (To which line is the error message referring?)\nWhere would you edit the code to fix the error?",
+    "crumbs": [
+      "Lectures",
+      "Lecture 5: Data visualization"
+    ]
+  },
+  {
+    "objectID": "Lectures/lec5_data_viz.html#how-to-locate-an-error-when-youve-rendered-too-much-at-once",
+    "href": "Lectures/lec5_data_viz.html#how-to-locate-an-error-when-youve-rendered-too-much-at-once",
+    "title": "Lecture 5: Data visualization with tidyverse!",
+    "section": "How to locate an error when you’ve rendered too much at once",
+    "text": "How to locate an error when you’ve rendered too much at once\nRule number 1: render frequently! But of course sometimes you forget, or you have other reasons that you add a lot of code or make a lot of code before rendering. Let’s talk about how to troubleshoot in that case if you haven’t named your code chunks: sequentially cut out code and try rendering again.\n\nCut (as in cut and paste, not as in delete) everything after the first code chunk.\nTry to render the document again.\n\nIf it doesn’t render successfully, you know that at least the first issue is in the small document you just tried to render: the YAML header, some Markdown text/formatting, or the first code chunk.\nIf it renders without errors, then the issue must be happening somewhere in the part that you cut. Paste it back, and now repeat step 1 but cut everything after the second code chunk. And so on.",
+    "crumbs": [
+      "Lectures",
+      "Lecture 5: Data visualization"
+    ]
+  },
+  {
+    "objectID": "Homework/CSSS508_HW1_Example.html",
+    "href": "Homework/CSSS508_HW1_Example.html",
+    "title": "CSSS508 Homework 1 Example",
+    "section": "",
+    "text": "I’m interested in exploring a dataset from base R called iris. From its documentation I see that it is data about 50 flowers from each of 3 species of iris and their respective measurements of sepal length, sepal width, petal length, and petal width.\nI first want to take a look at a preview of the dataset by making a nice table.\n\n\n\n\n\n\n\n\n\nSepal.Length\nSepal.Width\nPetal.Length\nPetal.Width\nSpecies\n\n\n\n\n1\n5.1\n3.5\n1.4\n0.2\nsetosa\n\n\n2\n4.9\n3.0\n1.4\n0.2\nsetosa\n\n\n3\n4.7\n3.2\n1.3\n0.2\nsetosa\n\n\n4\n4.6\n3.1\n1.5\n0.2\nsetosa\n\n\n5\n5.0\n3.6\n1.4\n0.2\nsetosa\n\n\n6..145\n\n\n\n\n\n\n\n146\n6.7\n3.0\n5.2\n2.3\nvirginica\n\n\n147\n6.3\n2.5\n5.0\n1.9\nvirginica\n\n\n148\n6.5\n3.0\n5.2\n2.0\nvirginica\n\n\n149\n6.2\n3.4\n5.4\n2.3\nvirginica\n\n\n150\n5.9\n3.0\n5.1\n1.8\nvirginica\n\n\n\n\n\n\n\nThe mean petal length is 3.76 but its median petal length is 4.35. It’s range is 5.9 which additionally suggests a certain degree of spread.\nIt might be useful to look at the distribution to gain a better sense of the variation of this variable.\n\n\n\n\n\n\n\n\n\nThere seems to be a cluster of much smaller petals and then another cluster of average to bigger petals. I wonder how this varies by species…?\n\n\n\n\n\n\n\n\n\nWe can see from this plot that the overall mean and median of petal length is quite misleading! Only the verisicolor species of iris is close to those values while setosa is much mush smaller and virginica is a bit bigger.\nIs there a similar thing happening for sepal length and width? Let’s look at some basic descriptives of the dataset.\n\n\n\n\n\n\n\n\nSepal.Length\nSepal.Width\nPetal.Length\nPetal.Width\nSpecies\n\n\n\n\nMin. :4.300\nMin. :2.000\nMin. :1.000\nMin. :0.100\nsetosa :50\n\n\n1st Qu.:5.100\n1st Qu.:2.800\n1st Qu.:1.600\n1st Qu.:0.300\nversicolor:50\n\n\nMedian :5.800\nMedian :3.000\nMedian :4.350\nMedian :1.300\nvirginica :50\n\n\nMean :5.843\nMean :3.057\nMean :3.758\nMean :1.199\nNA\n\n\n3rd Qu.:6.400\n3rd Qu.:3.300\n3rd Qu.:5.100\n3rd Qu.:1.800\nNA\n\n\nMax. :7.900\nMax. :4.400\nMax. :6.900\nMax. :2.500\nNA\n\n\n\n\n\n\n\nIt’s interesting to note with the summary function that for numerical data it’ll calculate the classic 5 statistics used to construct a boxplot plus the mean but for a categorical variable like iris$Species it returns the frequency of each value of the variable.\nThe distribution of sepal length looks wider than sepal width, similar to how it was for those measurements of the petals. Let’s see how sepal length and width relate to one another graphically.\n\n\n\n\n\n\n\n\n\nThere are still clusters by each species type but for verisicolor and virginica there’s much more overlap. Overall, there’s tighter clustering by species for the petal length and width than there is for the sepal length and width."
+  },
+  {
+    "objectID": "Homework/homework4_followup.html",
+    "href": "Homework/homework4_followup.html",
+    "title": "HW4 follow-up: When does order matter?",
+    "section": "",
+    "text": "Let’s go over some findings from Homework 4, Part C. Here were the three cases we considered. In the first case, we considered whether order mattered when the two operations were (1) selecting the three columns/variables country, year, and pop, and (2) filtering to keep only the rows with pop less than 20 million.\n\nresult1 = gapminder %&gt;%\n  select(country, year, pop) %&gt;%\n  filter(pop &lt; 20000000)\n\nresult2 = gapminder %&gt;%\n  filter(pop &lt; 20000000) %&gt;%\n  select(country, year, pop)\n\nIn the second case, we considered whether order mattered when the two operations were (1) mutating the pop column to divide by a million, and (2) filtering to keep only the rows with pop less than 20 million.\n\nresult3 = gapminder %&gt;%\n  mutate(pop = pop/10^6) %&gt;%\n  filter(pop &lt; 20000000)\n\nresult4 = gapminder %&gt;%\n  filter(pop &lt; 20000000) %&gt;%\n  mutate(pop = pop/10^6)\n\nIn the third case, we considered whether order mattered when the two operations were (1) creating a new column called pop_millions which equals the pop column divided by a million, and (2) filtering to keep only the rows with pop less than 20 million.\n\nresult5 = gapminder %&gt;%\n  mutate(pop_millions = pop/10^6) %&gt;%\n  filter(pop &lt; 20000000)\n\nresult6 = gapminder %&gt;%\n  filter(pop &lt; 20000000) %&gt;%\n  mutate(pop_millions = pop/10^6)\n\nSo in which of these cases does order matter, and why?\nFirst let’s settle the answer: order matters in the second case only, not in the first and third cases. We can tell by running the code and checking the results, which I assume you did in HW4; it was not meant to be strictly a thought exercise. If you didn’t run the code in HW4, run it now and check out the results with me. If you run the code, you will notice that the number of rows is not the same for results 3 and 4, so the results cannot be the same. For the other two cases, we can toggle back and forth to see that they look the same, or we can be sure by using code to check whether the results are the same:\n\n# we can add up how many elements are different between results 1 and 2, or between 5 and 6\nsum(result1 != result2)\n\n[1] 0\n\nsum(result5 != result6)\n\n[1] 0\n\n# or we can use the identical function which checks if two objects are identical\nidentical(result1, result2)\n\n[1] TRUE\n\nidentical(result5, result6)\n\n[1] TRUE\n\n\nNow let’s think about why order matters for only the second case.\nIn the first case, one operation selects rows based on the value of the pop column, while the other operation selects three columns. These operations don’t affect each other. The final result in either case is going to be the subset of the data that have a population less than 20 million, and it’ll show only the three columns we selected for.\nIn the third case, again, one operation uses the pop column values to define a new column called pop_millions, and the other operation filters the dataset to keep just the rows in which the pop column meets some condition. Therefore, these two operations do not affect each other. If you do the filter operation first, you will only create the pop_millions column for the rows you’ll keep in the end. If you do the mutate operation first, you will create the pop_millions column for all the rows and then just keep the rows you’re interested in.\nHowever, in the second case, one operation rescales the pop column by dividing it by million, and the other operation filters for values that are less than 20,000,000. If you rescale first, a value of 20,000,000 in the pop column means a value of 20 trillion (20 million millions), not 20 million. No country has trillions of people, so this filtering operation won’t do anything. If instead you filter first, you will subset the data to countries with populations of fewer than 20 million people, and then you rescale the population.\nIn the second case, probably the coder meant to end up with a dataset that contained all countries with fewer than 20 million people, so they probably want result4, not result3. We can modify the code for result3 to get the same answer, though, by making one change to the filter function: what change? (Try it out!)",
+    "crumbs": [
+      "Homework",
+      "HW4 follow-up: When does order matter?"
+    ]
+  },
+  {
+    "objectID": "Homework/homework6.html",
+    "href": "Homework/homework6.html",
+    "title": "Homework 6",
+    "section": "",
+    "text": "Homework 6 has been posted on Canvas; you can download the qmd file there. I’ve also posted the instructions here.\n\nI have set eval: false because the code in this document is not yet complete (the assignment is to fill it in). In order for you to be able to render the template even before you add any code, I either had to set eval: false in the YAML header or within certain code chunks. You can change the evaluation settings however you like for your own workflow. If you have trouble, please post on Ed Discussion or come to office hours; setting these options and rendering Quarto documents is something we’re still practicing, so this is an extra chance to practice with it.\nFor problems with coding, if a code chunk is not provided, insert one or more code chunks below that problem and before the next problem to include your code.\n\nTip: name your code chunks as we saw in class and as you can see below. This will help you identify where an error occurred in the event that rendering your document doesn’t complete without errors.\n\nModify this document to complete your homework for Homework 6.\nPost questions on Ed Discussion, discuss with each other, and get as far as you can on these problems.\nIf by the time the homework is due you have worked on a problem but did’t fully complete it, feel free to leave your work so far and write about where you’re stuck or what is going wrong or what your question is, and your peer evaluator might have some input.\nFeel free to change the format of this document in ways that you think make the output look nicer or easier to read, but keep the general structure (sections, questions, etc) so that your peer reviewer knows which part is which.",
+    "crumbs": [
+      "Homework",
+      "Homework 6"
+    ]
+  },
+  {
+    "objectID": "Homework/homework6.html#section-a-object-types",
+    "href": "Homework/homework6.html#section-a-object-types",
+    "title": "Homework 6",
+    "section": "Section A: Object types",
+    "text": "Section A: Object types\n\nProblem 1: Vectors\nHere are examples of three different ways we have seen to construct vectors:\n\nvector_c = c(\"bananas\", \"apples\", \"grapes\", \"kumquats\")\nvector_colon = 11:22\nvector_seq = seq(50, 100, 20)\n\nLet’s use these to understand a few things about making and using vectors.\nPart a. What is the data type of each of these three vectors?\nyour answer\nPart b. How many elements are in each vector?\nyour answer\nPart c. What do “c” and “seq” stand for? (You can find these in the lecture notes, in the R help documentation with ?, or online.)\nyour answer\nPart d. Write out what the elements of vector_seq are. In other words, write out each value in that vector, separated by commas. Does it include 50, 100, and/or 20? Why/why not?\nyour answer\n\n\nProblem 2: Making a list\nLet’s make a small list for practice. First, create a vector called numbers of the numbers 1, 2, 3, …, 100. Create a character-type object called my_favorite_food that equals a single value, the name of (one of) your favorite foods. Then make a list called example_list that has three named elements: these two items, as well as the swiss dataset.\n\n\nProblem 3: Using a list\nI’ve written comments describing code I’d like you to write. Please fill in the code. I completed one as an example. For each of these lines of code, make sure to use the list.\n\n# call/access the favorite food from your list\nexample_list$my_favorite_food\n\n# call/access the 17th value of numbers from your list\n\n# call/access the swiss dataset from your list\n\n# call/access the education value for Delemont in the swiss dataset from your list",
+    "crumbs": [
+      "Homework",
+      "Homework 6"
+    ]
+  },
+  {
+    "objectID": "Homework/homework6.html#section-b-factors",
+    "href": "Homework/homework6.html#section-b-factors",
+    "title": "Homework 6",
+    "section": "Section B: Factors",
+    "text": "Section B: Factors\nThis section doesn’t require new code or answers; instead, please read this section and run the code as you read, looking at the results yourself. The goal here is to get you started with factors, and we’ll continue with this in class next time. This section is drawn partly from R for Data Science.\nConsider a vector of months:\n\nx = c(\"Dec\", \"Apr\", \"Jan\", \"Mar\")\n\nHandling this as character-type data has at least two disadvantages: (1) you might have typos or multiple formats like “January” or “01” or “Jam” instead of “Jan”, even though there should only be 12 possible values since there are 12 months, and (2) sorting the vector sorts it alphabetically, not in the order of months. For instance, try this out:\n\nsort(x)\n\nWe can address these problems by making the variable a factor. First, we create a list of the levels (possible values) in order:\n\nmonth_levels = c(\n  \"Jan\", \"Feb\", \"Mar\", \"Apr\", \"May\", \"Jun\", \n  \"Jul\", \"Aug\", \"Sep\", \"Oct\", \"Nov\", \"Dec\"\n)\n\nThen we make our variable a factor:\n\nx = factor(x, levels = month_levels)\n\nTake a look at the vector now by calling it and trying to sort it:\n\n# call x\nx\n# sort x\nsort(x)\n\nIf you have typos or different formats, they’ll be converted to NA, in which case you can look back at the original data to see what those values were and handle them accordingly. For example:\n\n# here the last two values should be counted as the same month\nx_oops = c(\"Dec\", \"Apr\", \"January\", \"Jan\")\nx_oops_factor = factor(x_oops, levels = month_levels)\n# but they're not\nx_oops_factor\n# which value didn't match our 12 values?\nx_oops[is.na(x_oops_factor)]\n# ahh, that should be Jan, so let's change it using logical indices\n# - this code says, \"set every element of x_oops whose value is 'January' to 'Jan'\"\nx_oops[x_oops == \"January\"] = \"Jan\"\n\nWe’ll keep working with this when we cover data cleaning!",
+    "crumbs": [
+      "Homework",
+      "Homework 6"
+    ]
+  },
+  {
+    "objectID": "Homework/homework6.html#section-c-plots",
+    "href": "Homework/homework6.html#section-c-plots",
+    "title": "Homework 6",
+    "section": "Section C: Plots",
+    "text": "Section C: Plots\nBelow is the final plot code we ended up with in class. Make the following changes, listed below. Show the code and plot for each change, one at a time, and state what change you’re making in that step. (I recommend having a separate code chunk for each change.) The first three changes listed are things we saw how to do either in Lecture 5 or 6. For the last three changes, you probably need to google how to do them. See the Lecture 6 recording and past lecture notes for tips on how to do this effectively. Feel free to trade tips on Ed Discussion!\n\nMake the continent average line a little transparent so that you can see the other lines through it.\nRename the legend “Continent”.\nPut all the continents in a single row instead of having the current two-row plot arrangement. (You might or might not decide to make other adjustments to make the plot look nice in a single row; use your discretion and comment on any other changes you make.)\nChange the way you set the legend position so that you address the warning about numerical settings with legend.position being deprecated.\nChange the font size.\nSet the panel.spacing using a different unit than lines.\n\n\nggplot(data = gapminder, \n       aes(x = year, y = lifeExp, group = country, color = continent)) +\n  geom_line() +\n  geom_line(stat = \"smooth\", \n            aes(group = continent),\n            color = \"black\", linewidth = 1) +\n  facet_wrap(~ continent, nrow = 2) +\n  labs(x = \"\", \n       y = \"Life Expectancy (Years)\",\n       title = \"Life Expectancy, 1952-2007\", \n       subtitle = \"By continent and country\") +\n  scale_x_continuous(limits = c(1950, 2010), breaks = seq(1950, 2010, 20)) +\n  scale_color_manual(\n    name = \"Which continent are\\nwe looking at?\", # \\n adds a line break \n    values = c(\"Africa\" = \"#4e79a7\", \"Americas\" = \"#f28e2c\", \n               \"Asia\" = \"#e15759\", \"Europe\" = \"#76b7b2\", \"Oceania\" = \"#59a14f\")) +\n  theme_minimal() +\n  theme(panel.spacing = unit(2, \"lines\"),\n        legend.position = c(0.8, 0.2)) # or \"bottom\" or many other options",
+    "crumbs": [
+      "Homework",
+      "Homework 6"
+    ]
+  },
+  {
+    "objectID": "Homework/homework4.html",
+    "href": "Homework/homework4.html",
+    "title": "Homework 4",
+    "section": "",
+    "text": "Instructions\nHomework 4 has been posted on Canvas, and the instructions are posted there. Rather than reading instructions here for creating your own Quarto document, from the Canvas assignment you can download a Quarto file that has the homework instructions/problems and spaces for you to add/modify text and code. You’ll upload that qmd file and its rendered html file as your homework submission.\nHappy coding! I look forward to hearing how this homework goes for you.",
+    "crumbs": [
+      "Homework",
+      "Homework 4"
+    ]
+  },
+  {
+    "objectID": "Homework/homework3.html",
+    "href": "Homework/homework3.html",
+    "title": "Homework 3",
+    "section": "",
+    "text": "Instructions\nCreate a new Quarto document (.qmd file) for this new homework; always use a new Quarto document for each homework.\nIn your Homework 3 Quarto document, continue to explore the gapminder dataset from the gapminder package, following the instructions below. Your document should be pleasant for a peer to look at, with some organization using section headings. Use chunk options to control which code and raw output you show in the html file when you render your Quarto document. When you’ve completed the assignment, upload to Canvas both the .qmd file and the .html file it generates when you render the .qmd file.\nDetailed instructions for HW3:\n\nOrganize your report in a few sections with appropriately named and Markdown-formatted section headings.\nUse an Introduction or Data section at the start of the report to summarize in sentences what the dataset is, where it comes from, what variables it includes and what they mean. Try to add one piece of information to what you wrote in your HW2.\nMake a table of some subset of rows and columns of the dataset (different from the one you made in HW2) two different ways, one using base R and one using tidyverse. In other words, you should have two chunks of code making the same table, and both chunks of code and both tables should show up in your rendered html file.\nThen use Markdown text (not just code comments) to summarize your approach to writing these two different chunks of code. Use code-style text formatting like this to make code references in your text look like code, just as in the lecture notes (e.g. when I write about mutate() and gapminder).\nCompute the number of Asian countries in the dataset two different ways, one using base R and one using tidyverse. Use chunk options to make sure your code for both approaches is displayed in your rendered html file, not hidden, and insert one of the two results (they should be the same as each other) into a text sentence using inline code.\nUsing either base R or tidyverse, compute the number of observations with at least 29 million people in 1952, and report your answer using inline code. Then pose a similar problem for the other student to try, and report the code and answer in your html file with a brief explanation of your solution!\nState one thing you didn’t do to your satisfaction in HW2 and how you have improved upon it in HW3. For instance, maybe you corrected some aspect of a table or of the Quarto html formatting in HW3 that wasn’t working in your HW2 submission.\nMost of all, have some fun practicing what we did in class and any other R/RStudio/Quarto features you might be discovering!",
+    "crumbs": [
+      "Homework",
+      "Homework 3"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "CSSS 508: Intro to R for Social Scientists",
+    "section": "",
+    "text": "Jess Kunke (she/they)\n\n\n\nTuesdays 4:30-6:20pm\nThomson Hall, Room 125\n\n\n\nAs of Oct 28th:\n\nMon 4-5pm (Zoom and Padelford B-221)\nFri 2-3pm (Zoom only)\nSee Canvas for Zoom links\n\nFor further course details, please see the syllabus.\nThank you Vic Sass for the fantastic website design!"
+  },
+  {
+    "objectID": "index.html#welcome",
+    "href": "index.html#welcome",
+    "title": "CSSS 508: Intro to R for Social Scientists",
+    "section": "",
+    "text": "Jess Kunke (she/they)\n\n\n\nTuesdays 4:30-6:20pm\nThomson Hall, Room 125\n\n\n\nAs of Oct 28th:\n\nMon 4-5pm (Zoom and Padelford B-221)\nFri 2-3pm (Zoom only)\nSee Canvas for Zoom links\n\nFor further course details, please see the syllabus.\nThank you Vic Sass for the fantastic website design!"
+  },
+  {
+    "objectID": "Homework/homework2.html",
+    "href": "Homework/homework2.html",
+    "title": "Homework 2",
+    "section": "",
+    "text": "Instructions\nCreate a new Quarto document (.qmd file) for this new homework; always use a new Quarto document for each homework.\nIn your Homework 2 Quarto document, explore the gapminder dataset from the gapminder package. Later in class we will also read this dataset in from a file, but for this homework we will access the dataset from a package. If you have not used this package before on your computer, you’ll need to install it first and then load it with library() as we saw in class. Otherwise, you can just use library(gapminder) to load the package and data(gapminder) to load the dataset.\nUse your Quarto document to report on a brief exploration of the dataset. This might read like the dataset section of a paper. It doesn’t have to be longer than a page or two, and it does not have to be up to the standard of what you would expect in a paper; the purpose is to practice R, RStudio, and Quarto to do things that eventually you would find practically useful. Remember, the homework is just meant to be a chance to practice stuff from class.\nDo at least the following:\n\nStart by doing some exploratory analysis of the dataset in the Console, some/much of which will not make it into your final document. In your Quarto document, only include code that you will use for the final document you submit. For example, don’t include commands like ?gapminder, and also don’t include code like str(gapminder) or mean(gapminder$year) unless you use them in tables, figures, and/or inline code.\nUse text to summarize what the dataset is, where it comes from, what variables it includes and what they mean.\nComment on the range or distribution of one of the dataset variables. You could show a histogram and report some summary statistics of the variable in the text of the document using inline R code (when we use r code to print values directly into the text of the document).\nInclude at least one plot of one variable versus another and comment briefly on what you notice in the plot.\nMake a table of some subset of rows and columns of the dataset and comment briefly on what you notice.\nComment your code using some comments (lines that start with #), even if the code doesn’t show up in the final html document. You don’t have to comment every line, but comment at least some lines that you think should be explained to someone who is trying to understand your code. For example, suppose you sent your Quarto document to a colleague because they wanted to reproduce your analysis and play with the dataset themselves. They might find it useful to see a comment that explains what kable() does and what kind of table you are trying to make there.\nMost of all, just have some fun exploring this dataset and practicing what we did in class!\n\nYour document should be pleasant for a peer to look at, with some organization using section headings. Some attempt should be made to label and format plots and tables. Use chunk options to limit the code and raw output you show in the html file when you render your Quarto document. Don’t include a figure or table without commenting on it in the text with at least a sentence. Round any numbers you report to a reasonable precision.\nUpload to Canvas both the .qmd file and the .html file it generates when you render.",
+    "crumbs": [
+      "Homework",
+      "Homework 2"
+    ]
+  },
+  {
+    "objectID": "Homework/homework1.html",
+    "href": "Homework/homework1.html",
+    "title": "Homework 1",
+    "section": "",
+    "text": "Instructions\nWrite up a .qmd file showing some exploratory analyses of the Swiss fertility data. Upload both the .qmd file and the .html file to Canvas. You must upload BOTH for credit.\nMix inline R calculations, R output, and plots with text describing the relationships you see. Include at least two plots and at least one instance of inline R code (e.g. functions like nrow(), mean(), sd(), cor(), median(), min()). You are encouraged to include more! You may not hard-code any numbers referenced in your text.\nYour document should be pleasant for a peer to look at, with some organization using sections or lists, and all plots labeled clearly. Use chunk options echo and output to limit the code/output you show in the .html. Discussion of specific values should be summarized in sentences in your text—not as printed code and output—and rounded so as not to be absurdly precise (e.g. round x with round(x, 2)).\n\n\nTemplate\nrendered html file • raw qmd file\n\n\nExample\nrendered html file • raw qmd file",
+    "crumbs": [
+      "Homework",
+      "Homework 1"
+    ]
+  },
+  {
+    "objectID": "Homework/homework5.html",
+    "href": "Homework/homework5.html",
+    "title": "Homework 5",
+    "section": "",
+    "text": "Homework 5 has been posted on Canvas, and just as with Homework 4, you can download a Quarto document from the Homework 5 Canvas assignment that has the homework instructions/problems and spaces for you to add/modify text and code. You’ll upload that qmd file and its rendered html file as your homework submission. I’ve also posted the instructions here, and if you prefer, you can create a new Quarto document from scratch and answer these problems in it instead of the one provided on the Homework 5 Canvas assignment. In that case, you will submit that qmd file and the html file you get when you render it.\n\nModify this document to complete your homework for Homework 5.\nPost questions on Ed Discussion, discuss with each other, and get as far as you can on these problems.\nIf by the time the homework is due you have worked on a problem but did’t fully complete it, feel free to leave your work so far and write about where you’re stuck or what is going wrong or what your question is, and your peer evaluator might have some input.\nFeel free to change the format of this document in ways that you think make the output look nicer or easier to read, but keep the general structure (sections, questions, etc) so that your peer reviewer knows which part is which.",
+    "crumbs": [
+      "Homework",
+      "Homework 5"
+    ]
+  },
+  {
+    "objectID": "Homework/homework5.html#section-a-pivoting-with-the-gapminder-dataset",
+    "href": "Homework/homework5.html#section-a-pivoting-with-the-gapminder-dataset",
+    "title": "Homework 5",
+    "section": "Section A: Pivoting with the gapminder dataset",
+    "text": "Section A: Pivoting with the gapminder dataset\n\nWe saw in lecture how to pivot n_obs_by_year_cont wider:\n\n\nobs_by_year_cont_wider = n_obs_by_year_cont %&gt;%\n  pivot_wider(\n    # get the names for the new columns from the continent column\n    names_from = continent,\n    # get the values for the new columns from the n.obs column\n    values_from = n.obs\n  )\n\nWrite code to pivot obs_by_year_cont_wider longer and call the resulting table obs_by_year_cont_longer. You should find that obs_by_year_cont_longer is the same as n_obs_by_year_cont. Use kable() to display the two tables neatly in your rendered html file.\n\n# your code here\n\n\nFollowing the example from class using %in%, create a subset of the gapminder dataset that has just the data for Argentina, El Salvador, and Uruguay before 1990, and give this dataset an appropriate name. Then reformat the dataset so that each row is a country, each column is a year, and each cell of the table is the per-capita GDP. (If you would like a little extra challenge, make each cell of the table the total GDP by multiplying population and per-capita GDP.) Display the table in the rendered html file using kable().\n\n\n# your code here\n\n\nFor extra practice, work your way through some of the examples here for both pivoting longer and pivoting wider. These examples are designed to help you gradually learn about additional options you can set during pivoting and how to handle problems of varying complexity. I recommend trying the first couple examples in the pivoting longer section and the tidycensus example in the pivoting wider section. For each example you check out, I recommend first reading the section about it and the code that goes with it, then try it out yourself. For many of them you don’t have to install any new packages, but some like tidycensus will require that you install a package (such as tidycensus) first in order to access the dataset they use. Then explain (here, in text, below this problem and before Section B) one or two things you learned.",
+    "crumbs": [
+      "Homework",
+      "Homework 5"
+    ]
+  },
+  {
+    "objectID": "Homework/homework5.html#section-b-plots",
+    "href": "Homework/homework5.html#section-b-plots",
+    "title": "Homework 5",
+    "section": "Section B: Plots",
+    "text": "Section B: Plots\nIn this section, the code chunks are not created for you. Create a new code chunk below each problem and before the next to put your code for that problem. If the problem asks you questions that you should answer in words instead of code, write your answers in text below the problem rather than as comments in the code.\n\nPlot per-capita GDP versus life expectancy for Colombia as a line, points, or both. Give the plot appropriate axis labels and a title. Try out a few themes and use a theme you like. Set the color and transparency of the line/points.\nPlot per-capita GDP over time for Argentina, El Salvador, and Uruguay before 1990. Make the plot three different ways: first plot all three countries on the same plot, then use facet_wrap() to plot each country in its own subplot, then use facet_grid(). Comment on which plot settings you need for each plot, if there are any that differ between the two plots. Also comment on what happens if you omit the facet_wrap argument scales = \"free\".\nCombine pivoting and facet_grid() to make a plot with 9 subplots in a 3x3 grid, where the columns are country (Japan, China, or South Korea), the rows are variables (life expectancy, population, or per-capita GDP), and the x-axis is time. Use scales = \"free_y\" as an argument to facet_grid(). Your plot should look something like this:\n\n\nTake your time with this. Break the problem down into steps. Identify at least one step you’ll have to do, and then work backwards or forwards from there: What do I need to do in order to be able to do that step? What will I do once I have that step?\nIf you have time, here are further extensions you can try with this plot:\n\nImprove the axis labels, theme, and/or other features.\nScale the variables so that the y-axis scales are nicer or more easily readable.\nWhat could you do to get the variables to be labeld in the plot as “Population”, “LifeExpectancy”, and “GDPperCapita”? (If you want, you can go further and try to make them “Population”, “Life Expectancy”, and “GDP per Capita” and even add units.)\nTry using scales = \"free\" in facet_grid. Does it do what you expect? Try replacing facet_grid(..., scales = \"free\") with ggh4x::facet_grid2(..., scales = \"free_y\", independent = \"y\"), i.e. use the facet_grid2() function from the ggh4x package, and see how you like it.",
+    "crumbs": [
+      "Homework",
+      "Homework 5"
+    ]
+  },
+  {
+    "objectID": "Homework/homework.html",
+    "href": "Homework/homework.html",
+    "title": "Overview",
+    "section": "",
+    "text": "This page contains general instructions for assignments and peer reviews. For homework-specific instructions and templates go to the specific assignment listed on the left.\nAll assignments should be created using Quarto and uploaded to Canvas as both html and qmd files. Your document should be pleasant for a peer to look at and follow all instructions. Use sections for organization, label figures/tables, and use code chunks.\nThis is a one-credit pass/fail course intended to help you learn R. The focus is on learning and practice, not on points. Assignments and peer reviews will be graded for completion, but the points are not the point: they are key opportunities to practice R/RStudio/Quarto and to learn from each other. Feel free to work together, discussion questions on Ed Discussion, trade ideas and tips.",
+    "crumbs": [
+      "Homework",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "Homework/homework.html#peer-review",
+    "href": "Homework/homework.html#peer-review",
+    "title": "Overview",
+    "section": "Peer Review",
+    "text": "Peer Review\nYou are required to examine and provide feedback on a peer’s homework submission each week. Reading and evaluating the work of others is useful and important! Good programmers realize that most problems have been solved by others; the trick is figuring out how to apply existing code to new problems. You will develop this skill by reading others’ code, seeing how other people approached the problems, providing suggestions, and pointing out when you learned something new. Please give constructive, polite, and insightful comments that encourage your classmate and help them learn from you.",
+    "crumbs": [
+      "Homework",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "Homework/homework.html#a-note-about-rendering-your-html-documents",
+    "href": "Homework/homework.html#a-note-about-rendering-your-html-documents",
+    "title": "Overview",
+    "section": "A Note About Rendering Your HTML documents",
+    "text": "A Note About Rendering Your HTML documents\nYou need to include embed-resources: true in your YAML header in order for your HTML documents to include any plot output when you upload them to Canvas. It should look something like the following:\n\nYou can read more about this option here but basically, whenever you render a .qmd file to HTML, all output created goes into a separate, associated folder, which is referenced when displaying the page in your web browser. However, when you upload the HTML file separately from that folder (e.g. to Canvas or through email), it doesn’t have the specific output images to reference, so they won’t appear. When you specify in your YAML header that you want to embed resources, you’re explicitly adding the output created by your code to the HTML file so that a separate output folder is longer created and you can send your HTML file with all its output as one entity.",
+    "crumbs": [
+      "Homework",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "Homework/homework.html#assignment-due-dates",
+    "href": "Homework/homework.html#assignment-due-dates",
+    "title": "Overview",
+    "section": "Assignment Due Dates",
+    "text": "Assignment Due Dates\n\n\n\n\n\n\n\n\n#\nHomework Due\nPeer Review Due\n\n\n\n\n1\n08 October\n13 October\n\n\n2\n15 October\n20 October\n\n\n3\n22 October\n27 October\n\n\n4\n29 October\n03 November\n\n\n5\n05 November\n10 November\n\n\n6\n12 November\n17 November\n\n\n7\n19 November\n24 November\n\n\n8\n26 November\n01 December\n\n\n9\n03 December\n08 December",
+    "crumbs": [
+      "Homework",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "Homework/CSSS508_HW1_Template.html",
+    "href": "Homework/CSSS508_HW1_Template.html",
+    "title": "Homework 1",
+    "section": "",
+    "text": "This basic R markdown file has some text, inline code, and code chunks!"
+  },
+  {
+    "objectID": "Homework/CSSS508_HW1_Template.html#code-chunks",
+    "href": "Homework/CSSS508_HW1_Template.html#code-chunks",
+    "title": "Homework 1",
+    "section": "Code Chunks",
+    "text": "Code Chunks\n\nset.seed(1)\nnorm &lt;- rnorm(100)\nhist(x = norm, \n     xlab = \"X Axis Name\", \n     ylab = \"Count\", \n     main = \"Histogram of 100 observations from a Standard Normal\")\n\n\n\n\n\n\n\n\nUnless you include the chunk option #| echo: false, your code chunk will be displayed in your final document."
+  },
+  {
+    "objectID": "Homework/CSSS508_HW1_Template.html#text-and-inline-text",
+    "href": "Homework/CSSS508_HW1_Template.html#text-and-inline-text",
+    "title": "Homework 1",
+    "section": "Text and Inline Text",
+    "text": "Text and Inline Text\nThe sample mean of the data plotted above (rounded to 3 decimal points) is 0.109 and the variance is 0.807.\nWhat’s the relationship between standard deviation and variance?\n\\[ \\text{Standard Deviation}(X) = \\sqrt{\\text{Variance}(X)} \\]\nThe standard deviation of the data plotted above is 0.898."
+  },
+  {
+    "objectID": "syllabus.html",
+    "href": "syllabus.html",
+    "title": "Syllabus",
+    "section": "",
+    "text": "Welcome! I look forward to working with you this quarter.\nThis syllabus is subject to change. All changes will be announced in class and via Canvas announcements.\n\nOverview\nThis course is intended to give students a foundational understanding of programming in the statistical language R. This knowledge is intended to be broadly useful wherever you encounter data in your education and career.\nThis course has no prerequisites; we do not assume you have any prior programming experience with R or any other language. We will also cover almost no statistics, but this course should help prepare you for CSSS, STAT, or other departments’ methods courses so that you can focus on the methods they cover more than the coding itself. Additionally, the basic concepts you learn will be applicable to other programming languages and research in general, such as logic and algorithmic thinking.\n\n\nLearning objectives\nBy the end of the course, students will be able to…\n\nDevelop more confidence in their programming skills and their understanding of computation more broadly\nBe familiar with the RStudio application and the syntax of the R language\nOrganize and document coding projects for reproducibility and efficient workflow\nRead in data from a file and explore the data\nManipulate and reformat data for quality control, summary statistics, and other purposes\nCombine multiple data sets from different sources and of different types\nCreate beautiful, clear, and informative data visualizations\nCombine text, code, and output into reports using Quarto\nGain confidence troubleshooting, debugging, and learning how to do new things in R\n\n\n\nStructure\nThis course consists of a hands-on lecture and drop-in office hours, each once a week for two hours.\nIn person or remote? This course is intended to be primarily in person, but I recognize that life happens, so I will plan to hold lectures and office hours in a hybrid fashion in case you need to join remotely sometimes. This way we can also post lecture recordings in case you want to review something from class.\n\nLectures\nFor a schedule of lecture topics, please see the Lectures page. Note that the course will not meet during final exam week.\nPlease bring a laptop to class each week; I will spend a lot of class “live coding”, meaning I will move at a pace and in a sequence that is intended for you to code along with me and ask questions as they come up. I will also have some practice problems for you to work on during class. If you do not have a laptop you can bring to class and are not sure how to borrow one, please let me know in advance.\n\n\nOffice hours\nOffice hours are optional/drop-in and are a great space for asking questions, getting advice, or continuing discussions from class.\n\n\n\nResources\nThis course has no required text. I will guide you through content during lecture, and the lecture notes will all be here on this website. There are also many helpful resources available for free online if you would like further references along the way or after this class ends, and here is just a selection that you might find useful:\n\nR for Data Science by Hadley Wickham, Mine Çetinkaya-Rundel, & Garrett Grolemund.\n\n\n\nClass communication\n\nCourse content (lecture notes) and homework instructions will be posted here on this course website.\nYou will be submitting your assignments and peer reviews through Canvas.\nCheck your Canvas notification settings and make sure you get our course announcements! This is how I will send out homework clarifications, schedule changes, and other important information.\nPlease use Ed Discussion to post your questions to peers and provide some advice to others! I will also keep an eye on the discussions and step in as needed, but the primary goal is to encourage collaboration and discussion among members of the class.\nPlease also make good use of my office hours to address your questions and get extra practice with the material.\nWhen asking questions, please provide the code you ran and the error you gave, be specific and concrete, and try to provide a minimal reproducible example. This helps me and your fellow students give you the most helpful feedback!\n\n\n\nAnonymous feedback\nThroughout the course, I welcome your feedback through this short anonymous feedback survey on what’s working for you about the class environment or format, what’s not, and any suggestions or ideas you have.\n\n\nGrading\nThis course is graded as credit/no credit. To pass you need to receive at least 60% of the available points. There will be 9 graded homework assignments, assigned weekly for the first 9 weeks of instruction. There are 4 points possible for each week that features a homework.\n\nHomework (75%; 3 points): These must be turned in as rendered Markdown documents which we will learn to create and for which templates are provided. They will be graded for completion (3 points if submitted, 0 otherwise). These are designed first and foremost to develop skills rather than “prove” you have learned concepts. I encourage you to communicate and work together, so long as you write and explain your code yourself and do not copy work. You can learn a lot from replicating others’ code, but you will learn nothing if you copy it without knowing how it works! In other words, you’re not really going to learn unless you do the coding yourself!\nPeer Review (25%; 1 point): Each week an assignment is due, students will be randomly assigned to provide constructive feedback on another student’s submission. Reading others’ code is an important skill and you will write better code knowing others will see it. These reviews will be due 5 days after homework is due. Each peer review is worth 1 point and will be graded for completion.\nSchedule: We have a 2-hour interactive lecture/lab session on Tuesdays. Office Hours will be be held on Wednesdays. Homeworks will be due before class each Tuesday and peer reviews will be due 5 days later, by end-of-day on Sundays. Make sure to check the Homework page or Canvas for all due dates!\n\n\n\nClassroom Environment\nI’m committed to fostering a friendly and inclusive classroom environment in which all students have an equal opportunity to learn and succeed. This course is an attempt to make an often difficult and frustrating experience (learning R for the first time) less obfuscating, daunting, and stressful. That said, learning happens in different ways at at a different pace for everyone. Learning is also a collaborative and creative process and my aim is to create an environment in which you all feel comfortable asking questions of me and each other. Treat your peers and yourself with empathy and respect as you all approach this topic from a range of backgrounds and experiences (in programming and in life).\n\nNames & Pronouns: Everyone deserves to be addressed respectfully and correctly. You are welcome to send me your preferred name and correct gender pronouns at any time.\nGetting Help: If at any point during the quarter you find yourself struggling to keep up, please let me know! I am here to help. A great place to start this process is by chatting after class, coming to office hours, or sending me an email.\nDiversity: Diverse backgrounds, embodiments, and experiences are essential to the critical thinking endeavor at the heart of university education. Therefore, I expect you to follow the UW Student Conduct Code in your interactions with your colleagues and me in this course by respecting the many social and cultural differences among us, which may include, but are not limited to: age, cultural background, disability, ethnicity, family status, gender identity and presentation, body size/shape, citizenship and immigration status, national origin, race, religious and political beliefs, sex, sexual orientation, socioeconomic status, and veteran status.\nAccessibility & Accommodations: Your experience in this class is important to me. If you have already established accommodations with Disability Resources for Students (DRS), please communicate your approved accommodations to me at your earliest convenience so we can discuss your needs in this course. If you have not yet established services through DRS, but have a temporary health condition or permanent disability that requires accommodations (conditions include but not limited to; mental health, attention-related, learning, vision, hearing, physical or health impacts), you are welcome to contact DRS at 206-543-8924, uwdrs@uw.edu, or through their website. DRS offers resources and coordinates reasonable accommodations for students with disabilities and/or temporary health conditions. Reasonable accommodations are established through an interactive process between you, me (your instructor), and DRS. It is the policy and practice of the University of Washington to create inclusive and accessible learning environments consistent with federal and state law.\nAcademic Integrity: Academic integrity is essential to this course and to your learning. In this course, violations of the academic integrity policy include but are not limited to: copying from a peer, copying from an online resource, or using resources from a previous iteration of the course. That said, I hope you will collaborate with peers on assignments, and use Internet resources when questions arise to help solve issues. The key is that you ultimately submit your own work. Anything found in violation of this policy will be automatically given a score of 0 with no exceptions. If the situation merits, it will also be reported to the UW Student Conduct Office, at which point it is out of my hands. If you have any questions about this policy, please do not hesitate to reach out and ask.\nReligious Accommodations: Washington state law requires that UW develop a policy for accommodation of student absences or significant hardship due to reasons of faith or conscience, or for organized religious activities. The UW’s policy, including more information about how to request an accommodation, is available at Religious Accommodations Policy. Accommodations must be requested within the first two weeks of this course using the Religious Accommodations Request form."
+  },
+  {
+    "objectID": "Lectures/lec2_data_manip.html",
+    "href": "Lectures/lec2_data_manip.html",
+    "title": "Lecture 2: Manipulating and summarizing data",
+    "section": "",
+    "text": "(a) The experience I think some people had this week\n\n\n\n\n\n\n\n\n\n\n\n(b) The experience I want to help people have\n\n\n\n\n\n\n\nFigure 1: Two very different experiences with coding. (Illustration credit: Allison Horst)\nThere’s a certain amount of confusion and struggle that is a natural part of learning new skills and concepts, and that’s a great albeit uncomfortable thing. I didn’t mean to introduce additional barriers, though, and I’m sorry.\nLet’s get from Figure 1 (a) to Figure 1 (b) together today!",
+    "crumbs": [
+      "Lectures",
+      "Lecture 2: Data manipulation with base R"
+    ]
+  },
+  {
+    "objectID": "Lectures/lec2_data_manip.html#different-working-modes",
+    "href": "Lectures/lec2_data_manip.html#different-working-modes",
+    "title": "Lecture 2: Manipulating and summarizing data",
+    "section": "Different working modes",
+    "text": "Different working modes\nWe saw two different ways to write and organize R code last time: in the Console and in a Quarto document. A third mode is to make an R script, and we can demo that briefly here. What’s the difference, and when might you use one mode or another?\n\nConsole\n\nInteractive\nGreat for exploratory analysis\nGreat for trying out different commands and developing your code\nNot really meant for recording your steps for later\nNot meant for sharing with other people\nOrder matters: for example, you have to define a variable (height = 60) before you use it (height + 4) or modify it (height = height + 4)\n\nBut if you mix up the order, you get an error, and you can type new code to fix it\n\n\nR script (.R file type)\n\nGreat for organizing a final analysis or set of code\nOrder matters: runs from start to finish\nMake notes for yourself/readers in the comments\n\nQuarto document (.qmd file type)\n\nIncorporate text, code, tables, plots, etc. together in one document\nGreat for making a report, website, etc.\nOrder matters: runs from start to finish\n\n\nNote: when you render a Quarto document, it actually creates an html file on your computer in the same directory as your qmd file and with the same name. For example, if you render myHW1.qmd it will create myHW1.html in the same folder. It might be an unfamiliar file type, but it’s a file just like a pdf or a Word document or an R script. It is this html file which it opens for you in your browser or in RStudio, and after you render it you can always open that file at any time by double-clicking the html file with the same name as your qmd file. So when it comes time to submit your qmd and html files, you’ll want to submit the html file that’s already on your computer and in the same folder as the qmd file.",
+    "crumbs": [
+      "Lectures",
+      "Lecture 2: Data manipulation with base R"
+    ]
+  },
+  {
+    "objectID": "Lectures/lec2_data_manip.html#working-environments",
+    "href": "Lectures/lec2_data_manip.html#working-environments",
+    "title": "Lecture 2: Manipulating and summarizing data",
+    "section": "Working environments",
+    "text": "Working environments\nWhen you run height = 4 or read in data using the Console, you see these objects appear in the Environment tab. The reason it’s called the Environment tab is that it shows you what is in your current global environment. You can think of this like your work desk in R Studio. It’s the stuff you have defined already, that you can work with. If you run the code x + 4 in the console but you haven’t yet defined an object called x, you’ll get an error because that object is not defined in your global environment.\nWhen you open a script or a Quarto document and put code there, it doesn’t get run until you run it. So just because you have defined an object in your script or Quarto document does not mean it has actually been created anywhere yet. Similarly, the order in which you run your code matters.\nWhen you render a Quarto document, it actually creates a fresh environment behind the scenes and runs the code in the document start to finish. So if you defined some object height in your global environment (you see it in your Environment tab) but you never defined it in your Quarto document, and the code in your Quarto document tries to use it (like smaller_height = height - 4), you’ll get an error like “object height does not exist”.\nAll of this is important when it comes to troubleshooting errors yourself and when you ask for help in troubleshooting them.\nAlso, there are a few commands we learned that are useful when you work interactively in the Console but won’t work if you try to put them in a Quarto file and render it. The View() command and the ? command are both commands intended for use in the console only because they produce changes in the interactive RStudio window that can’t be reproduced in an html file when you try to render the Quarto file. Basically, commands that just print stuff or make plots/tables are fine, but commands that pull up viewing windows, help pages, etc probably won’t work. So if you get an error when you try to render the qmd file, and you have View and ? commands such as the following in your Quarto file, remove them and try rendering again:\n\nView(swiss)\n?swiss\n?mean",
+    "crumbs": [
+      "Lectures",
+      "Lecture 2: Data manipulation with base R"
+    ]
+  },
+  {
+    "objectID": "Lectures/lec2_data_manip.html#workflow-tips-and-time-savers",
+    "href": "Lectures/lec2_data_manip.html#workflow-tips-and-time-savers",
+    "title": "Lecture 2: Manipulating and summarizing data",
+    "section": "Workflow tips and time savers",
+    "text": "Workflow tips and time savers\nFor your homework as well as for coding in general, here are some key tips to make your life easier:\n\nRender your Quarto document frequently\n\nIf an error occurs, you know it was something you just changed and not anywhere in the whole document\nMakes errors more interpretable and easier to troubleshoot\n\nExplore and develop your code in the Console, and as you work out parts of your code that you want to include in the final document, put them in your Quarto document or R script (for homework, we’re using Quarto documents) in the order that it needs to be run\nUse RStudio’s autocomplete to help you type less and avoid typos\n\nIf you type the first 3-4 characters of the name of a dataset or a function in R, a little menu will appear and allow you to autocomplete the rest of the name\nIf it’s a function name you’re typing, it will give you a quick summary of the function’s purpose and format\nAs we will see today, if it’s a dataset, once you enter the name and type $ it will list all the variables of the dataset and you can autocomplete the name of the variable you want\n\nIf you already typed some code and you want to type similar code, copy and paste, then modify\nUse and practice keyboard shortcuts\n\nShift-Command-C (or Shift-Control-C on a PC) to comment/uncomment a line\nCommand-Return (or Control-Return on a PC) to run a line of code or a highlighted chunk of code\nOption-Command-I to insert a code chunk in a Quarto document",
+    "crumbs": [
+      "Lectures",
+      "Lecture 2: Data manipulation with base R"
+    ]
+  },
+  {
+    "objectID": "Lectures/lec2_data_manip.html#commenting-your-code",
+    "href": "Lectures/lec2_data_manip.html#commenting-your-code",
+    "title": "Lecture 2: Manipulating and summarizing data",
+    "section": "Commenting your code",
+    "text": "Commenting your code\nMany languages have a comment character that allows you to “comment out” parts of your code so that R will not run them. In R, that comment character is the hashtag #.\nWhy would I ever want to do that? One big reason: you can (and should! please!) use this to write comments to yourself and others who read your code, to explain what you’re doing or why. You can see examples of this above; for example, with the logical vectors, I used comments to tell you what each line of code did.\nThe second big reason: you can use this to temporarily not run certain lines, like if you’re troubleshooting code and you want to run the whole script start to finish but you want to skip some parts without deleting them. Let’s test this out. What value does x have after this code chunk? Why?\n\nx = 9\nx = x + 2\nx = x - 5\n\nWhat about after this code chunk, which is the same except the middle line is commented out? Why?\nRemember that to toggle back and forth between making the line commented and uncommented, you can use the keyboard shortcuts shift-control-C or shift-command-C.\n\nx = 9\n# x = x + 2\nx = x - 5",
+    "crumbs": [
+      "Lectures",
+      "Lecture 2: Data manipulation with base R"
+    ]
+  },
+  {
+    "objectID": "Lectures/lec2_data_manip.html#extracting-multiple-rowscolumns",
+    "href": "Lectures/lec2_data_manip.html#extracting-multiple-rowscolumns",
+    "title": "Lecture 2: Manipulating and summarizing data",
+    "section": "Extracting multiple rows/columns",
+    "text": "Extracting multiple rows/columns\nYou can also extract multiple rows and/or columns by specifying a vector of row/column indices or names instead of just a single one:\n\n# some different types of vectors:\n16:20\nc(2, 4, 5)\nc(\"Conthey\", \"Herens\", \"Sion\", \"Boudry\")\nswiss$Education\n\n# using vectors to extract more complex subsets of the data\nswiss[16:20, 2:3]\nswiss[c(\"Conthey\", \"Herens\", \"Sion\", \"Boudry\"), 2:4]\nswiss$Education[2:4]\n\nA very useful kind of vector for indexing and subsetting is a logical-valued vector, meaning its elements are all either true or false.\n\nswiss$Education\nswiss$Education &gt; 20\nswiss$Education == 53\nswiss$Education != 53\n!(swiss$Education == 53)\n\nNow let’s use these logical vectors to do even more powerful subsetting:\n\n# get the values of Education that are greater than 20\nswiss$Education[swiss$Education &gt; 20]\n# get the values of Fertility for provinces in which Education is greater than 20\nswiss$Fertility[swiss$Education &gt; 20]\n# get the indices of the Education column for which the value is greater than 20\nwhich(swiss$Education &gt; 20)",
+    "crumbs": [
+      "Lectures",
+      "Lecture 2: Data manipulation with base R"
+    ]
+  },
+  {
+    "objectID": "Lectures/lec2_data_manip.html#other-uses-of-logical-variables",
+    "href": "Lectures/lec2_data_manip.html#other-uses-of-logical-variables",
+    "title": "Lecture 2: Manipulating and summarizing data",
+    "section": "Other uses of logical variables",
+    "text": "Other uses of logical variables\nHow many of the provinces have Agriculture lower than 35%? 5%? 1%?\n\nsum(swiss$Agriculture &lt; 35)\nsum(swiss$Agriculture &lt; 5)\nsum(swiss$Agriculture &lt; 1)\n\nWhat percentage of provinces have Agriculture lower than 35%?\n\nmean(swiss$Agriculture &lt; 35)\n\n\n\n\n\n\n\nYour Turn\n\n\n\n\nWrite three different lines of code that will extract the Fertility variable of the swiss dataset.\nWhat does each of these lines do? Which of these lines work and which don’t? Which ones don’t work the way you expect? Why do you think that is?\n\n\nswiss[2,4]\nswiss[Courtelary,]\nswiss[\"Courtelary\"]\nswiss$Fertility[1,4]\nswiss$Fertility[1]\n\n\nUsing kable, make a table of just the Agriculture and Catholic variables of the swiss dataset.\nModify your answer to part 3 by showing just rows 5 through 10 in the table.",
+    "crumbs": [
+      "Lectures",
+      "Lecture 2: Data manipulation with base R"
+    ]
+  },
+  {
+    "objectID": "Lectures/lec2_data_manip.html#file-paths",
+    "href": "Lectures/lec2_data_manip.html#file-paths",
+    "title": "Lecture 2: Manipulating and summarizing data",
+    "section": "File paths",
+    "text": "File paths\nA file path is the path to a folder (directory) or file on your computer. File paths are specified in reference to a root directory or a home directory. So for example, on my computer, the file path “~/Documents/CSSS-math-camp-2024/gapminder.csv” means that in my home directory (signified by “~”), there should be a “Documents” folder, and in there should be a “CSSS-math-camp-2024” folder, and in there should be a file called “gapminder.csv”. This path may or may not exist; it’s an address, and a file may or may not actually live there, and one of those folders might not actually be in the folder it’s supposed to be in, etc.\nFile paths can be absolute or relative. An absolute file path is defined with reference to the root directory. For example, “/Users/jessicakunke/Documents/CSSS-math-camp-2024/gapminder.csv” is an absolute file path. On a Windows machine, the root directory is usually “C:\\”, and the slashes in the path are all backward slashes “\\” instead of forward slashes “/”. On Mac and Linux machines, the root directory is usually “/”.\n\n\n\n\n\n\nAn important note for Windows users\n\n\n\n\n\ntl;dr: use a double backslash instead of a single backslash throughout your Windows file paths.\nThe deets:\nUnfortunately, R and other languages use backslashes as an “escape character”. What does that mean? Consider how character values have to be surrounded by double quotes to indicate it’s a character value instead of a variable/object/function name. Then what do you do if your character string includes double quotes? You “escape” the quotes with a backslash:\n\n# these two lines won't work if you uncomment them\n# print(\"He said \"whooooaaa\"\")\n# cat(\"He said \"whooooaaa\"\")\n\n# but these work; note the different output of print and cat\nprint('He said \\\"whooooaaa\\\"')\ncat('He said \\\"whooooaaa\\\"')\n\nAs a result, if you want to include a backslash as a character, you need to escape it with another backslash:\n\n# these two lines won't work if you uncomment them\n#   specifically, they expect you to type more (they think the commands aren't \n#   complete) because the \\\" is interpreted as part of the character string and\n#   it's expecting another \" to end the character string\n# print(\"C:\\User\\Desktop\\\")\n# cat(\"C:\\User\\Desktop\\\")\n\n# but these work\nprint(\"C:\\\\User\\\\Desktop\\\\\")\ncat(\"C:\\\\User\\\\Desktop\\\\\")\n\n\n\n\nA relative file path is defined with reference to an arbitrary location. For example, “data/gapminder.csv” means, look in your current directory for a folder called “data”, and in there, look for a file called “gapminder.csv”.\nReading in the data with gapminder &lt;- read_csv(\"gapminder.csv\") will work if RStudio knows to look in the directory that contains our dataset. You can use the command getwd() (for “get working directory”) to see the folder where RStudio is currently looking for your files; this location or folder is called your current working directory. Any relative file paths you use are relative to this folder. So when you say the file you want is “gapminder.csv”, you’re looking for that file in this folder.\nYou can organize your R projects using absolute paths, but this is not what I recommend if you are sharing your code or collaborating with others. Instead, see the next section on R projects!\n\n\n\n\n\n\nExpand for tips on using absolute file paths\n\n\n\n\n\n\nCheck out setwd() and getwd()\nIn the RStudio Files pane, navigate to the data set you want, click the gear, select “Copy folder path to clipboard”, then paste that file path wherever you want the file path (e.g. inside read_csv()).",
+    "crumbs": [
+      "Lectures",
+      "Lecture 2: Data manipulation with base R"
+    ]
+  },
+  {
+    "objectID": "Lectures/lec2_data_manip.html#organizing-your-work-with-r-projects",
+    "href": "Lectures/lec2_data_manip.html#organizing-your-work-with-r-projects",
+    "title": "Lecture 2: Manipulating and summarizing data",
+    "section": "Organizing your work with R projects",
+    "text": "Organizing your work with R projects\nA fairly painless and straightforward way to handle these file path challenges is to create an R Project. This R project will be associated with a folder where you put most or all of the code and data needed for the project. When you open the project in RStudio, it will tell RStudio to use that folder as “home base”. Then you specify all your file paths relative to that folder.\nLet’s try this approach. Create an R Project (File &gt; New Project) and select either New Directory or Existing Directory.\nOnce your new project opens, let’s see where the current working directory is (it should be the folder that you made the project in):\n\n# get working directory (getwd)\ngetwd()\n\nMake sure that gapminder.csv is in this directory, then try loading the file again as before:\n\ngapminder &lt;- read_csv(\"gapminder.csv\")\n\nTa-da!\nNotice this command is kind of noisy, printing out a bunch of stuff we don’t need. As the message says, we can make it “quieter” by setting another argument of the read_csv() function:\n\ngapminder &lt;- read_csv(\"gapminder.csv\", show_col_types = FALSE)",
+    "crumbs": [
+      "Lectures",
+      "Lecture 2: Data manipulation with base R"
+    ]
+  },
+  {
+    "objectID": "Lectures/lec4_debugging_review.html",
+    "href": "Lectures/lec4_debugging_review.html",
+    "title": "Lecture 4: Debugging and review",
+    "section": "",
+    "text": "Homework and peer reviews (including for HW2) will be graded for completion\n\nThis is a one-credit course and I want the focus to be on practice, not points\n\nReminder: this week’s office hour is in Thomson, not Padelford (see website for details)\n\nDoes the office hour time work for people?",
+    "crumbs": [
+      "Lectures",
+      "Lecture 4: Debugging and review"
+    ]
+  },
+  {
+    "objectID": "Lectures/lec4_debugging_review.html#code-chunk-options",
+    "href": "Lectures/lec4_debugging_review.html#code-chunk-options",
+    "title": "Lecture 4: Debugging and review",
+    "section": "Code chunk options",
+    "text": "Code chunk options\nThere are several code chunk options, including echo, include, and eval. You can review them in the Quarto documentation here.\n\nWhich chunk option do we use…\n\nto show/hide the code in the rendered html document?\nto run/not run the code?\nto run the code but not show any output or messages from it?\n\nWhich chunk option(s) should we use when we load packages at the beginning of the Quarto document?\nWhich chunk option(s) should we use if we want to show the code we used to make a graph, but we don’t want to actually run it (we might do this in a tutorial, like to show how to install a package)?",
+    "crumbs": [
+      "Lectures",
+      "Lecture 4: Debugging and review"
+    ]
+  },
+  {
+    "objectID": "Lectures/lec4_debugging_review.html#formatting-text-to-look-like-code",
+    "href": "Lectures/lec4_debugging_review.html#formatting-text-to-look-like-code",
+    "title": "Lecture 4: Debugging and review",
+    "section": "Formatting text to look like code",
+    "text": "Formatting text to look like code\nTo do this, surround the text with backticks (`): `mutate()` will become mutate().",
+    "crumbs": [
+      "Lectures",
+      "Lecture 4: Debugging and review"
+    ]
+  },
+  {
+    "objectID": "Lectures/lec4_debugging_review.html#how-to-read-a-quarto-rendering-error-message",
+    "href": "Lectures/lec4_debugging_review.html#how-to-read-a-quarto-rendering-error-message",
+    "title": "Lecture 4: Debugging and review",
+    "section": "How to read a Quarto rendering error message",
+    "text": "How to read a Quarto rendering error message\nWhen you try to render a Quarto document and it fails, you get an error message something like this:\n\nLet’s break this down.\n\nThe thing with the arrow ==&gt; at the top is the command that RStudio runs when you click the Render button.\nThen it says it’s processing your file, and it shows some of the progress it made through rendering\n\nThe “unnamed-chunk-2” refers to a code chunk in your code\nIt says unnamed because we didn’t name the chunk (we hadn’t talked about how to do that anyway). If you had named it, the name would appear there instead of “unnamed-chunk-2”.\n\nThe actual error message starts with “Quitting from ….”\n\nThe part that tells you something about what’s happening is the error message itself: object 'true' not found. This suggests that somewhere you typed a “true” where it doesn’t know what to do with it.",
+    "crumbs": [
+      "Lectures",
+      "Lecture 4: Debugging and review"
+    ]
+  },
+  {
+    "objectID": "Lectures/lec4_debugging_review.html#naming-chunks",
+    "href": "Lectures/lec4_debugging_review.html#naming-chunks",
+    "title": "Lecture 4: Debugging and review",
+    "section": "Naming chunks",
+    "text": "Naming chunks\nIf I render the following Quarto document:\n\nI get the following error message:\n\nIf I take the same Quarto document and just name my code chunks like so:\n\nThen I get somewhat more helpful output about the progress before the error:\n\n\n\n\n\n\n\nYour turn\n\n\n\nMake a Quarto document that looks like the second one above, with the named chunks.\nThen identify and fix the error(s) to get it rendering successfully.",
+    "crumbs": [
+      "Lectures",
+      "Lecture 4: Debugging and review"
+    ]
+  },
+  {
+    "objectID": "Lectures/lec4_debugging_review.html#render-frequently",
+    "href": "Lectures/lec4_debugging_review.html#render-frequently",
+    "title": "Lecture 4: Debugging and review",
+    "section": "Render frequently!",
+    "text": "Render frequently!\nRule number 1: render frequently! But of course sometimes you forget, or you have other reasons that you add a lot of code or make a lot of code before rendering. Let’s talk about how to troubleshoot in that case: sequentially cut out code and try rendering again.\n\nCut (as in cut and paste, not as in delete) everything after the first code chunk.\nTry to render the document again.\n\nIf it doesn’t render successfully, you know that at least the first issue is in the small document you just tried to render: the YAML header, some Markdown text/formatting, or the first code chunk.\nIf it renders without errors, then the issue must be happening somewhere in the part that you cut. Paste it back, and now repeat step 1 but cut everything after the second code chunk. And so on.\n\n\nOnce you identify what line is triggering the error message, then you can work on figuring out what caused the error. Remember: this is not necessarily the code you want to edit. The part of the code you modify to fix the issue could be in an earlier line of code or an earlier code chunk.\n\n\n\n\n\n\nYour turn\n\n\n\nIn fact let’s practice that right now! In the qmd file below,\n\nWhich line is generating the error message? (To which line is the error message referring?)\nWhere would you edit the code to fix the error?",
+    "crumbs": [
+      "Lectures",
+      "Lecture 4: Debugging and review"
+    ]
+  },
+  {
+    "objectID": "Lectures/lec7_import_export_clean_join.html",
+    "href": "Lectures/lec7_import_export_clean_join.html",
+    "title": "Lecture 7: Import, export, process, and join data",
+    "section": "",
+    "text": "Data workflows. Illustration by Allison Horst."
+  },
+  {
+    "objectID": "Lectures/lec7_import_export_clean_join.html#file-paths",
+    "href": "Lectures/lec7_import_export_clean_join.html#file-paths",
+    "title": "Lecture 7: Import, export, process, and join data",
+    "section": "File paths",
+    "text": "File paths\nA file path is the path to a folder (directory) or file on your computer. File paths are specified in reference to a root directory or a home directory. So for example, on my computer, the file path “~/Documents/CSSS-508/data/airlines.csv” means that in my home directory (signified by “~”), there should be a “Documents” folder, which should contain a “CSSS-508” folder, which in turn should contain a folder called “data” that has a file called “airlines.csv”. This path may or may not exist; it’s an address, and a file may or may not actually live there, and one of those folders might not actually be in the folder it’s supposed to be in, etc.\nFile paths can be absolute or relative. An absolute file path is a sequence of directories telling you how to get from the root directory to some location. Each directory in the path is separated by a slash. On a Windows machine, the slashes in the path are all backward slashes “\\” and the root directory is usually “C:\\”. On Mac and Linux machines, the slashes in the path are all forward slashes “/” and the root directory is usually “/”. For example, “C:\\User\\Desktop\\” is an example of a Windows absolute file path, and “/Users/jessicakunke/Documents/CSSS-508/data/airlines.csv” is an example of a Mac absolute file path.\nImportant note: if you are on a Windows machine, use a double backslash instead of a single backslash throughout your Windows file paths when you are typing them in R. Next week we will be able to better explain why this is once we learn more about working with text in R, but feel free to take a peek at the details below if you’re curious. Otherwise, for now, just consider this a handy tip. In fact, in order for me to get the single backslash to show up correctly in these lecture notes, I had to type them as double backslashes.\n\n\n\n\n\n\nWhy the double backslash?\n\n\n\n\n\nR and other languages use backslashes as an “escape character”. What does that mean? We’ll learn more next week about handling text in R, but let’s introduce the idea now. Consider how character values have to be surrounded by double quotes to indicate it’s a character value instead of a variable/object/function name. Then what do you do if your character string includes double quotes? You “escape” the quotes with a backslash:\n\n# these two lines won't work if you uncomment them\n# print(\"He said \"whooooaaa\"\")\n# cat(\"He said \"whooooaaa\"\")\n\n# but these work; note the different output of print and cat\nprint('He said \\\"whooooaaa\\\"')\ncat('He said \\\"whooooaaa\\\"')\n\nAs a result, if you want to include a backslash as a character, you need to escape it with another backslash:\n\n# these two lines won't work if you uncomment them\n#   specifically, they expect you to type more (they think the commands aren't \n#   complete) because the \\\" is interpreted as part of the character string and\n#   it's expecting another \" to end the character string\n# print(\"C:\\User\\Desktop\\\")\n# cat(\"C:\\User\\Desktop\\\")\n\n# but these work\nprint(\"C:\\\\User\\\\Desktop\\\\\")\ncat(\"C:\\\\User\\\\Desktop\\\\\")\n\nMore info on Windows file paths\n\n\n\nA relative file path is defined with reference to an arbitrary location. Examples:\n\n“data/airlines.csv” means “look in your current directory for a folder called ‘data’, and in there, look for a file called ‘airlines.csv’”.\nThe home directory is typically “C:\\Users\\username” on Windows and “/Users/username” on a Mac/Linux system, where you replace “username” with your username. A shorthand for the home directory in either case is “~”.\n\nIf you want to look “up” a level, i.e. the directory that contains your current directory, then use “..”. For example, if you’re in “~/MyDocs/Pictures” and you want to look in “~/MyDocs/Music”, you would use “../Music”. The “..” brings you up/back a level to MyDocs, and then “/Music” brings you into the Music subfolder of MyDocs:\n\nReading in the data with airlines = read_csv(\"airlines.csv\") will work if RStudio knows to look in the directory that contains our dataset. You can use the command getwd() (for “get working directory”) to see the folder where RStudio is currently looking for your files; this location or folder is called your current working directory. Any relative file paths you use are relative to this folder. So when you say the file you want is “airlines.csv”, you’re looking for that file in this folder.\n\ngetwd()\n\nThe length of an absolute file path is how deep (how many levels/folders) you are nested within the root folder. The length of a relative file path is how many levels removed you are from your current working directory. A major advantage of relative file paths is that if the things you need for a project are all relatively close to each other in your file system, then no matter where they are or how many folders deep they are, the relative file paths will be short even though the absolute file paths may be long and complicated. Absolute paths can also be annoying if you are sharing your code or collaborating with others. For an alternative project setup using relative paths, see the next section on R projects!\n\n\n\n\n\n\nExpand for tips on using absolute file paths\n\n\n\n\n\n\nCheck out setwd() and getwd()\nIn the RStudio Files pane, navigate to the data set you want, click the gear, select “Copy folder path to clipboard”, then paste that file path wherever you want the file path (e.g. inside read_csv()).\n\n\n\n\n\n\n\n\n\n\nYour Turn\n\n\n\n\nUse getwd() to figure out what your current working directory is in RStudio.\nIn the RStudio Files pane, navigate to some data set on your computer, click the gear, select “Copy folder path to clipboard”, then paste that file path somewhere (in a script, in the Console as a comment, into a text file, whatever) to take a look at it. Remember: a file path is not itself code, so either put it in quotes or comment it out if you’re pasting it in the Console, an R script, or a Quarto document. If you copy and paste it into Word or Notepad or something, then it doesn’t matter. Once you’ve got the file path, describe what each part of that file path tells you.\nRewrite the absolute file path “~/Documents/UW/CSSS508/Data/mydata.csv” as a relative file path that is relative to the directory “UW”. In other words, if your current working directory is “~/Documents/UW”, write a relative file path to get from there to the file mydata.csv.\nNow suppose that UW also contains a folder called “Research” and suppose that folder is your current working directory; write a relative file path to the file mydata.csv."
+  },
+  {
+    "objectID": "Lectures/lec7_import_export_clean_join.html#organize-your-work-with-r-projects",
+    "href": "Lectures/lec7_import_export_clean_join.html#organize-your-work-with-r-projects",
+    "title": "Lecture 7: Import, export, process, and join data",
+    "section": "Organize your work with R projects",
+    "text": "Organize your work with R projects\nA fairly painless and straightforward way to handle these file path challenges is to create an R Project. This R project will be associated with a folder where you put most or all of the code and data needed for the project. When you open the project in RStudio, it will tell RStudio to use that folder as your working directory, so any relative file paths will be relative to that folder.\nLet’s try this approach. Create an R Project (File &gt; New Project) and select either New Directory or Existing Directory.\nOnce your new project opens, figure out where the current working directory is (it should be the folder that you made the project in):\n\n# get working directory (getwd)\ngetwd()\n\nMake sure that airlines.csv is in this directory, then try loading the file again as before:\n\nairlines = read_csv(\"airlines.csv\")\n\nTa-da!\nNotice this command is kind of noisy, printing out a bunch of stuff we don’t need. As the message says, we can make it “quieter” by setting another argument of the read_csv() function:\n\nairlines = read_csv(\"airlines.csv\", show_col_types = FALSE)\n\nIn the future, when you want to work on this project, open RStudio by navigating to that folder in Finder or File Explorer and double-click the .Rproj file. This will automatically set your working directory to that folder! Splendid!\nUsing R Projects, you can have multiple RStudio sessions open and running at once if you like: for example, one for your CSSS 508 homework, one for your research, and one for your homework in another course.\n\n\n\n\n\n\nYour Turn\n\n\n\nSuppose that you want to keep all your data in a “Data” subfolder of your project directory (I often recommend doing this). How would you modify the code below to read in data files from that folder?\n\nairlines = read_csv(\"airlines.csv\")\n\n\n\n\n\n\n\n\n\nSolution\n\n\n\n\n\nAssuming you opened your R Project by double-clicking the .RProj file, your working directory should be your project directory. Since “Data” is a subfolder of that project directory, you can use the following relative path to say “look for a folder here called ‘Data’ and look inside there for a file called ‘airlines.csv’”.\n\nairlines = read_csv(\"Data/airlines.csv\")"
+  },
+  {
+    "objectID": "Lectures/lec7_import_export_clean_join.html#read-in-todays-data",
+    "href": "Lectures/lec7_import_export_clean_join.html#read-in-todays-data",
+    "title": "Lecture 7: Import, export, process, and join data",
+    "section": "Read in today’s data",
+    "text": "Read in today’s data\nWe’ll assume you have the csv data files in a “Data” subfolder of your R project folder, so either make sure you have your project set up that way in order to successfully load the data with the code below, or adapt the code below to look for the data wherever you actually stored it.\n\nairlines = read_csv(\"Data/airlines.csv\"))\nflights = read_csv(\"Data/flights.csv\"))\n\nNotice that this requires copying and pasting “Data/” many times. What if later you decide to reorganize your files and you move the data into another folder, or you rename the folder? You might update end up missing one of these lines when you go to update the code. To avoid that issue, I recommend that if you are going to use a file path more than once, actually store it as an object and then use paste0() to paste together the two strings without a space in between (that’s what the 0 means, no added space in between).\nTo see how this works and practice a little:\n\ndata_path = \"Data/\"\n\npaste0(data_path, \"airlines.csv\")\n\npaste0(\"My name is\", \"Jess\")\n\nSo here’s the code you would actually use to read in your data files:\n\n# set the relative file path to the folder where your data is stored\ndata_path = \"Data/\"\n\n# read in your data files\nairlines = read_csv(paste0(data_path, \"airlines.csv\"))\nflights = read_csv(paste0(data_path, \"flights.csv\"))"
   },
   {
     "objectID": "Lectures/lectures.html",

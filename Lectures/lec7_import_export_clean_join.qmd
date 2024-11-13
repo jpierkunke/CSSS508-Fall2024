@@ -1,0 +1,385 @@
+---
+title: "Lecture 7: Import, export, process, and join data"
+subtitle: "CSSS 508"
+author: "Jess Kunke; drawn from R for Data Science by Hadley Wickham and Garrett Grolemund"
+date: "Tue 12 Nov 2024"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number_sections: false
+    embed-resources: true
+execute:
+  eval: false
+  message: false
+  warning: false
+lightbox: true
+---
+
+```{r}
+#| include: false
+library(knitr)
+library(gapminder)
+library(tidyverse)
+```
+
+![Data workflows. Illustration by Allison Horst.](https://github.com/jules32/useR-2019-keynote/blob/gh-pages/img/horst-eco-r4ds.png?raw=true)
+
+# Updates and reminders
+
+- This week's office hours were via Zoom only due to the holiday, but the Monday 4-5pm office hours will be hybrid again starting Nov 18th
+- Office hours are Mon 4-5pm (Zoom and my office) and Fri 2-3pm (Zoom only)
+
+# Outline for today
+
+- RStudio pro tips
+- Importing/reading in data
+- Processing data using factors
+- Joining two datasets
+- Exporting data to a file
+
+# RStudio pro tips
+
+- Gear symbol next to "Render" button
+  - Control where your document preview appears (and whether it appears at all) when you render
+  - Control whether the Source panel shows previews of your images and equations
+  - Control whether output you run from your qmd file using Run (or the keyboard shortcut or the green arrow) appears in the Console or "inline" in your Source panel
+
+- Use keyboard shortcuts and autocompletion to reduce the typing and clicking you need to do
+  - Command-enter/Control-enter to run the line of code your cursor is on
+    - Add Shift to run the whole code chunk
+  - To make similar code to what you already have, copy, paste, and edit instead of typing it all from scratch
+  - Use find and replace (Command-F or Control-F)
+  - Take advantage of RStudio's autocompletion features to autocomplete function names, object names, and YAML options
+  - If you want to rerun an old line of code in the Console, just use the up arrow to find it again in your command history
+    - If you want to run a similar line of code, use the up arrow and then modify it before you run it
+  - If you want to find a command you ran previously that starts with something, type that something in the Console and then hit Command-up or Control-up to scroll through commands you ran that start with that!
+
+# Import/read data
+
+The simplest way to read data into R is from a text file such as a comma-separated values (csv) file. If you have data in Excel, I generally recommend exporting it as a csv and importing the csv file into R. There are packages for importing Excel files into R, but I find some of the data formatting is more consistent if I export to csv first instead of trying to read the Excel files directly into R. That's something you can experiment with in your own work if you like! There are ways to read many other file types into R, of course, but for this class we will focus on csv files since they are common and very computer-friendly.
+
+The package **nycflights13** contains five datasets: airlines, airports, flights, planes, and weather. We'll be working with two of these datasets today, but to practice reading data from a file, I exported them as csv files for us to read in: "airlines.csv" and "flights.csv".
+
+Please download those csv files from Canvas so you can follow along.
+
+In theory, you can just read these datasets into R with one line of code each. For example, try this to load the airlines data:
+
+```{r}
+airlines = read_csv("airlines.csv")
+```
+
+Did that work for you? It may or may not. To know why, we need to talk a bit about how files are organized on your computer, and where R looks for things when you tell it to read in a file. This can be a bit painful and confusing at first, but once you know a little about it as we'll cover today, you can establish a workflow that works for you!
+
+## File paths
+
+A **file path** is the path to a folder (directory) or file on your computer. File paths are specified in reference to a **root** directory or a **home** directory. So for example, on my computer, the file path "~/Documents/CSSS-508/data/airlines.csv" means that in my home directory (signified by "~"), there should be a "Documents" folder, which should contain a "CSSS-508" folder, which in turn should contain a folder called "data" that has a file called "airlines.csv". This path may or may not exist; it's an address, and a file may or may not actually live there, and one of those folders might not actually be in the folder it's supposed to be in, etc.
+
+File paths can be absolute or relative.  An **absolute** file path is a sequence of directories telling you how to get from the root directory to some location. Each directory in the path is separated by a slash. On a Windows machine, the slashes in the path are all backward slashes "\\" and the root directory is usually "C:\\". On Mac and Linux machines, the slashes in the path are all forward slashes "/" and the root directory is usually "/". For example, "C:\\User\\Desktop\\" is an example of a Windows absolute file path, and "/Users/jessicakunke/Documents/CSSS-508/data/airlines.csv" is an example of a Mac absolute file path.
+
+**Important note: if you are on a Windows machine, use a double backslash** instead of a single backslash throughout your Windows file paths when you are typing them in R. Next week we will be able to better explain why this is once we learn more about working with text in R, but feel free to take a peek at the details below if you're curious. Otherwise, for now, just consider this a handy tip. In fact, in order for me to get the single backslash to show up correctly in these lecture notes, I had to type them as double backslashes.
+
+:::{.callout-warning collapse="true"}
+## Why the double backslash?
+
+R and other languages use backslashes as an "escape character". What does that mean? We'll learn more next week about handling text in R, but let's introduce the idea now. Consider how character values have to be surrounded by double quotes to indicate it's a character value instead of a variable/object/function name. Then what do you do if your character string includes double quotes? You "escape" the quotes with a backslash: 
+
+```{r}
+# these two lines won't work if you uncomment them
+# print("He said "whooooaaa"")
+# cat("He said "whooooaaa"")
+
+# but these work; note the different output of print and cat
+print('He said \"whooooaaa\"')
+cat('He said \"whooooaaa\"')
+```
+
+As a result, if you want to include a backslash as a character, you need to escape it with another backslash:
+
+```{r}
+# these two lines won't work if you uncomment them
+#   specifically, they expect you to type more (they think the commands aren't 
+#   complete) because the \" is interpreted as part of the character string and
+#   it's expecting another " to end the character string
+# print("C:\User\Desktop\")
+# cat("C:\User\Desktop\")
+
+# but these work
+print("C:\\User\\Desktop\\")
+cat("C:\\User\\Desktop\\")
+```
+
+[More info on Windows file paths](https://learn.microsoft.com/en-us/dotnet/standard/io/file-path-formats)
+:::
+
+A **relative** file path is defined with reference to an arbitrary location. Examples:
+
+- "data/airlines.csv" means "look in your current directory for a folder called 'data', and in there, look for a file called 'airlines.csv'".
+- The home directory is typically "C:\\Users\\username" on Windows and "/Users/username" on a Mac/Linux system, where you replace "username" with your username. A shorthand for the home directory in either case is "~".
+
+If you want to look "up" a level, i.e. the directory that *contains* your current directory, then use "..". For example, if you're in "~/MyDocs/Pictures" and you want to look in "~/MyDocs/Music", you would use "../Music". The ".." brings you up/back a level to MyDocs, and then "/Music" brings you into the Music subfolder of MyDocs:
+
+![](images/filepath_example.png){width=70%}
+
+Reading in the data with `airlines = read_csv("airlines.csv")` will work if RStudio knows to look in the directory that contains our dataset. You can use the command `getwd()` (for "get working directory") to see the folder where RStudio is currently looking for your files; this location or folder is called your current **working directory**. Any relative file paths you use are relative to this folder. So when you say the file you want is "airlines.csv", you're looking for that file in this folder.
+
+```{r}
+getwd()
+```
+
+The length of an absolute file path is how deep (how many levels/folders) you are nested within the root folder. The length of a relative file path is how many levels removed you are from your current working directory. **A major advantage of relative file paths** is that if the things you need for a project are all relatively close to each other in your file system, then no matter where they are or how many folders deep they are, the relative file paths will be short even though the absolute file paths may be long and complicated. Absolute paths can also be annoying if you are sharing your code or collaborating with others. For an alternative project setup using relative paths, see the next section on R projects!
+
+::: {.callout-caution collapse="true"}
+## Expand for tips on using absolute file paths
+
+- Check out `setwd()` and `getwd()`
+- In the RStudio Files pane, navigate to the data set you want, click the gear, select "Copy folder path to clipboard", then paste that file path wherever you want the file path (e.g. inside `read_csv()`).
+:::
+
+:::{.callout-note}
+## Your Turn
+
+1. Use `getwd()` to figure out what your current working directory is in RStudio.
+2. In the RStudio Files pane, navigate to some data set on your computer, click the gear, select "Copy folder path to clipboard", then paste that file path somewhere (in a script, in the Console as a comment, into a text file, whatever) to take a look at it. Remember: a file path is not itself code, so either put it in quotes or comment it out if you're pasting it in the Console, an R script, or a Quarto document. If you copy and paste it into Word or Notepad or something, then it doesn't matter. Once you've got the file path, describe what each part of that file path tells you.
+3. Rewrite the absolute file path "~/Documents/UW/CSSS508/Data/mydata.csv" as a relative file path that is relative to the directory "UW". In other words, if your current working directory is "~/Documents/UW", write a relative file path to get from there to the file mydata.csv.
+4. Now suppose that UW also contains a folder called "Research" and suppose that folder is your current working directory; write a relative file path to the file mydata.csv.
+:::
+
+## Organize your work with R projects
+
+A fairly painless and straightforward way to handle these file path challenges is to create an R Project. This R project will be associated with a folder where you put most or all of the code and data needed for the project. When you open the project in RStudio, it will tell RStudio to use that folder as your working directory, so any relative file paths will be relative to that folder.
+
+Let's try this approach. Create an R Project (File > New Project) and select either New Directory or Existing Directory.
+
+Once your new project opens, figure out where the current working directory is (it should be the folder that you made the project in):
+
+```{r}
+# get working directory (getwd)
+getwd()
+```
+
+Make sure that airlines.csv is in this directory, then try loading the file again as before:
+
+```{r}
+airlines = read_csv("airlines.csv")
+```
+
+Ta-da!
+
+Notice this command is kind of noisy, printing out a bunch of stuff we don't need.  As the message says, we can make it "quieter" by setting another argument of the `read_csv()` function:
+
+```{r}
+airlines = read_csv("airlines.csv", show_col_types = FALSE)
+```
+
+In the future, when you want to work on this project, open RStudio by navigating to that folder in Finder or File Explorer and double-click the .Rproj file. This will **automatically** set your working directory to that folder! Splendid!
+
+Using R Projects, you can have multiple RStudio sessions open and running at once if you like: for example, one for your CSSS 508 homework, one for your research, and one for your homework in another course.
+
+:::{.callout-note}
+## Your Turn
+
+Suppose that you want to keep all your data in a "Data" subfolder of your project directory (I often recommend doing this). How would you modify the code below to read in data files from that folder?
+
+```{r}
+airlines = read_csv("airlines.csv")
+```
+:::
+
+:::{.callout-note collapse=true}
+## Solution
+
+Assuming you opened your R Project by double-clicking the .RProj file, your working directory should be your project directory. Since "Data" is a subfolder of that project directory, you can use the following relative path to say "look for a folder here called 'Data' and look inside there for a file called 'airlines.csv'".
+
+```{r}
+airlines = read_csv("Data/airlines.csv")
+```
+:::
+
+## Read in today's data
+
+**We'll assume you have the csv data files in a "Data" subfolder of your R project folder**, so either make sure you have your project set up that way in order to successfully load the data with the code below, or adapt the code below to look for the data wherever you actually stored it.
+
+```{r}
+airlines = read_csv("Data/airlines.csv"))
+flights = read_csv("Data/flights.csv"))
+```
+
+Notice that this requires copying and pasting "Data/" many times. What if later you decide to reorganize your files and you move the data into another folder, or you rename the folder? You might update end up missing one of these lines when you go to update the code. To avoid that issue, I recommend that if you are going to use a file path more than once, actually store it as an object and then use `paste0()` to paste together the two strings without a space in between (that's what the 0 means, no added space in between).
+
+To see how this works and practice a little:
+
+```{r}
+data_path = "Data/"
+
+paste0(data_path, "airlines.csv")
+
+paste0("My name is", "Jess")
+```
+
+So **here's the code you would actually use** to read in your data files:
+
+```{r}
+# set the relative file path to the folder where your data is stored
+data_path = "Data/"
+
+# read in your data files
+airlines = read_csv(paste0(data_path, "airlines.csv"))
+flights = read_csv(paste0(data_path, "flights.csv"))
+```
+
+
+# Process data using factors
+
+We've already done a good bit of work with data manipulation using **tidyverse**, and we are going to keep doing more with data processing next week. For now, let's build upon what we started to learn about factors and missing data in the homework.
+
+Let's start by reviewing what you saw in the homework. Consider a vector of months:
+
+```{r}
+x = c("Dec", "Apr", "Jan", "Mar")
+```
+
+Handling this as character-type data has at least two disadvantages: (1) you might have typos or multiple formats like "January" or "01" or "Jam" instead of "Jan", even though there should only be 12 possible values since there are 12 months, and (2) sorting the vector sorts it alphabetically, not in the order of months. For instance, try this out:
+
+```{r}
+sort(x)
+```
+
+We can address these problems by making the variable a factor. If you **don't care about the order** of the levels, you can make the variable a factor in one step:
+
+```{r}
+x = factor(x)
+```
+
+Take a look at the vector now by calling it and trying to sort it:
+
+```{r}
+# call x
+x
+# sort x
+sort(x)
+```
+
+Otherwise, **if you do care about the order**, as we do with months, we'll do it in two steps. First, we create a list of the levels (possible values) in the order we want them to follow:
+
+```{r}
+month_levels = c(
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+)
+```
+
+Then we make our variable a factor:
+
+```{r}
+x = factor(x, levels = month_levels)
+```
+
+Take a look at the vector now by calling it and trying to sort it:
+
+```{r}
+# call x
+x
+# sort x
+sort(x)
+```
+
+If you have typos or different formats, they'll be converted to NA, in which case you can look back at the original data to see what those values were and handle them accordingly. For example:
+
+```{r}
+# here the last two values should be counted as the same month
+x_oops = c("Dec", "Apr", "January", "Jan")
+x_oops_factor = factor(x_oops, levels = month_levels)
+# but they're not
+x_oops_factor
+# which value didn't match our 12 values?
+x_oops[is.na(x_oops_factor)]
+# ahh, that should be Jan, so let's change it using logical indices
+# - this code says, "set every element of x_oops whose value is 'January' to 'Jan'"
+x_oops[x_oops == "January"] = "Jan"
+```
+
+How would we adapt the above code if `x` were not an object on its own but a column of a dataset? For example, here's a small example dataset:
+
+```{r}
+test_data = data.frame(month = c("Dec", "Apr", "Jan", "Mar"), temp_F = c(-10, 51, 16, 47))
+
+test_data$month
+```
+
+How do we define levels for the `month` column and format the column as a factor?
+
+:::{.callout-note collapse=true}
+## Solution
+
+```{r}
+# first set the levels:
+month_levels = c(
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+)
+
+# then do one of the following:
+# either this
+test_data$month = factor(test_data$month, levels = month_levels)
+# or this
+test_data = test_data %>%
+  mutate(month = factor(month, levels = month_levels))
+
+# check the results:
+test_data$month
+str(test_data$month)
+```
+:::
+
+
+
+:::{.callout-note}
+## Your Turn: Applying this to today's data
+
+1. Which column do the `airlines` and `flights` datasets have in common? How many different values does that column have in the `airlines` dataset? in the `flights` dataset? Does each row have a unique value for this column in the airlines dataset? in the `flights` dataset?
+
+2. Soon we're going to merge these two datasets together by matching this column, so to prepare for that, let's quality control this column in the two datasets.
+
+    a. You should have found in Problem 1 that in one of the datasets (but not the other), every row has a unique value for this shared column. Make the column a factor in that dataset with a unique level for each unique value. Does order matter? Why or why not?
+    
+    b. Using the same levels as in Part a, make the same column of the other dataset a factor. Are there any missing values (NAs)? Why, what were the original values? You can read in that second dataset again to get the original values back instead of the NAs.
+    
+    c. Identify the unique values of that second dataset and correct them before making the column a factor. In other words, let's say you find some typos like "Jam" instead of "Jan". How would you write the following logic in R code: "For all the rows in which this column equals 'Jam', set this column to 'Jan'." Give it a shot and discuss with your neighbors!
+    
+By the end of this exercise, you should have made the following changes:
+
+- The shared column should now be formatted as a factor in both these datasets.
+- Any typos should be corrected so that there are no missing values in this column in either dataset.
+:::
+
+# Join two datasets
+
+As our next step, we're going to join the two datasets using this shared column. To understand conceptually how a general join works, let's consider this diagram:
+
+![Joining two datasets.](https://mgimond.github.io/ES218/img/full_join.png)
+
+There are actually many different ways to join data: do you want to keep your first/left dataset and just add columns based on the second/right dataset? Vice versa? Keep rows from both? How do you handle any cases in which there may be multiple matches?
+
+For now, we will assume that there are no multiple matches, that you have correctly identified the column you're joining by as a unique identifier. We'll also assume you want to keep your first/left dataset and just add columns based on the second/right dataset, so that's known as a left join.
+
+```{r}
+# start with your "left" dataset
+combined = flights %>%
+  left_join(airlines)
+```
+
+How can we check whether the join worked?
+
+# Export/Write data to a file
+
+We used `read_csv()` to read in the data, and to write to file, we'll use `write_csv()`. Where will the following line of code save your output? What if you wanted to save to another location?
+
+```{r}
+write_csv(combined, file = "combined.csv")
+```
+
+
+
+
+
