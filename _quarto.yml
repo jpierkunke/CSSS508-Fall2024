@@ -43,6 +43,8 @@ website:
           text: "Lecture 5: Data visualization"
         - file: Lectures/lec6_better_plots.qmd
           text: "Lecture 6: Better plots"
+        - file: Lectures/lec7_import_export_clean_join.qmd
+          text: "Lecture 7: Import, process, join and export data"
 
     - title: "Homework"
       contents: 

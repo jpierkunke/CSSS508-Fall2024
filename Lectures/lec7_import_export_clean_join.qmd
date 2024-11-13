@@ -1,5 +1,5 @@
 ---
-title: "Lecture 7: Import, export, process, and join data"
+title: "Lecture 7: Import, process, join and export data"
 subtitle: "CSSS 508"
 author: "Jess Kunke; drawn from R for Data Science by Hadley Wickham and Garrett Grolemund"
 date: "Tue 12 Nov 2024"
