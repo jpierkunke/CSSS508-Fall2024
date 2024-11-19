@@ -1,0 +1,426 @@
+---
+title: "Lecture 8: Working with text in R"
+subtitle: "CSSS 508"
+author: "Jess Kunke"
+date: "Tue 19 Nov 2024"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number_sections: false
+    embed-resources: true
+execute:
+  eval: false
+  message: false
+  warning: false
+lightbox: true
+---
+
+```{r}
+#| include: false
+library(knitr)
+library(gapminder)
+library(tidyverse)
+```
+
+# Outline for today
+
+- Continuing our work with the flight data
+  - Import/read the airlines and flights data
+  - Explore the data
+  - Make a variable a factor
+  - "Clean" the data (in this case, handle the typos)
+  - Join the two datasets
+  - Export/write the processed, combined dataset to a file
+- Extracting metadata from filenames!
+
+
+# Continuing our work with the flight data
+
+## Import/read the airlines and flights data
+
+Let's start by loading packages we plan to use and reading in the data:
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+# read in your data files
+airlines = read_csv("Data/airlines.csv")
+flights = read_csv("Data/flights_with_typos.csv")
+```
+
+Where does your data have to be located (and relative to where/what) in order for this code to successfully read in your data? How do R Projects help with that?
+
+## Explore the data
+
+Before you use data, it's good practice to explore the dataset and make sure you understand how it is organized and whether there seem to be errors:
+
+- What variables/columns do they have?
+- How is the data organized, and what does each row represent (a person, a country-year combination, etc)?
+- What possible values does each column/variable have? Do they make sense and do they conform with what you expect based on the documentation and whatever else you know about how the data were collected/created?
+- If you're working with multiple datasets, how do the datasets relate to one another?
+
+To figure these things out and generally explore the data, you might use any of a number of functions and strategies we've talked about, including (1) clicking on the datasets in the Environment panel so that they appear in the Source panel in a spreadsheet-like format, and (2) using some combination of the following commands, which is by no means an exhaustive list:
+
+```{r}
+str(airlines)
+str(flights)
+dim(airlines)
+dim(flights)
+names(airlines)
+names(flights)
+summary(airlines)
+summary(flights)
+head(airlines)
+head(flights)
+```
+
+Other commands you like to use?
+
+A nice way to figure out what variables are shared between the two datasets is to use the `%in%` operator. The three lines of code below help us explore how this operator works. Which line is the most useful for actually answering the question of which variables appear in both datasets?
+
+```{r}
+names(airlines) %in% names(flights)
+names(flights) %in% names(airlines)
+names(airlines)[names(airlines) %in% names(flights)]
+```
+
+They each have 16 unique values:
+
+```{r}
+n_distinct(airlines$carrier)
+n_distinct(flights$carrier)
+```
+
+Since `airlines` has 16 rows, that means every row has a unique value for the `carrier` column. Since `flights` has over 300,000 rows, there certainly must be repeats of at least some of the 16 unique carriers.
+
+Note that if you check which values they are, though, they are not the same 16 values:
+
+```{r}
+unique(airlines$carrier)
+unique(flights$carrier)
+```
+
+It's easier to directly compare these two sets of values if we sort them in the same way as each other:
+
+```{r}
+sort(unique(airlines$carrier))
+sort(unique(flights$carrier))
+```
+
+That should already tip you off that you will have to consider why these values don't match and what that means for your analysis. Are some of the differing values typos, or does this just reflect that each dataset contains data on only a subset of the possible airline carriers?
+
+Ideally you notice this before you start making `carrier` a factor or processing the rest of the data. For now, though, let's suppose you only checked how many unique values there were and didn't realize there are some carriers in each dataset that are not in the other.
+
+**Note** that at this point, we haven't done anything to the data. All the commands we've used up to this point in this lecture have shown us different things about the data, but we haven't actually modified or reformatted our `flights` and `airlines` objects at all, so we haven't modified or reformatted the copies of the data that we loaded into R. And unless we export/write back to the files we loaded (which we won't do till the end), we won't have changed the data in those files.
+
+## Make a variable a factor
+
+Let's say we go ahead and make carrier a factor, then. There are various ways we can do that, and they may have pros and cons. To understand this, let's play around with it some more first.
+
+We could make the carrier column a factor in different ways by specifying the levels differently. To understand how the order of the data in the column affects or doesn't affect the order of levels in the factor you make, we first consider a version of airlines that is sorted by `name` instead of `carrier`:
+
+```{r}
+airlines_byname = airlines %>% arrange(name)
+```
+
+So what is the same and what is different between `airlines` and `airlines_byname`?
+
+Now let's make `carrier` a factor in the `airlines_byname` dataset three different ways:
+
+```{r}
+airlines_byname = airlines_byname %>%
+  mutate(carrier_factor1 = factor(carrier),
+         carrier_factor2 = factor(carrier, levels = airlines_byname$carrier),
+         carrier_factor3 = factor(carrier, levels = c("9E", "AA", "AS", "B6", "DL", "EV", "F9", 
+                                                      "FL", "HA", "MQ", "OO", "UA", "US", "VX", 
+                                                      "WN", "YV", "ZZ", "BB", "DD", "EE", "UU")))
+```
+
+Question: where are these three new variables such as `carrier_factor1` being created? Where can you find them and look at them?
+
+Then let's take a look at them through code and compare them. How are they similar and how are they different? Why?
+
+```{r}
+# the first row of output from this command shows the values as they appear in airlines$carrier
+# the second row shows the possible levels, in the order you set them (or the default alphabetic order otherwise)
+airlines_byname$carrier_factor1
+
+# same, except the output is sorted
+sort(airlines_byname$carrier_factor1)
+
+# the first part of the str output says it's a factor variable with 16 levels 
+# and lists the first few possible levels in order.
+# then after the colon (:), it lists the first few values of airlines$carrier,
+# BUT instead of listing them by the character value ("9E", "AA", etc.), it lists
+# them by their order: 1 for the first level, 8 for the eighth level, etc.
+# this order depends on how you defined the levels!
+str(airlines_byname$carrier_factor1)
+
+# now let's run the same code, but for carrier_factor2 and carrier_factor3
+airlines_byname$carrier_factor2
+sort(airlines_byname$carrier_factor2)
+str(airlines_byname$carrier_factor2)
+
+airlines_byname$carrier_factor3
+sort(airlines_byname$carrier_factor3)
+str(airlines_byname$carrier_factor3)
+```
+
+Now that we understand more about the different ways we can set up a factor variable, let's get back to `airlines` and `flights`, neither of which we've changed still (we were playing with `airlines_byname`). What does the following code do?
+
+```{r}
+# note: in the homework I had you read the flights data again from scratch 
+# before running the following code.
+# that's because you were asked to read through the Problem 2b solution and run 
+# the code in that solution yourself before running the code below, so to make 
+# sure that the following code acted on the original dataset, we read it in 
+# again fresh.
+#
+# right now in lecture, we didn't do anything to flights or airlines, so we 
+# don't need to read the data again.
+
+airlines = airlines %>%
+  mutate(carrier = factor(carrier))
+
+flights = flights %>%
+  mutate(carrier_factor = factor(carrier, levels = levels(airlines$carrier)))
+```
+
+As you take a look at your new factor variable, though, you might notice that somehow you've introduced NAs:
+
+```{r}
+# some examples of exploratory commands that will tip you off that there are NAs now
+summary(flights$carrier_factor)
+unique(flights$carrier_factor)
+```
+
+We didn't originally have any missing data. Where did the NAs come from? How could you figure that out? It would be nice to look at the rows in which `carrier_factor` is NA and see what the original value was by looking at `carrier`. But the two columns are far apart in the dataset. We can actually view just the columns of interest. You might have noticed that when you click a dataset like `flights` in the environment panel to view it in the source panel, the `View(flights)` command appears in your Console. You can actually use the `View()` command directly to view specific columns, filter your dataset, and so on. For example:
+
+```{r}
+View(select(flights, carrier, carrier_factor))
+```
+
+**Please note** that the `View()` command does **NOT** work in a Quarto file when you try to render it, so use this command only in the Console. (Happy to explain further if you like.)
+
+However, we still have to scroll through all these rows. Since we know that what we care about is the rows in which `carrier_factor` is NA, we can extract just those rows with code:
+
+```{r}
+flights_compare = flights %>%
+  filter(is.na(carrier_factor))
+```
+
+Then what does this do?
+
+```{r}
+unique(flights_compare$carrier)
+```
+
+Can you think of other ways to indicate to yourself why some values are becoming NA?
+
+## "Clean" the data (in this case, handle the typos)
+
+Now that you have identified the carrier IDs in `flights` that didn't match those in `airlines`, we have to decide what to do about it. There are lots of possibilities. We might not know whether the carrier IDs that differ are typos or truly different values. We might be interested in all the carrier IDs that appear in both datasets, or we might only be interested in those that appear in `airlines`. For our context here, we might suspect that "00" was a typo for "OO" (perhaps these were manually entered from paper files at some point) and that "F8" and "F9" are supposed to be the same code. Hopefully we would have a way to verify this from area knowledge or from records. Sometimes we just don't know, and we have to make assumptions and document our assumptions.
+
+For now let's assume that we can be confident that these are typos: let's assume that "00" was supposed to be "OO" and "F8" was supposed to be "F9".
+
+1. Go ahead and change all "00" values to "OO" and all "F8" values to "F9" in the `flights$carrier` column.
+2. Then make it a factor using the same levels as `airlines$carrier`. 
+3. Then verify that there are no more NAs in `flights$carrier`, and explore `flights$carrier` to see if it seems correct now or if there's anything else you might want to consider.
+
+```{r}
+#| echo: false
+flights$carrier[flights$carrier == "00"] = "OO"
+flights$carrier[flights$carrier == "F8"] = "F9"
+flights$carrier = factor(flights$carrier, levels = levels(airlines$carrier))
+summary(flights$carrier)
+#    9E    AA    AS    B6    DL    EV    F9    FL    HA    MQ    OO    UA    US    VX    WN    YV 
+# 18460 32729   714 54635 48110 54173   685  3260   342 26397    32 58665 20536     0 12275   601 
+unique(flights$carrier)
+#  [1] UA AA B6 DL EV MQ US WN FL AS 9E F9 HA YV OO
+# Levels: 9E AA AS B6 DL EV F9 FL HA MQ OO UA US VX WN YV
+n_distinct(flights$carrier) # 15
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Join the two datasets
+
+As our next step, we're going to join the two datasets using this shared column. To understand conceptually how a general join works, let's consider this diagram:
+
+![Joining two datasets. In this figure, dj could be seen as another example of a lookup table that matches each fruit to a value of y.](https://www.yukatakemon.com/workshop/VancouverDataJam2022-Lesson2/leftjoin_image.png)
+
+There are actually many different ways to join data: do you want to keep your first/left dataset and just add columns based on the second/right dataset? Vice versa? Keep rows from both? How do you handle any cases in which there may be multiple matches?
+
+For now, we will assume that there are no multiple matches, that you have correctly identified the column you're joining by as a unique identifier. We'll also assume you want to keep your first/left dataset and just add columns based on the second/right dataset, so that's known as a left join.
+
+```{r}
+# start with your "left" dataset
+combined = flights %>%
+  left_join(airlines)
+```
+
+How can we check whether the join worked (the way we intended)?
+
+```{r}
+#| echo: false
+# this is a good time to demonstrate how summing a logical variable treates TRUE as 1 and FALSE as 0
+sum(is.na(combined$name))
+```
+
+
+## Export/write the processed, combined dataset to a file
+
+We used `read_csv()` to read in the data, and to write to file, we'll use `write_csv()`.
+
+1. Where will the following line of code save your output?
+2. What if you wanted to save to another location?
+
+```{r}
+write_csv(combined, file = "combined.csv")
+```
+
+
+
+# Extracting metadata from filenames!
+
+Download the gapminder zip file ("gapminder_multifile.zip") from Canvas, unzip it, and take a look. You'll see a bunch of files, each one containing data for just a particular continent and year. What we might like to do is read in this data and join it together into one dataset for analysis. We can automate this process!
+
+## List all files in a directory
+
+To start, in R we can list the names of files within a given directory:
+
+```{r}
+list.files("Data/gapminder")
+```
+
+If we just want the csv files:
+
+```{r}
+list.files("Data/gapminder", pattern = ".csv")
+```
+
+Let's save that list as an R object called `filenames`:
+
+```{r}
+filenames = list.files("Data/gapminder", pattern = ".csv")
+```
+
+## Start by looking at a couple individual files
+
+To make sense of things, let's start by taking a look at a couple of individual files and filenames.
+
+```{r}
+file1 = filenames[1]
+file1
+dataset1 = read_csv(paste0("Data/gapminder/", file1))
+str(dataset1)
+View(dataset1)
+
+file50 = filenames[50]
+file50
+dataset50 = read_csv(paste0("Data/gapminder/", file50))
+str(dataset50)
+View(dataset50)
+```
+
+What will we need in order to combine these datasets?
+
+## Extracting parts of text strings
+
+For one thing, we probably want to get the metadata (continent and year in this case) from the filename and add it to the dataset as new columns. To do that, first we have to figure out how to split the text of the filename and extract the information we want. We call this "string splitting" (strings are sequences of characters or text). There is a base-R function called strsplit, or we can use functions from the handy **stringr** package. Let's explore the functions `str_split` and `str_split_1` from the **stringr** package:
+
+```{r}
+str_split(file1, pattern = "_")
+str_split(file1, pattern = "Africa")
+str_split(file1, pattern = ".")
+str_split(file1, pattern = "[.]")
+str_split(file1, pattern = "[_.]")
+str_split_1(file1, pattern = "[_.]")
+```
+
+We can use this to extract just the info we want from the filename:
+
+```{r}
+res = str_split_1(file1, pattern = "[_.]")[2:3]
+continent = res[1]
+year = res[2]
+```
+
+## More string manipulation
+
+The **stringr** package has lots of functions that allow us to do very powerful things with strings! Here are some examples, and you can [see more here](https://stringr.tidyverse.org/). These functions for manipulating and formatting text are helpful tools for data processing and also for formatting our plots, tables, and inline code.
+
+Run these one by one so you can take a look at what each line does. I recommend copying and pasting this code chunk into a script, then run the lines one by one from the script using command-return or control-return.
+
+```{r}
+# for a single string
+x = "population"
+str_length(x)
+toupper(x) # base R
+str_to_upper(x) # same but in stringr (tidyverse)
+tolower(x) # base R
+str_to_lower(x) # same but in stringr (tidyverse)
+str_to_title(x)
+
+# ?str_to_title:
+# str_to_upper() converts to upper case.
+# str_to_lower() converts to lower case.
+# str_to_title() converts to title case, where only the first letter of each word is capitalized.
+# str_to_sentence() convert to sentence case, where only the first letter of sentence is capitalized.
+
+# for a vector of strings
+str_length(filenames) 
+str_c(filenames, collapse = ", ")
+str_c(filenames, collapse = " and ")
+str_sub(filenames, 1, 10)
+str_sub(filenames, 11, 20)
+str_subset(filenames, "Oceania")
+str_subset(filenames, "[Oceania]")
+str_count(filenames, "a")
+str_count(filenames, "[aA]")
+
+```
+
+## Combining multiple datasets
+
+Ok, let's come back to combining the gapminder datasets.
+
+```{r}
+# get a list of data files
+filenames = list.files("Data/gapminder", pattern = ".csv")
+
+# pick the first filename and extract metadata from it
+file1 = filenames[1]
+res = str_split_1(file1, pattern = "[_.]")[2:3]
+continent = res[1]
+year = res[2]
+
+# read in the first file and add the metadata
+dataset1 = read_csv(paste0("Data/gapminder/", file1)) %>%
+  mutate(continent = continent, year = year)
+
+# do the same for the 2nd file...
+# (copy and paste the above code, and change file1 to file2, filenames[1] to filenames[2], etc)
+
+# then combine them together...
+combined = rbind(dataset1, dataset2)
+```
+
+We will see later how to use something called **for-loops** to automate this across all the files in the folder! Very fast and efficient, and no copying and pasting!
+
