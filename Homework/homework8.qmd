@@ -1,0 +1,138 @@
+---
+title: "Homework 8"
+highlight-style: a11y-dark
+embed-resources: true
+execute: 
+  eval: false
+---
+
+### Instructions
+
+Homework 8 has been posted on Canvas; you can download the qmd file there. I've also posted the instructions here.
+
+Instructions from HW 6 still apply here; refer back to those if needed. You can read more about joins [here](https://r4ds.hadley.nz/joins) if you'd like an additional reference/guide.
+
+```{r}
+#| label: load-packages
+#| include: false
+#| eval: true
+# load here any packages you need
+library(tidyverse)
+```
+
+To start, set up a folder somewhere on your computer called "HW8" and create a subfolder (a folder within HW8) called "Data". Create an R project using the HW8 folder; this should make a file called "HW8.Rproj" within your HW8 folder. Then in Finder or File Explorer (however you navigate your computer's folders and files outside of RStudio), double-click HW8.Rproj to open your R project in RStudio.
+
+Check that your working directory is your HW8 folder:
+
+```{r}
+getwd()
+```
+
+If you have tips or questions about any of that process, please share them on Ed Discussion!
+
+## Problem 1: Data input/output
+
+Let's start by making some small example datasets to practice with. Run this code to make these four datasets:
+
+```{r}
+states = data.frame(
+  state = c("CA", "ID", "OR", "WA", "WY"),
+  state_name = c("California", "Idaho", "Oregon", "Washington", "Wyoming")
+)
+
+cities = data.frame(
+  city = c("Bozeman", "Eugene", "Olympia", "Portland", "Sacramento", "San Francisco", "Seattle"),
+  state = c("MO", "OR", "WA", "OR", "CA", "CA", "WA")
+)
+
+states2 = data.frame(
+  code = c("CA", "ID", "OR", "WA", "WY"),
+  name = c("California", "Idaho", "Oregon", "Washington", "Wyoming")
+)
+
+cities2 = data.frame(
+  name = c("Bozeman", "Eugene", "Olympia", "Portland", "Sacramento", "San Francisco", "Seattle"),
+  state = c("MO", "OR", "WA", "OR", "CA", "CA", "WA"),
+)
+
+cities3 = data.frame(
+  name = rep(c("Bozeman", "Eugene", "Olympia", "Portland", "Sacramento", "San Francisco", "Seattle"), 2),
+  state = rep(c("MO", "OR", "WA", "OR", "CA", "CA", "WA"), 2),
+  year = c(rep(2000, 7), rep(2010, 7)),
+  population = c(28210, 139142, 43099, 529897, 408762, 777340, 564109,
+                 37321, 156516, 47083, 585476, 467246, 805519, 610654)
+)
+```
+
+Then write and run some code below to write each dataset to a different file in your Data subfolder:
+
+```{r}
+# write states to a file called "states.csv" in the Data subfolder
+
+# write states2 to a file called "states2.csv" in the Data subfolder
+
+# write cities to a file called "cities.csv" in the Data subfolder
+
+# write cities2 to a file called "cities2.csv" in the Data subfolder
+
+# write cities3 to a file called "cities3.csv" in the Data subfolder
+
+```
+
+Now check that you can read the five data files back into RStudio using `read_csv`:
+
+```{r}
+# read in states.csv as states, states2.csv as states2, etc.
+
+```
+
+## Problem 2: Joining two datasets
+
+### Part 1: `states` and `cities`
+
+Let's try different ways of joining the `states` and `cities` datasets. First, let's orient ourselves to the data. What variables does each of these two datasets have? How many rows, and what do the rows represent? How (by what variable or variables) do you think it would be most natural to join or match these two datasets?
+
+In the first example here (below), the "left" dataset is `states`; go ahead and run this line of code.
+
+```{r}
+left_join(states, cities)
+```
+
+Remember that by default, R will join by whatever variable name or set of variable names appear in both datasets, and it will tell you what it joins by in the output ("Joining with..."). What variable does the output say R used to join these two datasets? How many rows and columns do you end up with in the joined dataset? In what rows and columns do you end up with NAs (if you end up with any), and why? The `states` dataset has 5 rows and the `cities` dataset has 7 rows, so why does the resulting joined dataset have 8 rows?
+
+Now let's switch the order of the datasets, so that the "left" dataset is `cities`. Run this code. Why does the resulting dataset have 7 rows?
+
+```{r}
+left_join(cities, states)
+```
+
+Looking at the results of both previous joins (`left_join(states, cities)` and `left_join(cities, states)`), what determines the order in which the columns appear in the resulting joined dataset?
+
+### Part 2: `states2` and `cities2`
+
+Let's orient ourselves to the data first. What variables does each of these two datasets have? How many rows, and what do the rows represent? How (by what variable or variables) do you think it would be most natural to join or match these two datasets?
+
+What variable does the code below join by, and why does that not make sense for these datasets? How many rows and columns does this code give you, and why is the `state` column all NA?
+
+```{r}
+left_join(states2, cities2)
+```
+
+This modified code gets us the desired join (try it out):
+
+```{r}
+left_join(states2, cities2, by = join_by(code == state))
+```
+
+However, it names the resulting columns `code`, `name.x`, and `name.y`. Read the documentation in `?left_join` and provide a brief explanation of why these ".x" and ".y" appear. There are many ways we can handle this: some possible approaches are (1) we can rename the `name` columns in the two datasets before joining, (2) we can rename the columns after joining if we remember which dataset corresponds to ".x" and which to ".y", or (3) we can set the `suffix` argument in the join so that the names make more sense. Try one of these or find another approach. Whatever you decide on, write the code in a code chunk below and write a brief explanation in the text above or below that.
+
+### Part 3: `states2` (same as before) and `cities3`
+
+Let's orient ourselves to the data first. What variables does each of these two datasets have? How many rows, and what do the rows represent? Note that the rows `cities3` are no longer uniquely defined, identified or represented by a single variable but by two variables: which two? How (by what variable or variables) do you think it would be most natural to join or match these two datasets?
+
+Then join `states2` and `cities3` in a reasonable way. Show your code and explain why you handled it this way.
+
+### Bonus (if you have time)
+
+Write code here to make two simple datasets of your own for someone else to join, and point out some questions they will have to consider when joining them. If you like, you can also demonstrate how you would join them, or you can leave it as a question for someone else to solve!
+

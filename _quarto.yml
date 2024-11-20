@@ -67,4 +67,6 @@ website:
           text: "Homework 6"
         - file: Homework/homework7.qmd
           text: "Homework 7"
+        - file: Homework/homework8.qmd
+          text: "Homework 8"
 
