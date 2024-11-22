@@ -52,7 +52,7 @@ states2 = data.frame(
 
 cities2 = data.frame(
   name = c("Bozeman", "Eugene", "Olympia", "Portland", "Sacramento", "San Francisco", "Seattle"),
-  state = c("MO", "OR", "WA", "OR", "CA", "CA", "WA"),
+  state = c("MO", "OR", "WA", "OR", "CA", "CA", "WA")
 )
 
 cities3 = data.frame(
