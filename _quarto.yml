@@ -47,6 +47,8 @@ website:
           text: "Lecture 7: Import, process, join and export data"
         - file: Lectures/lec8_text.qmd
           text: "Lecture 8: Working with text in R"
+        - file: Lectures/lec9_regression.qmd
+          text: "Lecture 9: Regression in R"
 
     - title: "Homework"
       contents: 
@@ -69,4 +71,6 @@ website:
           text: "Homework 7"
         - file: Homework/homework8.qmd
           text: "Homework 8"
+        # - file: Homework/homework9.qmd
+        #   text: "Homework 9"
 

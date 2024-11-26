@@ -1,0 +1,269 @@
+---
+title: "Lecture 9: Regression in R"
+subtitle: "CSSS 508"
+author: "Jess Kunke"
+date: "Tue 26 Nov 2024"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number_sections: false
+    embed-resources: true
+execute:
+  eval: false
+  message: false
+  warning: false
+lightbox: true
+---
+
+```{r}
+#| include: false
+#| eval: true
+library(knitr)
+library(tidyverse)
+```
+
+!["Linear Regression" by xkcd.](https://imgs.xkcd.com/comics/linear_regression.png){fig-align="left"}
+
+# Updates and reminders
+
+Wow, it's already coming up on the end of the term!
+
+- Last lecture: next week, Tue Dec 3rd
+- Last homework: HW9 assigned today, due Tue Dec 3rd
+- Last peer reviews:
+    - HW8 review due this Sun Dec 1st
+    - HW9 review due Sun Dec 8th
+- All submissions for grades are due Tue Dec 10th at the latest
+- Class is credit/no credit; you receive credit if you earn 60% or more of the total points
+- Please reach out sooner rather than later if you have any concerns
+
+
+# Outline for the rest of the course
+
+- Today: regression in R
+- Next time: a demo of more advanced topics
+
+
+# Regression in R
+
+Today we'll introduce how to do regression in R. You'll use a lot of what you've already learned, including how to use lists.
+
+If you'd like some references on this topic, here are two fairly practical and useful resources. Both are pretty readable and practical, and full of R code and examples.
+
+- *Linear Models with R* by Julian Faraway. You can find packages, code, errata and more [here](https://julianfaraway.github.io/faraway/LMR/), and you can probably borrow it through the UW libraries.
+- Chapter 23: Model Basics in the book *R for Data Science* by Hadley Wickham and Garrett Grolemund. This textbook is fully freely available online, and you can find Chapter 23 [here](https://r4ds.had.co.nz/model-basics.html).
+
+## Plotting best-fit lines
+
+:::{.callout-note}
+## Your Turn
+
+Let's start by taking a look at this `mtcars` dataset that comes with R. Load the data and take a look. What does this dataset represent and where does it come from? What does each row represent? What variables are in the dataset and what do they mean? Explore with one or more classmates, and trade tips on how you like to do exploratory analysis in R or what you're still trying to figure out. Here are a couple commands to get you started:
+
+```{r}
+data(mtcars)
+?mtcars
+```
+:::
+
+Let's plot `mpg` versus `hp`. First, ask yourself: what do these variables represent? Do you think they might be associated with each other?
+
+```{r}
+ggplot(mtcars, aes(x = hp, y = mpg)) + 
+  geom_point()
+```
+
+Did you know you can add a best-fit line/curve just using `ggplot`?
+
+```{r}
+ggplot(mtcars, aes(x = hp, y = mpg)) + 
+  geom_point() + 
+  geom_line(stat = "smooth", method = "lm")
+```
+
+You can add more general best-fit curves too or specify other formulas like this!
+
+```{r}
+ggplot(mtcars, aes(x = hp, y = mpg)) + 
+  geom_point() + 
+  geom_line(stat = "smooth",
+            method = "lm",
+            formula = "y ~ poly(x,2)")
+```
+
+In order to compare these more directly, let's fix the y-axis so that it doesn't rescale when we change the method:
+
+```{r}
+ggplot(mtcars, aes(x = hp, y = mpg)) + 
+  geom_point() + 
+  geom_line(stat = "smooth", 
+            method = "lm") +
+  ylim(c(5, 35))
+
+ggplot(mtcars, aes(x = hp, y = mpg)) + 
+  geom_point() + 
+  geom_line(stat = "smooth",
+            method = "lm",
+            formula = "y ~ poly(x,2)") +
+  ylim(c(5, 35))
+```
+
+Which best-fit curve do you think is better? This question is called the question of "model selection". To think about which one is better, let's investigate regression a bit more first.
+
+
+## Regression: a conceptual review
+
+What is regression doing? If you "eyeball it" by looking the data and drawing a "best-fit" line yourself by hand, that's a sort of regression. You'd probably draw a line that fits the general shape of the points as your eye sees it without trying to connect every point.
+
+If we really cared about fitting every point, we'd just connect the dots, making sure it's still a function, meaning that no $x$ value (`hp` value) has more than one $y$ value (`mpg` value). Why doesn't this satisfy us? Why would we call this overfitting? What is the tradeoff here?
+
+We can formalize what we're doing when we draw the line by hand. We can come up with some way of representing the tradeoff mathematically. There are various ways to quantify this tradeoff, and one way is to try to minimize the sum of squared vertical distances from each point to the best-fit line. This is why we call it "least squares", and this is the default method we often mean if we just say "regression".
+
+There's a lot more detail we could get into, but today we're here to focus on how to use R to do regression.
+
+## Get regression output beyond a plot
+
+So let's see what is happening under the hood when ggplot gives us those curves above. Let's start by estimating parameters for the following model (note that multiplication is implied between $\beta_1$ and `hp`):
+
+$$\text{mpg} = \beta_0 + \beta_1 \text{hp} + \epsilon$$
+
+$$\epsilon \sim N(0, \sigma^2)$$
+
+The first equation above is the formula for a line. You might remember lines as $y = mx + b$, and this is the same, we're just calling the slope $\beta_1$ instead of $m$ and the intercept $\beta_0$ instead of $b$. (If you're interested, we can chat about how $\epsilon$ fits into this.) The second "equation" above (a math statement more generally, not really an equation) is saying that that extra term $\epsilon$ is normally distributed with a mean of zero and a variance of $sigma^2$. Note that actually both statements are required to state your model; by convention, we often make assumptions about what "$+ \epsilon$" means, but without stating somewhere what we're assuming about that $\epsilon$, it's just some undefined variable.
+
+The data here are `mpg` and `hp`, and the parameters we're going to estimate are the intercept $\beta_0$, the slope or the `hp` effect $\beta_1$, and the noise variance $\sigma^2$. Estimating these parameters means picking values for them that are somehow "best-fit" values. Otherwise, $\beta_0$, $\beta_1$, and $\sigma^2$ are just placeholders for any three numbers, and with different choices of numbers we would get various lines. For example, here are a few possible choices that are probably not the best fit:
+
+```{r}
+#| eval: true
+ggplot(mtcars, aes(x = hp, y = mpg)) + 
+  geom_point() + 
+  geom_abline(slope = 1/10, intercept = 0, 
+              color = "maroon", linetype = "dashed", linewidth = 1.2) +
+  geom_abline(slope = 0, intercept = 20, 
+              color = "darkblue", linetype = "dotted", linewidth = 1.2) +
+  geom_abline(slope = 0.13, intercept = 9.2, 
+              color = "orange", linetype = "twodash", linewidth = 1.2) +
+  ylim(c(5, 35)) +
+  theme_bw()
+```
+
+```{r}
+lm(mpg ~ hp, data = mtcars)
+```
+
+We can store the resulting model results like this:
+
+```{r}
+model1 = lm(mpg ~ hp, data = mtcars)
+```
+
+Note: is `model1` a good object name here? It might be if you're going to try a few different models and you have a clear definition somewhere of each model, as I'd argue we'll have here. Otherwise it might be better to name it in some way that better reminds you what it represents.
+
+You can extract just the best-fit coefficients or parameter estimates like this:
+
+```{r}
+coef(model1)
+```
+
+This is handy sometimes, but in my experience the most useful data is typically in the summary of the model object:
+
+```{r}
+summary(model1)
+```
+
+Therefore I'm actually going to store the summary as its own object (in fact, I often only store the summary, not the direct result of `lm`):
+
+```{r}
+model1_summary = summary(model1)
+```
+
+For example, you can get the coefficient estimates as well as their standard errors and significance like this:
+
+```{r}
+model1_summary$coefficients
+```
+
+:::{.callout-note}
+## Your Turn
+
+Don't worry about getting the full answer to these questions, but think of this as a time to explore amongst yourselves before we go through this together.
+
+What kind of R object is `model1_summary`: a vector, a list, a data frame? How can you tell?
+
+How many elements does `model1_summary` have, and what are their names? (**Tip:** type the first few letters of the object name, like `mod`, then autocomplete the name of the object to `model1_summary`, then type a `$` and you should get a pop-up menu. These are the elements of `model1_summary`.) What type or format is each element, and what kind of information do you think it contains?
+:::
+
+## Table of estimates and standard errors
+
+Now let's make a table of the coefficient estimates and standard errors.
+
+:::{.callout-note}
+## Your Turn
+
+1. Use the `kable` function we've used before from the `knitr` package to make a table with the coefficients, standard errors etc. from `model1_summary$coefficients`.
+2. Suppose you just want the estimates and standard errors in your table. Extract just the first two columns and put those in your table.
+3. Change the row and column names in your table.
+4. Reduce the number of digits in your table to two places after the decimal point.
+:::
+
+
+## Fitting a polynomial
+
+One confusing thing about the term "linear regression" is that it doesn't actually restrict you to lines like $y = \beta_0 + \beta_1 x + \epsilon$: you can also consider more complicated functions like $x^2$ and $log(x)$ and you can have multiple terms that are functions of the same variable, like $y = \beta_0 + \beta_1 x + \beta_2 x^2 + \beta_3 \log(x) + \epsilon$. WHAT? Then why do we call it linear? We mean linear in the *coefficients* ($\beta_0$, $\beta_1$, etc.), not in the predictor variables. In order for linear regression to work, we just have to have something like $$\text{outcome} = \beta_0 + \beta_1 \text{variable}_1 + \beta_2 \text{variable}_2 + ... + \epsilon,$$ and it's okay if one of the predictor variables is $x^2$ and another is $x$, for example.
+
+The curve we fit above was a parabola, also known as a second-order **poly**nomial:
+
+$$\text{mpg} = \beta_0 + \beta_1 \text{hp} + \beta_2 \text{hp}^2 + \epsilon$$
+
+$$\epsilon \sim N(0, \sigma^2)$$
+
+So how do we actually go about fitting this in R? Oddly, this one doesn't work:
+
+```{r}
+lm(mpg ~ hp + hp^2, data = mtcars)
+```
+
+But these approaches do:
+
+```{r}
+lm(mpg ~ poly(hp, degree = 2, raw = TRUE), data = mtcars)
+lm(mpg ~ hp + I(hp^2), data = mtcars)
+```
+
+We don't need to go into this for the purposes of our work today, but if you are curious to learn more about why I set the argument `raw = TRUE` in the `poly` function here, you can read more [here](https://stackoverflow.com/questions/19484053/what-does-the-r-function-poly-really-do) and [here](https://mathoverflow.net/questions/38864/visualizing-orthogonal-polynomials), for example, and feel free to post questions on Ed Discussion.
+
+:::{.callout-note}
+## Your Turn
+
+For now, let's just pick one of these (whichever one you like better) and call it our Model 2:
+
+```{r}
+lm(mpg ~ poly(hp, degree = 2, raw = TRUE), data = mtcars)
+
+model2_summary = summary(model2)
+```
+
+Cool, so let's compare Models 1 and 2. Which one is a better fit?
+
+To understand the tradeoff a bit more, let's try one more model:
+
+```{r}
+model3 = lm(mpg ~ poly(hp, degree = 20, raw = TRUE), data = mtcars)
+
+model3_summary = summary(model3)
+```
+
+Which of the three models fits the data the best? Which one has the least error? Which one seems most reasonable?
+:::
+
+For more details on model selection and methods for doing it, see the Faraway text cited near the top of these lecture notes, or refer to your favorite statistics class notes/references.
+
+> All models are wrong, but some are useful.
+>
+> \- George Box, 1976
+
+
+
+
+
