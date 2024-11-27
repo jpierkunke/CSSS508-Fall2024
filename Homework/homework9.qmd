@@ -1,0 +1,48 @@
+---
+title: "Homework 9"
+highlight-style: a11y-dark
+embed-resources: true
+execute: 
+  eval: false
+---
+
+Instructions from HW 6 still apply here; refer back to those if needed. There are three problems but the second and third are short and meant to be fun. Don't spend too long on this homework; just use it for some practice and I hope you can take some well-deserved rest.
+
+```{r}
+#| label: load-packages
+#| include: false
+#| eval: true
+# load here any packages you need
+library(tidyverse)
+```
+
+## Problem 1
+
+This problem serves to give you practice with the regression skills we covered in Lecture 9. Choose one of the datasets we've used in class and/or in the homework: `swiss`, `gapminder`, `flights`/`airlines`, or `mtcars` (or if there's another one I forgot about, that's fair game too). Remind us briefly about what this dataset represents. Also remind us what each row of this dataset represents: is each row a person, or a person-year combination, or what?
+
+After exploring the dataset (you don't have to show your exploration), pick an outcome variable and a predictor variable to include in a regression. Remind us what these variables represent.
+
+Use `lm` to estimate the parameters for this regression. Present the estimates and standard errors in a nice table using `kable` or `gt` (or another package if you like). Also report the adjusted R-squared in a sentence of text using inline code.
+
+Using `ggplot`, make a scatterplot of the two variables with the outcome on the y-axis and the predictor variable on the x-axis. Add the best-fit line using `geom_line` with `stat = "smooth"` as we saw in class. Change the x- and y-labels and choose a `ggplot` theme you like.
+
+
+## Problem 2
+
+Share one thing you learned in this class that you found useful and would like to share with a classmate. Also share one question you have about coding in R.  I encourage you to share these on Ed Discussion too!
+
+
+## Problem 3
+
+Find a stats or R joke/graphic you like and share it here! It can be funny or informative or both. For example, here's one from lecture:
+
+!["Linear Regression" by xkcd.](https://imgs.xkcd.com/comics/linear_regression.png)
+
+If you're editing the Quarto file from Canvas, edit the line above to put your image in.
+
+If instead you're reading the notes online and making your own Quarto document, you can't see the line above that I used to generate the image you see above. Instead, below shows you the Markdown language that produces the above image. Copy and paste it into your Quarto document, then edit it to include the URL and caption for your own image.
+
+```markdown
+!["Linear Regression" by xkcd.](https://imgs.xkcd.com/comics/linear_regression.png)
+```
+

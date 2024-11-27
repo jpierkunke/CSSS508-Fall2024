@@ -487,225 +487,65 @@
     ]
   },
   {
-    "objectID": "Homework/homework8.html",
-    "href": "Homework/homework8.html",
-    "title": "Homework 8",
+    "objectID": "Homework/homework9.html",
+    "href": "Homework/homework9.html",
+    "title": "Homework 9",
     "section": "",
-    "text": "Homework 8 has been posted on Canvas; you can download the qmd file there. I’ve also posted the instructions here.\nInstructions from HW 6 still apply here; refer back to those if needed. You can read more about joins here if you’d like an additional reference/guide.\nTo start, set up a folder somewhere on your computer called “HW8” and create a subfolder (a folder within HW8) called “Data”. Create an R project using the HW8 folder; this should make a file called “HW8.Rproj” within your HW8 folder. Then in Finder or File Explorer (however you navigate your computer’s folders and files outside of RStudio), double-click HW8.Rproj to open your R project in RStudio.\nCheck that your working directory is your HW8 folder:\n\ngetwd()\n\nIf you have tips or questions about any of that process, please share them on Ed Discussion!",
+    "text": "Instructions from HW 6 still apply here; refer back to those if needed. There are three problems but the second and third are short and meant to be fun. Don’t spend too long on this homework; just use it for some practice and I hope you can take some well-deserved rest.",
     "crumbs": [
       "Homework",
-      "Homework 8"
+      "Homework 9"
     ]
   },
   {
-    "objectID": "Homework/homework8.html#problem-1-data-inputoutput",
-    "href": "Homework/homework8.html#problem-1-data-inputoutput",
-    "title": "Homework 8",
-    "section": "Problem 1: Data input/output",
-    "text": "Problem 1: Data input/output\nLet’s start by making some small example datasets to practice with. Run this code to make these four datasets:\n\nstates = data.frame(\n  state = c(\"CA\", \"ID\", \"OR\", \"WA\", \"WY\"),\n  state_name = c(\"California\", \"Idaho\", \"Oregon\", \"Washington\", \"Wyoming\")\n)\n\ncities = data.frame(\n  city = c(\"Bozeman\", \"Eugene\", \"Olympia\", \"Portland\", \"Sacramento\", \"San Francisco\", \"Seattle\"),\n  state = c(\"MO\", \"OR\", \"WA\", \"OR\", \"CA\", \"CA\", \"WA\")\n)\n\nstates2 = data.frame(\n  code = c(\"CA\", \"ID\", \"OR\", \"WA\", \"WY\"),\n  name = c(\"California\", \"Idaho\", \"Oregon\", \"Washington\", \"Wyoming\")\n)\n\ncities2 = data.frame(\n  name = c(\"Bozeman\", \"Eugene\", \"Olympia\", \"Portland\", \"Sacramento\", \"San Francisco\", \"Seattle\"),\n  state = c(\"MO\", \"OR\", \"WA\", \"OR\", \"CA\", \"CA\", \"WA\")\n)\n\ncities3 = data.frame(\n  name = rep(c(\"Bozeman\", \"Eugene\", \"Olympia\", \"Portland\", \"Sacramento\", \"San Francisco\", \"Seattle\"), 2),\n  state = rep(c(\"MO\", \"OR\", \"WA\", \"OR\", \"CA\", \"CA\", \"WA\"), 2),\n  year = c(rep(2000, 7), rep(2010, 7)),\n  population = c(28210, 139142, 43099, 529897, 408762, 777340, 564109,\n                 37321, 156516, 47083, 585476, 467246, 805519, 610654)\n)\n\nThen write and run some code below to write each dataset to a different file in your Data subfolder:\n\n# write states to a file called \"states.csv\" in the Data subfolder\n\n# write states2 to a file called \"states2.csv\" in the Data subfolder\n\n# write cities to a file called \"cities.csv\" in the Data subfolder\n\n# write cities2 to a file called \"cities2.csv\" in the Data subfolder\n\n# write cities3 to a file called \"cities3.csv\" in the Data subfolder\n\nNow check that you can read the five data files back into RStudio using read_csv:\n\n# read in states.csv as states, states2.csv as states2, etc.",
+    "objectID": "Homework/homework9.html#problem-1",
+    "href": "Homework/homework9.html#problem-1",
+    "title": "Homework 9",
+    "section": "Problem 1",
+    "text": "Problem 1\nThis problem serves to give you practice with the regression skills we covered in Lecture 9. Choose one of the datasets we’ve used in class and/or in the homework: swiss, gapminder, flights/airlines, or mtcars (or if there’s another one I forgot about, that’s fair game too). Remind us briefly about what this dataset represents. Also remind us what each row of this dataset represents: is each row a person, or a person-year combination, or what?\nAfter exploring the dataset (you don’t have to show your exploration), pick an outcome variable and a predictor variable to include in a regression. Remind us what these variables represent.\nUse lm to estimate the parameters for this regression. Present the estimates and standard errors in a nice table using kable or gt (or another package if you like). Also report the adjusted R-squared in a sentence of text using inline code.\nUsing ggplot, make a scatterplot of the two variables with the outcome on the y-axis and the predictor variable on the x-axis. Add the best-fit line using geom_line with stat = \"smooth\" as we saw in class. Change the x- and y-labels and choose a ggplot theme you like.",
     "crumbs": [
       "Homework",
-      "Homework 8"
+      "Homework 9"
     ]
   },
   {
-    "objectID": "Homework/homework8.html#problem-2-joining-two-datasets",
-    "href": "Homework/homework8.html#problem-2-joining-two-datasets",
-    "title": "Homework 8",
-    "section": "Problem 2: Joining two datasets",
-    "text": "Problem 2: Joining two datasets\n\nPart 1: states and cities\nLet’s try different ways of joining the states and cities datasets. First, let’s orient ourselves to the data. What variables does each of these two datasets have? How many rows, and what do the rows represent? How (by what variable or variables) do you think it would be most natural to join or match these two datasets?\nIn the first example here (below), the “left” dataset is states; go ahead and run this line of code.\n\nleft_join(states, cities)\n\nRemember that by default, R will join by whatever variable name or set of variable names appear in both datasets, and it will tell you what it joins by in the output (“Joining with…”). What variable does the output say R used to join these two datasets? How many rows and columns do you end up with in the joined dataset? In what rows and columns do you end up with NAs (if you end up with any), and why? The states dataset has 5 rows and the cities dataset has 7 rows, so why does the resulting joined dataset have 8 rows?\nNow let’s switch the order of the datasets, so that the “left” dataset is cities. Run this code. Why does the resulting dataset have 7 rows?\n\nleft_join(cities, states)\n\nLooking at the results of both previous joins (left_join(states, cities) and left_join(cities, states)), what determines the order in which the columns appear in the resulting joined dataset?\n\n\nPart 2: states2 and cities2\nLet’s orient ourselves to the data first. What variables does each of these two datasets have? How many rows, and what do the rows represent? How (by what variable or variables) do you think it would be most natural to join or match these two datasets?\nWhat variable does the code below join by, and why does that not make sense for these datasets? How many rows and columns does this code give you, and why is the state column all NA?\n\nleft_join(states2, cities2)\n\nThis modified code gets us the desired join (try it out):\n\nleft_join(states2, cities2, by = join_by(code == state))\n\nHowever, it names the resulting columns code, name.x, and name.y. Read the documentation in ?left_join and provide a brief explanation of why these “.x” and “.y” appear. There are many ways we can handle this: some possible approaches are (1) we can rename the name columns in the two datasets before joining, (2) we can rename the columns after joining if we remember which dataset corresponds to “.x” and which to “.y”, or (3) we can set the suffix argument in the join so that the names make more sense. Try one of these or find another approach. Whatever you decide on, write the code in a code chunk below and write a brief explanation in the text above or below that.\n\n\nPart 3: states2 (same as before) and cities3\nLet’s orient ourselves to the data first. What variables does each of these two datasets have? How many rows, and what do the rows represent? Note that the rows cities3 are no longer uniquely defined, identified or represented by a single variable but by two variables: which two? How (by what variable or variables) do you think it would be most natural to join or match these two datasets?\nThen join states2 and cities3 in a reasonable way. Show your code and explain why you handled it this way.\n\n\nBonus (if you have time)\nWrite code here to make two simple datasets of your own for someone else to join, and point out some questions they will have to consider when joining them. If you like, you can also demonstrate how you would join them, or you can leave it as a question for someone else to solve!",
+    "objectID": "Homework/homework9.html#problem-2",
+    "href": "Homework/homework9.html#problem-2",
+    "title": "Homework 9",
+    "section": "Problem 2",
+    "text": "Problem 2\nShare one thing you learned in this class that you found useful and would like to share with a classmate. Also share one question you have about coding in R. I encourage you to share these on Ed Discussion too!",
     "crumbs": [
       "Homework",
-      "Homework 8"
+      "Homework 9"
     ]
   },
   {
-    "objectID": "Homework/CSSS508_HW1_Template.html",
-    "href": "Homework/CSSS508_HW1_Template.html",
-    "title": "Homework 1",
+    "objectID": "Homework/homework9.html#problem-3",
+    "href": "Homework/homework9.html#problem-3",
+    "title": "Homework 9",
+    "section": "Problem 3",
+    "text": "Problem 3\nFind a stats or R joke/graphic you like and share it here! It can be funny or informative or both. For example, here’s one from lecture:\n\n\n\n“Linear Regression” by xkcd.\n\n\nIf you’re editing the Quarto file from Canvas, edit the line above to put your image in.\nIf instead you’re reading the notes online and making your own Quarto document, you can’t see the line above that I used to generate the image you see above. Instead, below shows you the Markdown language that produces the above image. Copy and paste it into your Quarto document, then edit it to include the URL and caption for your own image.\n![\"Linear Regression\" by xkcd.](https://imgs.xkcd.com/comics/linear_regression.png)",
+    "crumbs": [
+      "Homework",
+      "Homework 9"
+    ]
+  },
+  {
+    "objectID": "Homework/CSSS508_HW1_Example.html",
+    "href": "Homework/CSSS508_HW1_Example.html",
+    "title": "CSSS508 Homework 1 Example",
     "section": "",
-    "text": "This basic R markdown file has some text, inline code, and code chunks!"
+    "text": "I’m interested in exploring a dataset from base R called iris. From its documentation I see that it is data about 50 flowers from each of 3 species of iris and their respective measurements of sepal length, sepal width, petal length, and petal width.\nI first want to take a look at a preview of the dataset by making a nice table.\n\n\n\n\n\n\n\n\n\nSepal.Length\nSepal.Width\nPetal.Length\nPetal.Width\nSpecies\n\n\n\n\n1\n5.1\n3.5\n1.4\n0.2\nsetosa\n\n\n2\n4.9\n3.0\n1.4\n0.2\nsetosa\n\n\n3\n4.7\n3.2\n1.3\n0.2\nsetosa\n\n\n4\n4.6\n3.1\n1.5\n0.2\nsetosa\n\n\n5\n5.0\n3.6\n1.4\n0.2\nsetosa\n\n\n6..145\n\n\n\n\n\n\n\n146\n6.7\n3.0\n5.2\n2.3\nvirginica\n\n\n147\n6.3\n2.5\n5.0\n1.9\nvirginica\n\n\n148\n6.5\n3.0\n5.2\n2.0\nvirginica\n\n\n149\n6.2\n3.4\n5.4\n2.3\nvirginica\n\n\n150\n5.9\n3.0\n5.1\n1.8\nvirginica\n\n\n\n\n\n\n\nThe mean petal length is 3.76 but its median petal length is 4.35. It’s range is 5.9 which additionally suggests a certain degree of spread.\nIt might be useful to look at the distribution to gain a better sense of the variation of this variable.\n\n\n\n\n\n\n\n\n\nThere seems to be a cluster of much smaller petals and then another cluster of average to bigger petals. I wonder how this varies by species…?\n\n\n\n\n\n\n\n\n\nWe can see from this plot that the overall mean and median of petal length is quite misleading! Only the verisicolor species of iris is close to those values while setosa is much mush smaller and virginica is a bit bigger.\nIs there a similar thing happening for sepal length and width? Let’s look at some basic descriptives of the dataset.\n\n\n\n\n\n\n\n\nSepal.Length\nSepal.Width\nPetal.Length\nPetal.Width\nSpecies\n\n\n\n\nMin. :4.300\nMin. :2.000\nMin. :1.000\nMin. :0.100\nsetosa :50\n\n\n1st Qu.:5.100\n1st Qu.:2.800\n1st Qu.:1.600\n1st Qu.:0.300\nversicolor:50\n\n\nMedian :5.800\nMedian :3.000\nMedian :4.350\nMedian :1.300\nvirginica :50\n\n\nMean :5.843\nMean :3.057\nMean :3.758\nMean :1.199\nNA\n\n\n3rd Qu.:6.400\n3rd Qu.:3.300\n3rd Qu.:5.100\n3rd Qu.:1.800\nNA\n\n\nMax. :7.900\nMax. :4.400\nMax. :6.900\nMax. :2.500\nNA\n\n\n\n\n\n\n\nIt’s interesting to note with the summary function that for numerical data it’ll calculate the classic 5 statistics used to construct a boxplot plus the mean but for a categorical variable like iris$Species it returns the frequency of each value of the variable.\nThe distribution of sepal length looks wider than sepal width, similar to how it was for those measurements of the petals. Let’s see how sepal length and width relate to one another graphically.\n\n\n\n\n\n\n\n\n\nThere are still clusters by each species type but for verisicolor and virginica there’s much more overlap. Overall, there’s tighter clustering by species for the petal length and width than there is for the sepal length and width."
   },
   {
-    "objectID": "Homework/CSSS508_HW1_Template.html#code-chunks",
-    "href": "Homework/CSSS508_HW1_Template.html#code-chunks",
-    "title": "Homework 1",
-    "section": "Code Chunks",
-    "text": "Code Chunks\n\nset.seed(1)\nnorm &lt;- rnorm(100)\nhist(x = norm, \n     xlab = \"X Axis Name\", \n     ylab = \"Count\", \n     main = \"Histogram of 100 observations from a Standard Normal\")\n\n\n\n\n\n\n\n\nUnless you include the chunk option #| echo: false, your code chunk will be displayed in your final document."
-  },
-  {
-    "objectID": "Homework/CSSS508_HW1_Template.html#text-and-inline-text",
-    "href": "Homework/CSSS508_HW1_Template.html#text-and-inline-text",
-    "title": "Homework 1",
-    "section": "Text and Inline Text",
-    "text": "Text and Inline Text\nThe sample mean of the data plotted above (rounded to 3 decimal points) is 0.109 and the variance is 0.807.\nWhat’s the relationship between standard deviation and variance?\n\\[ \\text{Standard Deviation}(X) = \\sqrt{\\text{Variance}(X)} \\]\nThe standard deviation of the data plotted above is 0.898."
-  },
-  {
-    "objectID": "Homework/homework.html",
-    "href": "Homework/homework.html",
-    "title": "Overview",
+    "objectID": "Homework/homework4_followup.html",
+    "href": "Homework/homework4_followup.html",
+    "title": "HW4 follow-up: When does order matter?",
     "section": "",
-    "text": "This page contains general instructions for assignments and peer reviews. For homework-specific instructions and templates go to the specific assignment listed on the left.\nAll assignments should be created using Quarto and uploaded to Canvas as both html and qmd files. Your document should be pleasant for a peer to look at and follow all instructions. Use sections for organization, label figures/tables, and use code chunks.\nThis is a one-credit pass/fail course intended to help you learn R. The focus is on learning and practice, not on points. Assignments and peer reviews will be graded for completion, but the points are not the point: they are key opportunities to practice R/RStudio/Quarto and to learn from each other. Feel free to work together, discussion questions on Ed Discussion, trade ideas and tips.",
+    "text": "Let’s go over some findings from Homework 4, Part C. Here were the three cases we considered. In the first case, we considered whether order mattered when the two operations were (1) selecting the three columns/variables country, year, and pop, and (2) filtering to keep only the rows with pop less than 20 million.\n\nresult1 = gapminder %&gt;%\n  select(country, year, pop) %&gt;%\n  filter(pop &lt; 20000000)\n\nresult2 = gapminder %&gt;%\n  filter(pop &lt; 20000000) %&gt;%\n  select(country, year, pop)\n\nIn the second case, we considered whether order mattered when the two operations were (1) mutating the pop column to divide by a million, and (2) filtering to keep only the rows with pop less than 20 million.\n\nresult3 = gapminder %&gt;%\n  mutate(pop = pop/10^6) %&gt;%\n  filter(pop &lt; 20000000)\n\nresult4 = gapminder %&gt;%\n  filter(pop &lt; 20000000) %&gt;%\n  mutate(pop = pop/10^6)\n\nIn the third case, we considered whether order mattered when the two operations were (1) creating a new column called pop_millions which equals the pop column divided by a million, and (2) filtering to keep only the rows with pop less than 20 million.\n\nresult5 = gapminder %&gt;%\n  mutate(pop_millions = pop/10^6) %&gt;%\n  filter(pop &lt; 20000000)\n\nresult6 = gapminder %&gt;%\n  filter(pop &lt; 20000000) %&gt;%\n  mutate(pop_millions = pop/10^6)\n\nSo in which of these cases does order matter, and why?\nFirst let’s settle the answer: order matters in the second case only, not in the first and third cases. We can tell by running the code and checking the results, which I assume you did in HW4; it was not meant to be strictly a thought exercise. If you didn’t run the code in HW4, run it now and check out the results with me. If you run the code, you will notice that the number of rows is not the same for results 3 and 4, so the results cannot be the same. For the other two cases, we can toggle back and forth to see that they look the same, or we can be sure by using code to check whether the results are the same:\n\n# we can add up how many elements are different between results 1 and 2, or between 5 and 6\nsum(result1 != result2)\n\n[1] 0\n\nsum(result5 != result6)\n\n[1] 0\n\n# or we can use the identical function which checks if two objects are identical\nidentical(result1, result2)\n\n[1] TRUE\n\nidentical(result5, result6)\n\n[1] TRUE\n\n\nNow let’s think about why order matters for only the second case.\nIn the first case, one operation selects rows based on the value of the pop column, while the other operation selects three columns. These operations don’t affect each other. The final result in either case is going to be the subset of the data that have a population less than 20 million, and it’ll show only the three columns we selected for.\nIn the third case, again, one operation uses the pop column values to define a new column called pop_millions, and the other operation filters the dataset to keep just the rows in which the pop column meets some condition. Therefore, these two operations do not affect each other. If you do the filter operation first, you will only create the pop_millions column for the rows you’ll keep in the end. If you do the mutate operation first, you will create the pop_millions column for all the rows and then just keep the rows you’re interested in.\nHowever, in the second case, one operation rescales the pop column by dividing it by million, and the other operation filters for values that are less than 20,000,000. If you rescale first, a value of 20,000,000 in the pop column means a value of 20 trillion (20 million millions), not 20 million. No country has trillions of people, so this filtering operation won’t do anything. If instead you filter first, you will subset the data to countries with populations of fewer than 20 million people, and then you rescale the population.\nIn the second case, probably the coder meant to end up with a dataset that contained all countries with fewer than 20 million people, so they probably want result4, not result3. We can modify the code for result3 to get the same answer, though, by making one change to the filter function: what change? (Try it out!)",
     "crumbs": [
       "Homework",
-      "Overview"
-    ]
-  },
-  {
-    "objectID": "Homework/homework.html#peer-review",
-    "href": "Homework/homework.html#peer-review",
-    "title": "Overview",
-    "section": "Peer Review",
-    "text": "Peer Review\nYou are required to examine and provide feedback on a peer’s homework submission each week. Reading and evaluating the work of others is useful and important! Good programmers realize that most problems have been solved by others; the trick is figuring out how to apply existing code to new problems. You will develop this skill by reading others’ code, seeing how other people approached the problems, providing suggestions, and pointing out when you learned something new. Please give constructive, polite, and insightful comments that encourage your classmate and help them learn from you.",
-    "crumbs": [
-      "Homework",
-      "Overview"
-    ]
-  },
-  {
-    "objectID": "Homework/homework.html#a-note-about-rendering-your-html-documents",
-    "href": "Homework/homework.html#a-note-about-rendering-your-html-documents",
-    "title": "Overview",
-    "section": "A Note About Rendering Your HTML documents",
-    "text": "A Note About Rendering Your HTML documents\nYou need to include embed-resources: true in your YAML header in order for your HTML documents to include any plot output when you upload them to Canvas. It should look something like the following:\n\nYou can read more about this option here but basically, whenever you render a .qmd file to HTML, all output created goes into a separate, associated folder, which is referenced when displaying the page in your web browser. However, when you upload the HTML file separately from that folder (e.g. to Canvas or through email), it doesn’t have the specific output images to reference, so they won’t appear. When you specify in your YAML header that you want to embed resources, you’re explicitly adding the output created by your code to the HTML file so that a separate output folder is longer created and you can send your HTML file with all its output as one entity.",
-    "crumbs": [
-      "Homework",
-      "Overview"
-    ]
-  },
-  {
-    "objectID": "Homework/homework.html#assignment-due-dates",
-    "href": "Homework/homework.html#assignment-due-dates",
-    "title": "Overview",
-    "section": "Assignment Due Dates",
-    "text": "Assignment Due Dates\n\n\n\n\n\n\n\n\n#\nHomework Due\nPeer Review Due\n\n\n\n\n1\n08 October\n13 October\n\n\n2\n15 October\n20 October\n\n\n3\n22 October\n27 October\n\n\n4\n29 October\n03 November\n\n\n5\n05 November\n10 November\n\n\n6\n12 November\n17 November\n\n\n7\n19 November\n24 November\n\n\n8\n26 November\n01 December\n\n\n9\n03 December\n08 December",
-    "crumbs": [
-      "Homework",
-      "Overview"
-    ]
-  },
-  {
-    "objectID": "Homework/homework7.html",
-    "href": "Homework/homework7.html",
-    "title": "Homework 7",
-    "section": "",
-    "text": "Homework 7 has been posted on Canvas; you can download the qmd file there. I’ve also posted the instructions here.\nInstructions from HW 6 still apply here; refer back to those if needed.\nLet’s unpack the practice problems at the end of Lecture 7 in more detail. Refer back to “Your Turn: Applying this to today’s data” in Lecture 7 as needed.\nTo start, put this .qmd file in the R project you made for the flights data in Lecture 7. Then the file paths below should work for reading the data into R.\n\n# load here any packages you need\nlibrary(tidyverse)\n\n# set the relative file path to the folder where your data is stored\ndata_path = \"Data/\"\n\n# read in your data files\nairlines = read_csv(paste0(data_path, \"airlines.csv\"))\nflights = read_csv(paste0(data_path, \"flights.csv\"))",
-    "crumbs": [
-      "Homework",
-      "Homework 7"
-    ]
-  },
-  {
-    "objectID": "Homework/homework7.html#problem-1-comparing-the-variable-sets-of-two-datasets",
-    "href": "Homework/homework7.html#problem-1-comparing-the-variable-sets-of-two-datasets",
-    "title": "Homework 7",
-    "section": "Problem 1: Comparing the variable sets of two datasets",
-    "text": "Problem 1: Comparing the variable sets of two datasets\nRead through the Problem 1 solution on the Lecture 7 page, and try out the code yourself. Then explain here to your peer reviewer how the %in% operator works and address the bolded question in the Problem 1 solution on the Lecture 7 page. Include the line of code you choose here.\n\n# which line of code did you choose? delete the other two below\nnames(airlines) %in% names(flights)\nnames(flights) %in% names(airlines)\nnames(airlines)[names(airlines) %in% names(flights)]",
-    "crumbs": [
-      "Homework",
-      "Homework 7"
-    ]
-  },
-  {
-    "objectID": "Homework/homework7.html#problem-2a-b-setting-the-levels-of-your-factor-variable",
-    "href": "Homework/homework7.html#problem-2a-b-setting-the-levels-of-your-factor-variable",
-    "title": "Homework 7",
-    "section": "Problem 2a-b: Setting the levels of your factor variable",
-    "text": "Problem 2a-b: Setting the levels of your factor variable\nRead through the Problem 2a and 2b solutions on the Lecture 7 page, and try out the code yourself. Then try your hand at these questions.\nRun the following code to make a version of airlines that is sorted alphabetically by name instead of carrier:\n\nairlines_byname = airlines %&gt;% arrange(name)\n\nNow make carrier a factor in the airlines_byname dataset three different ways:\n\nairlines_byname = airlines_byname %&gt;%\n  mutate(carrier_factor1 = factor(carrier),\n         carrier_factor2 = factor(carrier, levels = airlines_byname$carrier),\n         carrier_factor3 = factor(carrier, levels = c(\"9E\", \"AA\", \"AS\", \"B6\", \"DL\", \"EV\", \"F9\", \n                                                      \"FL\", \"HA\", \"MQ\", \"OO\", \"UA\", \"US\", \"VX\", \n                                                      \"WN\", \"YV\", \"ZZ\", \"BB\", \"DD\", \"EE\", \"UU\")))\n\nThen run the code below, and explain what the differences are in a way that would help someone understand the output of these nine lines of code. For example, why do some of these variables (carrier_factor1, carrier_factor2, carrier_factor3) sort one way and others sort a different way? Why do some lines with str() say “1 2 3 4 5 6 7 8 9 10” in the output and others say “8 3 2 5 1 10 6 7 9 4”?\n\nairlines_byname$carrier_factor1\nsort(airlines_byname$carrier_factor1)\nstr(airlines_byname$carrier_factor1)\n\nairlines_byname$carrier_factor2\nsort(airlines_byname$carrier_factor2)\nstr(airlines_byname$carrier_factor2)\n\nairlines_byname$carrier_factor3\nsort(airlines_byname$carrier_factor3)\nstr(airlines_byname$carrier_factor3)\n\n\nProblem 2b: Identifying discrepancies in the data\nRead through the Problem 2b solution on the Lecture 7 page, and try out the code yourself. Then try your hand at these questions.\nTo make sure you have your code restored to the version we want to examine, run the following code and add some comments to the above code to summarize what each step is doing. (To help yourself see what each step is doing, I recommend running one step at a time and taking a look at the results before you run the next line.)\n\nflights = read_csv(paste0(data_path, \"flights.csv\"))\n\nairlines = airlines %&gt;%\n  mutate(carrier = factor(carrier))\n\nflights = flights %&gt;%\n  mutate(carrier_factor = factor(carrier, levels = levels(airlines$carrier)))\n\nThere are many ways you can compare these columns now, but there are a lot of rows. In rows without an NA, the two columns should match, so really we only care about rows in which carrier_factor is NA. Also, what we care about is seeing what values the carrier column has in those rows. So let’s do this:\n\nflights_compare = flights %&gt;%\n  filter(is.na(carrier_factor))\n\nunique(flights_compare$carrier)\n\nWhat is this code doing, and why does it help us get the answer we want? Add comments to the code and write a short explanation below.\n\n\nProblem 2c: Handling the NAs\nNow that you have identified the carrier IDs in flights that didn’t match those in airlines, we have to decide what to do about it. There are lots of possibilities. We might not know whether the carrier IDs that differ are typos or truly different values. We might be interested in all the carrier IDs that appear in both datasets, or we might only be interested in those that appear in airlines. For our context here, we might suspect that “00” was a typo for “OO” (perhaps these were manually entered from paper files at some point) and that “F8” and “F9” are supposed to be the same code. Hopefully we would have a way to verify this from area knowledge or from records. Sometimes we just don’t know, and we have to make assumptions and document our assumptions.\nFor now let’s assume that we can be confident that these are typos: “00” was supposed to be “OO” and “F8” was supposed to be “F9”. Go ahead and change all “00” values to “OO” and all “F8” values to “F9” in the flights$carrier column, then make it a factor using the same levels as airlines$carrier. Try this out, and then verify that there are no more NAs in flights$carrier. Write your code below and include a brief explanation of your code.",
-    "crumbs": [
-      "Homework",
-      "Homework 7"
-    ]
-  },
-  {
-    "objectID": "Homework/homework4.html",
-    "href": "Homework/homework4.html",
-    "title": "Homework 4",
-    "section": "",
-    "text": "Instructions\nHomework 4 has been posted on Canvas, and the instructions are posted there. Rather than reading instructions here for creating your own Quarto document, from the Canvas assignment you can download a Quarto file that has the homework instructions/problems and spaces for you to add/modify text and code. You’ll upload that qmd file and its rendered html file as your homework submission.\nHappy coding! I look forward to hearing how this homework goes for you.",
-    "crumbs": [
-      "Homework",
-      "Homework 4"
-    ]
-  },
-  {
-    "objectID": "Homework/homework3.html",
-    "href": "Homework/homework3.html",
-    "title": "Homework 3",
-    "section": "",
-    "text": "Instructions\nCreate a new Quarto document (.qmd file) for this new homework; always use a new Quarto document for each homework.\nIn your Homework 3 Quarto document, continue to explore the gapminder dataset from the gapminder package, following the instructions below. Your document should be pleasant for a peer to look at, with some organization using section headings. Use chunk options to control which code and raw output you show in the html file when you render your Quarto document. When you’ve completed the assignment, upload to Canvas both the .qmd file and the .html file it generates when you render the .qmd file.\nDetailed instructions for HW3:\n\nOrganize your report in a few sections with appropriately named and Markdown-formatted section headings.\nUse an Introduction or Data section at the start of the report to summarize in sentences what the dataset is, where it comes from, what variables it includes and what they mean. Try to add one piece of information to what you wrote in your HW2.\nMake a table of some subset of rows and columns of the dataset (different from the one you made in HW2) two different ways, one using base R and one using tidyverse. In other words, you should have two chunks of code making the same table, and both chunks of code and both tables should show up in your rendered html file.\nThen use Markdown text (not just code comments) to summarize your approach to writing these two different chunks of code. Use code-style text formatting like this to make code references in your text look like code, just as in the lecture notes (e.g. when I write about mutate() and gapminder).\nCompute the number of Asian countries in the dataset two different ways, one using base R and one using tidyverse. Use chunk options to make sure your code for both approaches is displayed in your rendered html file, not hidden, and insert one of the two results (they should be the same as each other) into a text sentence using inline code.\nUsing either base R or tidyverse, compute the number of observations with at least 29 million people in 1952, and report your answer using inline code. Then pose a similar problem for the other student to try, and report the code and answer in your html file with a brief explanation of your solution!\nState one thing you didn’t do to your satisfaction in HW2 and how you have improved upon it in HW3. For instance, maybe you corrected some aspect of a table or of the Quarto html formatting in HW3 that wasn’t working in your HW2 submission.\nMost of all, have some fun practicing what we did in class and any other R/RStudio/Quarto features you might be discovering!",
-    "crumbs": [
-      "Homework",
-      "Homework 3"
-    ]
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "CSSS 508: Intro to R for Social Scientists",
-    "section": "",
-    "text": "Jess Kunke (she/they)\n\n\n\nTuesdays 4:30-6:20pm\nThomson Hall, Room 125\n\n\n\nAs of Oct 28th:\n\nMon 4-5pm (Zoom and Padelford B-221)\nFri 2-3pm (Zoom only)\nSee Canvas for Zoom links\n\nFor further course details, please see the syllabus.\nThank you Vic Sass for the fantastic website design!"
-  },
-  {
-    "objectID": "index.html#welcome",
-    "href": "index.html#welcome",
-    "title": "CSSS 508: Intro to R for Social Scientists",
-    "section": "",
-    "text": "Jess Kunke (she/they)\n\n\n\nTuesdays 4:30-6:20pm\nThomson Hall, Room 125\n\n\n\nAs of Oct 28th:\n\nMon 4-5pm (Zoom and Padelford B-221)\nFri 2-3pm (Zoom only)\nSee Canvas for Zoom links\n\nFor further course details, please see the syllabus.\nThank you Vic Sass for the fantastic website design!"
-  },
-  {
-    "objectID": "Homework/homework2.html",
-    "href": "Homework/homework2.html",
-    "title": "Homework 2",
-    "section": "",
-    "text": "Instructions\nCreate a new Quarto document (.qmd file) for this new homework; always use a new Quarto document for each homework.\nIn your Homework 2 Quarto document, explore the gapminder dataset from the gapminder package. Later in class we will also read this dataset in from a file, but for this homework we will access the dataset from a package. If you have not used this package before on your computer, you’ll need to install it first and then load it with library() as we saw in class. Otherwise, you can just use library(gapminder) to load the package and data(gapminder) to load the dataset.\nUse your Quarto document to report on a brief exploration of the dataset. This might read like the dataset section of a paper. It doesn’t have to be longer than a page or two, and it does not have to be up to the standard of what you would expect in a paper; the purpose is to practice R, RStudio, and Quarto to do things that eventually you would find practically useful. Remember, the homework is just meant to be a chance to practice stuff from class.\nDo at least the following:\n\nStart by doing some exploratory analysis of the dataset in the Console, some/much of which will not make it into your final document. In your Quarto document, only include code that you will use for the final document you submit. For example, don’t include commands like ?gapminder, and also don’t include code like str(gapminder) or mean(gapminder$year) unless you use them in tables, figures, and/or inline code.\nUse text to summarize what the dataset is, where it comes from, what variables it includes and what they mean.\nComment on the range or distribution of one of the dataset variables. You could show a histogram and report some summary statistics of the variable in the text of the document using inline R code (when we use r code to print values directly into the text of the document).\nInclude at least one plot of one variable versus another and comment briefly on what you notice in the plot.\nMake a table of some subset of rows and columns of the dataset and comment briefly on what you notice.\nComment your code using some comments (lines that start with #), even if the code doesn’t show up in the final html document. You don’t have to comment every line, but comment at least some lines that you think should be explained to someone who is trying to understand your code. For example, suppose you sent your Quarto document to a colleague because they wanted to reproduce your analysis and play with the dataset themselves. They might find it useful to see a comment that explains what kable() does and what kind of table you are trying to make there.\nMost of all, just have some fun exploring this dataset and practicing what we did in class!\n\nYour document should be pleasant for a peer to look at, with some organization using section headings. Some attempt should be made to label and format plots and tables. Use chunk options to limit the code and raw output you show in the html file when you render your Quarto document. Don’t include a figure or table without commenting on it in the text with at least a sentence. Round any numbers you report to a reasonable precision.\nUpload to Canvas both the .qmd file and the .html file it generates when you render.",
-    "crumbs": [
-      "Homework",
-      "Homework 2"
-    ]
-  },
-  {
-    "objectID": "Homework/homework1.html",
-    "href": "Homework/homework1.html",
-    "title": "Homework 1",
-    "section": "",
-    "text": "Instructions\nWrite up a .qmd file showing some exploratory analyses of the Swiss fertility data. Upload both the .qmd file and the .html file to Canvas. You must upload BOTH for credit.\nMix inline R calculations, R output, and plots with text describing the relationships you see. Include at least two plots and at least one instance of inline R code (e.g. functions like nrow(), mean(), sd(), cor(), median(), min()). You are encouraged to include more! You may not hard-code any numbers referenced in your text.\nYour document should be pleasant for a peer to look at, with some organization using sections or lists, and all plots labeled clearly. Use chunk options echo and output to limit the code/output you show in the .html. Discussion of specific values should be summarized in sentences in your text—not as printed code and output—and rounded so as not to be absurdly precise (e.g. round x with round(x, 2)).\n\n\nTemplate\nrendered html file • raw qmd file\n\n\nExample\nrendered html file • raw qmd file",
-    "crumbs": [
-      "Homework",
-      "Homework 1"
-    ]
-  },
-  {
-    "objectID": "Homework/homework5.html",
-    "href": "Homework/homework5.html",
-    "title": "Homework 5",
-    "section": "",
-    "text": "Homework 5 has been posted on Canvas, and just as with Homework 4, you can download a Quarto document from the Homework 5 Canvas assignment that has the homework instructions/problems and spaces for you to add/modify text and code. You’ll upload that qmd file and its rendered html file as your homework submission. I’ve also posted the instructions here, and if you prefer, you can create a new Quarto document from scratch and answer these problems in it instead of the one provided on the Homework 5 Canvas assignment. In that case, you will submit that qmd file and the html file you get when you render it.\n\nModify this document to complete your homework for Homework 5.\nPost questions on Ed Discussion, discuss with each other, and get as far as you can on these problems.\nIf by the time the homework is due you have worked on a problem but did’t fully complete it, feel free to leave your work so far and write about where you’re stuck or what is going wrong or what your question is, and your peer evaluator might have some input.\nFeel free to change the format of this document in ways that you think make the output look nicer or easier to read, but keep the general structure (sections, questions, etc) so that your peer reviewer knows which part is which.",
-    "crumbs": [
-      "Homework",
-      "Homework 5"
-    ]
-  },
-  {
-    "objectID": "Homework/homework5.html#section-a-pivoting-with-the-gapminder-dataset",
-    "href": "Homework/homework5.html#section-a-pivoting-with-the-gapminder-dataset",
-    "title": "Homework 5",
-    "section": "Section A: Pivoting with the gapminder dataset",
-    "text": "Section A: Pivoting with the gapminder dataset\n\nWe saw in lecture how to pivot n_obs_by_year_cont wider:\n\n\nobs_by_year_cont_wider = n_obs_by_year_cont %&gt;%\n  pivot_wider(\n    # get the names for the new columns from the continent column\n    names_from = continent,\n    # get the values for the new columns from the n.obs column\n    values_from = n.obs\n  )\n\nWrite code to pivot obs_by_year_cont_wider longer and call the resulting table obs_by_year_cont_longer. You should find that obs_by_year_cont_longer is the same as n_obs_by_year_cont. Use kable() to display the two tables neatly in your rendered html file.\n\n# your code here\n\n\nFollowing the example from class using %in%, create a subset of the gapminder dataset that has just the data for Argentina, El Salvador, and Uruguay before 1990, and give this dataset an appropriate name. Then reformat the dataset so that each row is a country, each column is a year, and each cell of the table is the per-capita GDP. (If you would like a little extra challenge, make each cell of the table the total GDP by multiplying population and per-capita GDP.) Display the table in the rendered html file using kable().\n\n\n# your code here\n\n\nFor extra practice, work your way through some of the examples here for both pivoting longer and pivoting wider. These examples are designed to help you gradually learn about additional options you can set during pivoting and how to handle problems of varying complexity. I recommend trying the first couple examples in the pivoting longer section and the tidycensus example in the pivoting wider section. For each example you check out, I recommend first reading the section about it and the code that goes with it, then try it out yourself. For many of them you don’t have to install any new packages, but some like tidycensus will require that you install a package (such as tidycensus) first in order to access the dataset they use. Then explain (here, in text, below this problem and before Section B) one or two things you learned.",
-    "crumbs": [
-      "Homework",
-      "Homework 5"
-    ]
-  },
-  {
-    "objectID": "Homework/homework5.html#section-b-plots",
-    "href": "Homework/homework5.html#section-b-plots",
-    "title": "Homework 5",
-    "section": "Section B: Plots",
-    "text": "Section B: Plots\nIn this section, the code chunks are not created for you. Create a new code chunk below each problem and before the next to put your code for that problem. If the problem asks you questions that you should answer in words instead of code, write your answers in text below the problem rather than as comments in the code.\n\nPlot per-capita GDP versus life expectancy for Colombia as a line, points, or both. Give the plot appropriate axis labels and a title. Try out a few themes and use a theme you like. Set the color and transparency of the line/points.\nPlot per-capita GDP over time for Argentina, El Salvador, and Uruguay before 1990. Make the plot three different ways: first plot all three countries on the same plot, then use facet_wrap() to plot each country in its own subplot, then use facet_grid(). Comment on which plot settings you need for each plot, if there are any that differ between the two plots. Also comment on what happens if you omit the facet_wrap argument scales = \"free\".\nCombine pivoting and facet_grid() to make a plot with 9 subplots in a 3x3 grid, where the columns are country (Japan, China, or South Korea), the rows are variables (life expectancy, population, or per-capita GDP), and the x-axis is time. Use scales = \"free_y\" as an argument to facet_grid(). Your plot should look something like this:\n\n\nTake your time with this. Break the problem down into steps. Identify at least one step you’ll have to do, and then work backwards or forwards from there: What do I need to do in order to be able to do that step? What will I do once I have that step?\nIf you have time, here are further extensions you can try with this plot:\n\nImprove the axis labels, theme, and/or other features.\nScale the variables so that the y-axis scales are nicer or more easily readable.\nWhat could you do to get the variables to be labeld in the plot as “Population”, “LifeExpectancy”, and “GDPperCapita”? (If you want, you can go further and try to make them “Population”, “Life Expectancy”, and “GDP per Capita” and even add units.)\nTry using scales = \"free\" in facet_grid. Does it do what you expect? Try replacing facet_grid(..., scales = \"free\") with ggh4x::facet_grid2(..., scales = \"free_y\", independent = \"y\"), i.e. use the facet_grid2() function from the ggh4x package, and see how you like it.",
-    "crumbs": [
-      "Homework",
-      "Homework 5"
+      "HW4 follow-up: When does order matter?"
     ]
   },
   {
@@ -753,22 +593,226 @@
     ]
   },
   {
-    "objectID": "Homework/homework4_followup.html",
-    "href": "Homework/homework4_followup.html",
-    "title": "HW4 follow-up: When does order matter?",
+    "objectID": "Homework/homework5.html",
+    "href": "Homework/homework5.html",
+    "title": "Homework 5",
     "section": "",
-    "text": "Let’s go over some findings from Homework 4, Part C. Here were the three cases we considered. In the first case, we considered whether order mattered when the two operations were (1) selecting the three columns/variables country, year, and pop, and (2) filtering to keep only the rows with pop less than 20 million.\n\nresult1 = gapminder %&gt;%\n  select(country, year, pop) %&gt;%\n  filter(pop &lt; 20000000)\n\nresult2 = gapminder %&gt;%\n  filter(pop &lt; 20000000) %&gt;%\n  select(country, year, pop)\n\nIn the second case, we considered whether order mattered when the two operations were (1) mutating the pop column to divide by a million, and (2) filtering to keep only the rows with pop less than 20 million.\n\nresult3 = gapminder %&gt;%\n  mutate(pop = pop/10^6) %&gt;%\n  filter(pop &lt; 20000000)\n\nresult4 = gapminder %&gt;%\n  filter(pop &lt; 20000000) %&gt;%\n  mutate(pop = pop/10^6)\n\nIn the third case, we considered whether order mattered when the two operations were (1) creating a new column called pop_millions which equals the pop column divided by a million, and (2) filtering to keep only the rows with pop less than 20 million.\n\nresult5 = gapminder %&gt;%\n  mutate(pop_millions = pop/10^6) %&gt;%\n  filter(pop &lt; 20000000)\n\nresult6 = gapminder %&gt;%\n  filter(pop &lt; 20000000) %&gt;%\n  mutate(pop_millions = pop/10^6)\n\nSo in which of these cases does order matter, and why?\nFirst let’s settle the answer: order matters in the second case only, not in the first and third cases. We can tell by running the code and checking the results, which I assume you did in HW4; it was not meant to be strictly a thought exercise. If you didn’t run the code in HW4, run it now and check out the results with me. If you run the code, you will notice that the number of rows is not the same for results 3 and 4, so the results cannot be the same. For the other two cases, we can toggle back and forth to see that they look the same, or we can be sure by using code to check whether the results are the same:\n\n# we can add up how many elements are different between results 1 and 2, or between 5 and 6\nsum(result1 != result2)\n\n[1] 0\n\nsum(result5 != result6)\n\n[1] 0\n\n# or we can use the identical function which checks if two objects are identical\nidentical(result1, result2)\n\n[1] TRUE\n\nidentical(result5, result6)\n\n[1] TRUE\n\n\nNow let’s think about why order matters for only the second case.\nIn the first case, one operation selects rows based on the value of the pop column, while the other operation selects three columns. These operations don’t affect each other. The final result in either case is going to be the subset of the data that have a population less than 20 million, and it’ll show only the three columns we selected for.\nIn the third case, again, one operation uses the pop column values to define a new column called pop_millions, and the other operation filters the dataset to keep just the rows in which the pop column meets some condition. Therefore, these two operations do not affect each other. If you do the filter operation first, you will only create the pop_millions column for the rows you’ll keep in the end. If you do the mutate operation first, you will create the pop_millions column for all the rows and then just keep the rows you’re interested in.\nHowever, in the second case, one operation rescales the pop column by dividing it by million, and the other operation filters for values that are less than 20,000,000. If you rescale first, a value of 20,000,000 in the pop column means a value of 20 trillion (20 million millions), not 20 million. No country has trillions of people, so this filtering operation won’t do anything. If instead you filter first, you will subset the data to countries with populations of fewer than 20 million people, and then you rescale the population.\nIn the second case, probably the coder meant to end up with a dataset that contained all countries with fewer than 20 million people, so they probably want result4, not result3. We can modify the code for result3 to get the same answer, though, by making one change to the filter function: what change? (Try it out!)",
+    "text": "Homework 5 has been posted on Canvas, and just as with Homework 4, you can download a Quarto document from the Homework 5 Canvas assignment that has the homework instructions/problems and spaces for you to add/modify text and code. You’ll upload that qmd file and its rendered html file as your homework submission. I’ve also posted the instructions here, and if you prefer, you can create a new Quarto document from scratch and answer these problems in it instead of the one provided on the Homework 5 Canvas assignment. In that case, you will submit that qmd file and the html file you get when you render it.\n\nModify this document to complete your homework for Homework 5.\nPost questions on Ed Discussion, discuss with each other, and get as far as you can on these problems.\nIf by the time the homework is due you have worked on a problem but did’t fully complete it, feel free to leave your work so far and write about where you’re stuck or what is going wrong or what your question is, and your peer evaluator might have some input.\nFeel free to change the format of this document in ways that you think make the output look nicer or easier to read, but keep the general structure (sections, questions, etc) so that your peer reviewer knows which part is which.",
     "crumbs": [
       "Homework",
-      "HW4 follow-up: When does order matter?"
+      "Homework 5"
     ]
   },
   {
-    "objectID": "Homework/CSSS508_HW1_Example.html",
-    "href": "Homework/CSSS508_HW1_Example.html",
-    "title": "CSSS508 Homework 1 Example",
+    "objectID": "Homework/homework5.html#section-a-pivoting-with-the-gapminder-dataset",
+    "href": "Homework/homework5.html#section-a-pivoting-with-the-gapminder-dataset",
+    "title": "Homework 5",
+    "section": "Section A: Pivoting with the gapminder dataset",
+    "text": "Section A: Pivoting with the gapminder dataset\n\nWe saw in lecture how to pivot n_obs_by_year_cont wider:\n\n\nobs_by_year_cont_wider = n_obs_by_year_cont %&gt;%\n  pivot_wider(\n    # get the names for the new columns from the continent column\n    names_from = continent,\n    # get the values for the new columns from the n.obs column\n    values_from = n.obs\n  )\n\nWrite code to pivot obs_by_year_cont_wider longer and call the resulting table obs_by_year_cont_longer. You should find that obs_by_year_cont_longer is the same as n_obs_by_year_cont. Use kable() to display the two tables neatly in your rendered html file.\n\n# your code here\n\n\nFollowing the example from class using %in%, create a subset of the gapminder dataset that has just the data for Argentina, El Salvador, and Uruguay before 1990, and give this dataset an appropriate name. Then reformat the dataset so that each row is a country, each column is a year, and each cell of the table is the per-capita GDP. (If you would like a little extra challenge, make each cell of the table the total GDP by multiplying population and per-capita GDP.) Display the table in the rendered html file using kable().\n\n\n# your code here\n\n\nFor extra practice, work your way through some of the examples here for both pivoting longer and pivoting wider. These examples are designed to help you gradually learn about additional options you can set during pivoting and how to handle problems of varying complexity. I recommend trying the first couple examples in the pivoting longer section and the tidycensus example in the pivoting wider section. For each example you check out, I recommend first reading the section about it and the code that goes with it, then try it out yourself. For many of them you don’t have to install any new packages, but some like tidycensus will require that you install a package (such as tidycensus) first in order to access the dataset they use. Then explain (here, in text, below this problem and before Section B) one or two things you learned.",
+    "crumbs": [
+      "Homework",
+      "Homework 5"
+    ]
+  },
+  {
+    "objectID": "Homework/homework5.html#section-b-plots",
+    "href": "Homework/homework5.html#section-b-plots",
+    "title": "Homework 5",
+    "section": "Section B: Plots",
+    "text": "Section B: Plots\nIn this section, the code chunks are not created for you. Create a new code chunk below each problem and before the next to put your code for that problem. If the problem asks you questions that you should answer in words instead of code, write your answers in text below the problem rather than as comments in the code.\n\nPlot per-capita GDP versus life expectancy for Colombia as a line, points, or both. Give the plot appropriate axis labels and a title. Try out a few themes and use a theme you like. Set the color and transparency of the line/points.\nPlot per-capita GDP over time for Argentina, El Salvador, and Uruguay before 1990. Make the plot three different ways: first plot all three countries on the same plot, then use facet_wrap() to plot each country in its own subplot, then use facet_grid(). Comment on which plot settings you need for each plot, if there are any that differ between the two plots. Also comment on what happens if you omit the facet_wrap argument scales = \"free\".\nCombine pivoting and facet_grid() to make a plot with 9 subplots in a 3x3 grid, where the columns are country (Japan, China, or South Korea), the rows are variables (life expectancy, population, or per-capita GDP), and the x-axis is time. Use scales = \"free_y\" as an argument to facet_grid(). Your plot should look something like this:\n\n\nTake your time with this. Break the problem down into steps. Identify at least one step you’ll have to do, and then work backwards or forwards from there: What do I need to do in order to be able to do that step? What will I do once I have that step?\nIf you have time, here are further extensions you can try with this plot:\n\nImprove the axis labels, theme, and/or other features.\nScale the variables so that the y-axis scales are nicer or more easily readable.\nWhat could you do to get the variables to be labeld in the plot as “Population”, “LifeExpectancy”, and “GDPperCapita”? (If you want, you can go further and try to make them “Population”, “Life Expectancy”, and “GDP per Capita” and even add units.)\nTry using scales = \"free\" in facet_grid. Does it do what you expect? Try replacing facet_grid(..., scales = \"free\") with ggh4x::facet_grid2(..., scales = \"free_y\", independent = \"y\"), i.e. use the facet_grid2() function from the ggh4x package, and see how you like it.",
+    "crumbs": [
+      "Homework",
+      "Homework 5"
+    ]
+  },
+  {
+    "objectID": "Homework/homework1.html",
+    "href": "Homework/homework1.html",
+    "title": "Homework 1",
     "section": "",
-    "text": "I’m interested in exploring a dataset from base R called iris. From its documentation I see that it is data about 50 flowers from each of 3 species of iris and their respective measurements of sepal length, sepal width, petal length, and petal width.\nI first want to take a look at a preview of the dataset by making a nice table.\n\n\n\n\n\n\n\n\n\nSepal.Length\nSepal.Width\nPetal.Length\nPetal.Width\nSpecies\n\n\n\n\n1\n5.1\n3.5\n1.4\n0.2\nsetosa\n\n\n2\n4.9\n3.0\n1.4\n0.2\nsetosa\n\n\n3\n4.7\n3.2\n1.3\n0.2\nsetosa\n\n\n4\n4.6\n3.1\n1.5\n0.2\nsetosa\n\n\n5\n5.0\n3.6\n1.4\n0.2\nsetosa\n\n\n6..145\n\n\n\n\n\n\n\n146\n6.7\n3.0\n5.2\n2.3\nvirginica\n\n\n147\n6.3\n2.5\n5.0\n1.9\nvirginica\n\n\n148\n6.5\n3.0\n5.2\n2.0\nvirginica\n\n\n149\n6.2\n3.4\n5.4\n2.3\nvirginica\n\n\n150\n5.9\n3.0\n5.1\n1.8\nvirginica\n\n\n\n\n\n\n\nThe mean petal length is 3.76 but its median petal length is 4.35. It’s range is 5.9 which additionally suggests a certain degree of spread.\nIt might be useful to look at the distribution to gain a better sense of the variation of this variable.\n\n\n\n\n\n\n\n\n\nThere seems to be a cluster of much smaller petals and then another cluster of average to bigger petals. I wonder how this varies by species…?\n\n\n\n\n\n\n\n\n\nWe can see from this plot that the overall mean and median of petal length is quite misleading! Only the verisicolor species of iris is close to those values while setosa is much mush smaller and virginica is a bit bigger.\nIs there a similar thing happening for sepal length and width? Let’s look at some basic descriptives of the dataset.\n\n\n\n\n\n\n\n\nSepal.Length\nSepal.Width\nPetal.Length\nPetal.Width\nSpecies\n\n\n\n\nMin. :4.300\nMin. :2.000\nMin. :1.000\nMin. :0.100\nsetosa :50\n\n\n1st Qu.:5.100\n1st Qu.:2.800\n1st Qu.:1.600\n1st Qu.:0.300\nversicolor:50\n\n\nMedian :5.800\nMedian :3.000\nMedian :4.350\nMedian :1.300\nvirginica :50\n\n\nMean :5.843\nMean :3.057\nMean :3.758\nMean :1.199\nNA\n\n\n3rd Qu.:6.400\n3rd Qu.:3.300\n3rd Qu.:5.100\n3rd Qu.:1.800\nNA\n\n\nMax. :7.900\nMax. :4.400\nMax. :6.900\nMax. :2.500\nNA\n\n\n\n\n\n\n\nIt’s interesting to note with the summary function that for numerical data it’ll calculate the classic 5 statistics used to construct a boxplot plus the mean but for a categorical variable like iris$Species it returns the frequency of each value of the variable.\nThe distribution of sepal length looks wider than sepal width, similar to how it was for those measurements of the petals. Let’s see how sepal length and width relate to one another graphically.\n\n\n\n\n\n\n\n\n\nThere are still clusters by each species type but for verisicolor and virginica there’s much more overlap. Overall, there’s tighter clustering by species for the petal length and width than there is for the sepal length and width."
+    "text": "Instructions\nWrite up a .qmd file showing some exploratory analyses of the Swiss fertility data. Upload both the .qmd file and the .html file to Canvas. You must upload BOTH for credit.\nMix inline R calculations, R output, and plots with text describing the relationships you see. Include at least two plots and at least one instance of inline R code (e.g. functions like nrow(), mean(), sd(), cor(), median(), min()). You are encouraged to include more! You may not hard-code any numbers referenced in your text.\nYour document should be pleasant for a peer to look at, with some organization using sections or lists, and all plots labeled clearly. Use chunk options echo and output to limit the code/output you show in the .html. Discussion of specific values should be summarized in sentences in your text—not as printed code and output—and rounded so as not to be absurdly precise (e.g. round x with round(x, 2)).\n\n\nTemplate\nrendered html file • raw qmd file\n\n\nExample\nrendered html file • raw qmd file",
+    "crumbs": [
+      "Homework",
+      "Homework 1"
+    ]
+  },
+  {
+    "objectID": "Homework/homework2.html",
+    "href": "Homework/homework2.html",
+    "title": "Homework 2",
+    "section": "",
+    "text": "Instructions\nCreate a new Quarto document (.qmd file) for this new homework; always use a new Quarto document for each homework.\nIn your Homework 2 Quarto document, explore the gapminder dataset from the gapminder package. Later in class we will also read this dataset in from a file, but for this homework we will access the dataset from a package. If you have not used this package before on your computer, you’ll need to install it first and then load it with library() as we saw in class. Otherwise, you can just use library(gapminder) to load the package and data(gapminder) to load the dataset.\nUse your Quarto document to report on a brief exploration of the dataset. This might read like the dataset section of a paper. It doesn’t have to be longer than a page or two, and it does not have to be up to the standard of what you would expect in a paper; the purpose is to practice R, RStudio, and Quarto to do things that eventually you would find practically useful. Remember, the homework is just meant to be a chance to practice stuff from class.\nDo at least the following:\n\nStart by doing some exploratory analysis of the dataset in the Console, some/much of which will not make it into your final document. In your Quarto document, only include code that you will use for the final document you submit. For example, don’t include commands like ?gapminder, and also don’t include code like str(gapminder) or mean(gapminder$year) unless you use them in tables, figures, and/or inline code.\nUse text to summarize what the dataset is, where it comes from, what variables it includes and what they mean.\nComment on the range or distribution of one of the dataset variables. You could show a histogram and report some summary statistics of the variable in the text of the document using inline R code (when we use r code to print values directly into the text of the document).\nInclude at least one plot of one variable versus another and comment briefly on what you notice in the plot.\nMake a table of some subset of rows and columns of the dataset and comment briefly on what you notice.\nComment your code using some comments (lines that start with #), even if the code doesn’t show up in the final html document. You don’t have to comment every line, but comment at least some lines that you think should be explained to someone who is trying to understand your code. For example, suppose you sent your Quarto document to a colleague because they wanted to reproduce your analysis and play with the dataset themselves. They might find it useful to see a comment that explains what kable() does and what kind of table you are trying to make there.\nMost of all, just have some fun exploring this dataset and practicing what we did in class!\n\nYour document should be pleasant for a peer to look at, with some organization using section headings. Some attempt should be made to label and format plots and tables. Use chunk options to limit the code and raw output you show in the html file when you render your Quarto document. Don’t include a figure or table without commenting on it in the text with at least a sentence. Round any numbers you report to a reasonable precision.\nUpload to Canvas both the .qmd file and the .html file it generates when you render.",
+    "crumbs": [
+      "Homework",
+      "Homework 2"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "CSSS 508: Intro to R for Social Scientists",
+    "section": "",
+    "text": "Jess Kunke (she/they)\n\n\n\nTuesdays 4:30-6:20pm\nThomson Hall, Room 125\n\n\n\nAs of Oct 28th:\n\nMon 4-5pm (Zoom and Padelford B-221)\nFri 2-3pm (Zoom only)\nSee Canvas for Zoom links\n\nFor further course details, please see the syllabus.\nThank you Vic Sass for the fantastic website design!"
+  },
+  {
+    "objectID": "index.html#welcome",
+    "href": "index.html#welcome",
+    "title": "CSSS 508: Intro to R for Social Scientists",
+    "section": "",
+    "text": "Jess Kunke (she/they)\n\n\n\nTuesdays 4:30-6:20pm\nThomson Hall, Room 125\n\n\n\nAs of Oct 28th:\n\nMon 4-5pm (Zoom and Padelford B-221)\nFri 2-3pm (Zoom only)\nSee Canvas for Zoom links\n\nFor further course details, please see the syllabus.\nThank you Vic Sass for the fantastic website design!"
+  },
+  {
+    "objectID": "Homework/homework3.html",
+    "href": "Homework/homework3.html",
+    "title": "Homework 3",
+    "section": "",
+    "text": "Instructions\nCreate a new Quarto document (.qmd file) for this new homework; always use a new Quarto document for each homework.\nIn your Homework 3 Quarto document, continue to explore the gapminder dataset from the gapminder package, following the instructions below. Your document should be pleasant for a peer to look at, with some organization using section headings. Use chunk options to control which code and raw output you show in the html file when you render your Quarto document. When you’ve completed the assignment, upload to Canvas both the .qmd file and the .html file it generates when you render the .qmd file.\nDetailed instructions for HW3:\n\nOrganize your report in a few sections with appropriately named and Markdown-formatted section headings.\nUse an Introduction or Data section at the start of the report to summarize in sentences what the dataset is, where it comes from, what variables it includes and what they mean. Try to add one piece of information to what you wrote in your HW2.\nMake a table of some subset of rows and columns of the dataset (different from the one you made in HW2) two different ways, one using base R and one using tidyverse. In other words, you should have two chunks of code making the same table, and both chunks of code and both tables should show up in your rendered html file.\nThen use Markdown text (not just code comments) to summarize your approach to writing these two different chunks of code. Use code-style text formatting like this to make code references in your text look like code, just as in the lecture notes (e.g. when I write about mutate() and gapminder).\nCompute the number of Asian countries in the dataset two different ways, one using base R and one using tidyverse. Use chunk options to make sure your code for both approaches is displayed in your rendered html file, not hidden, and insert one of the two results (they should be the same as each other) into a text sentence using inline code.\nUsing either base R or tidyverse, compute the number of observations with at least 29 million people in 1952, and report your answer using inline code. Then pose a similar problem for the other student to try, and report the code and answer in your html file with a brief explanation of your solution!\nState one thing you didn’t do to your satisfaction in HW2 and how you have improved upon it in HW3. For instance, maybe you corrected some aspect of a table or of the Quarto html formatting in HW3 that wasn’t working in your HW2 submission.\nMost of all, have some fun practicing what we did in class and any other R/RStudio/Quarto features you might be discovering!",
+    "crumbs": [
+      "Homework",
+      "Homework 3"
+    ]
+  },
+  {
+    "objectID": "Homework/homework4.html",
+    "href": "Homework/homework4.html",
+    "title": "Homework 4",
+    "section": "",
+    "text": "Instructions\nHomework 4 has been posted on Canvas, and the instructions are posted there. Rather than reading instructions here for creating your own Quarto document, from the Canvas assignment you can download a Quarto file that has the homework instructions/problems and spaces for you to add/modify text and code. You’ll upload that qmd file and its rendered html file as your homework submission.\nHappy coding! I look forward to hearing how this homework goes for you.",
+    "crumbs": [
+      "Homework",
+      "Homework 4"
+    ]
+  },
+  {
+    "objectID": "Homework/homework7.html",
+    "href": "Homework/homework7.html",
+    "title": "Homework 7",
+    "section": "",
+    "text": "Homework 7 has been posted on Canvas; you can download the qmd file there. I’ve also posted the instructions here.\nInstructions from HW 6 still apply here; refer back to those if needed.\nLet’s unpack the practice problems at the end of Lecture 7 in more detail. Refer back to “Your Turn: Applying this to today’s data” in Lecture 7 as needed.\nTo start, put this .qmd file in the R project you made for the flights data in Lecture 7. Then the file paths below should work for reading the data into R.\n\n# load here any packages you need\nlibrary(tidyverse)\n\n# set the relative file path to the folder where your data is stored\ndata_path = \"Data/\"\n\n# read in your data files\nairlines = read_csv(paste0(data_path, \"airlines.csv\"))\nflights = read_csv(paste0(data_path, \"flights.csv\"))",
+    "crumbs": [
+      "Homework",
+      "Homework 7"
+    ]
+  },
+  {
+    "objectID": "Homework/homework7.html#problem-1-comparing-the-variable-sets-of-two-datasets",
+    "href": "Homework/homework7.html#problem-1-comparing-the-variable-sets-of-two-datasets",
+    "title": "Homework 7",
+    "section": "Problem 1: Comparing the variable sets of two datasets",
+    "text": "Problem 1: Comparing the variable sets of two datasets\nRead through the Problem 1 solution on the Lecture 7 page, and try out the code yourself. Then explain here to your peer reviewer how the %in% operator works and address the bolded question in the Problem 1 solution on the Lecture 7 page. Include the line of code you choose here.\n\n# which line of code did you choose? delete the other two below\nnames(airlines) %in% names(flights)\nnames(flights) %in% names(airlines)\nnames(airlines)[names(airlines) %in% names(flights)]",
+    "crumbs": [
+      "Homework",
+      "Homework 7"
+    ]
+  },
+  {
+    "objectID": "Homework/homework7.html#problem-2a-b-setting-the-levels-of-your-factor-variable",
+    "href": "Homework/homework7.html#problem-2a-b-setting-the-levels-of-your-factor-variable",
+    "title": "Homework 7",
+    "section": "Problem 2a-b: Setting the levels of your factor variable",
+    "text": "Problem 2a-b: Setting the levels of your factor variable\nRead through the Problem 2a and 2b solutions on the Lecture 7 page, and try out the code yourself. Then try your hand at these questions.\nRun the following code to make a version of airlines that is sorted alphabetically by name instead of carrier:\n\nairlines_byname = airlines %&gt;% arrange(name)\n\nNow make carrier a factor in the airlines_byname dataset three different ways:\n\nairlines_byname = airlines_byname %&gt;%\n  mutate(carrier_factor1 = factor(carrier),\n         carrier_factor2 = factor(carrier, levels = airlines_byname$carrier),\n         carrier_factor3 = factor(carrier, levels = c(\"9E\", \"AA\", \"AS\", \"B6\", \"DL\", \"EV\", \"F9\", \n                                                      \"FL\", \"HA\", \"MQ\", \"OO\", \"UA\", \"US\", \"VX\", \n                                                      \"WN\", \"YV\", \"ZZ\", \"BB\", \"DD\", \"EE\", \"UU\")))\n\nThen run the code below, and explain what the differences are in a way that would help someone understand the output of these nine lines of code. For example, why do some of these variables (carrier_factor1, carrier_factor2, carrier_factor3) sort one way and others sort a different way? Why do some lines with str() say “1 2 3 4 5 6 7 8 9 10” in the output and others say “8 3 2 5 1 10 6 7 9 4”?\n\nairlines_byname$carrier_factor1\nsort(airlines_byname$carrier_factor1)\nstr(airlines_byname$carrier_factor1)\n\nairlines_byname$carrier_factor2\nsort(airlines_byname$carrier_factor2)\nstr(airlines_byname$carrier_factor2)\n\nairlines_byname$carrier_factor3\nsort(airlines_byname$carrier_factor3)\nstr(airlines_byname$carrier_factor3)\n\n\nProblem 2b: Identifying discrepancies in the data\nRead through the Problem 2b solution on the Lecture 7 page, and try out the code yourself. Then try your hand at these questions.\nTo make sure you have your code restored to the version we want to examine, run the following code and add some comments to the above code to summarize what each step is doing. (To help yourself see what each step is doing, I recommend running one step at a time and taking a look at the results before you run the next line.)\n\nflights = read_csv(paste0(data_path, \"flights.csv\"))\n\nairlines = airlines %&gt;%\n  mutate(carrier = factor(carrier))\n\nflights = flights %&gt;%\n  mutate(carrier_factor = factor(carrier, levels = levels(airlines$carrier)))\n\nThere are many ways you can compare these columns now, but there are a lot of rows. In rows without an NA, the two columns should match, so really we only care about rows in which carrier_factor is NA. Also, what we care about is seeing what values the carrier column has in those rows. So let’s do this:\n\nflights_compare = flights %&gt;%\n  filter(is.na(carrier_factor))\n\nunique(flights_compare$carrier)\n\nWhat is this code doing, and why does it help us get the answer we want? Add comments to the code and write a short explanation below.\n\n\nProblem 2c: Handling the NAs\nNow that you have identified the carrier IDs in flights that didn’t match those in airlines, we have to decide what to do about it. There are lots of possibilities. We might not know whether the carrier IDs that differ are typos or truly different values. We might be interested in all the carrier IDs that appear in both datasets, or we might only be interested in those that appear in airlines. For our context here, we might suspect that “00” was a typo for “OO” (perhaps these were manually entered from paper files at some point) and that “F8” and “F9” are supposed to be the same code. Hopefully we would have a way to verify this from area knowledge or from records. Sometimes we just don’t know, and we have to make assumptions and document our assumptions.\nFor now let’s assume that we can be confident that these are typos: “00” was supposed to be “OO” and “F8” was supposed to be “F9”. Go ahead and change all “00” values to “OO” and all “F8” values to “F9” in the flights$carrier column, then make it a factor using the same levels as airlines$carrier. Try this out, and then verify that there are no more NAs in flights$carrier. Write your code below and include a brief explanation of your code.",
+    "crumbs": [
+      "Homework",
+      "Homework 7"
+    ]
+  },
+  {
+    "objectID": "Homework/homework.html",
+    "href": "Homework/homework.html",
+    "title": "Overview",
+    "section": "",
+    "text": "This page contains general instructions for assignments and peer reviews. For homework-specific instructions and templates go to the specific assignment listed on the left.\nAll assignments should be created using Quarto and uploaded to Canvas as both html and qmd files. Your document should be pleasant for a peer to look at and follow all instructions. Use sections for organization, label figures/tables, and use code chunks.\nThis is a one-credit pass/fail course intended to help you learn R. The focus is on learning and practice, not on points. Assignments and peer reviews will be graded for completion, but the points are not the point: they are key opportunities to practice R/RStudio/Quarto and to learn from each other. Feel free to work together, discussion questions on Ed Discussion, trade ideas and tips.",
+    "crumbs": [
+      "Homework",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "Homework/homework.html#peer-review",
+    "href": "Homework/homework.html#peer-review",
+    "title": "Overview",
+    "section": "Peer Review",
+    "text": "Peer Review\nYou are required to examine and provide feedback on a peer’s homework submission each week. Reading and evaluating the work of others is useful and important! Good programmers realize that most problems have been solved by others; the trick is figuring out how to apply existing code to new problems. You will develop this skill by reading others’ code, seeing how other people approached the problems, providing suggestions, and pointing out when you learned something new. Please give constructive, polite, and insightful comments that encourage your classmate and help them learn from you.",
+    "crumbs": [
+      "Homework",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "Homework/homework.html#a-note-about-rendering-your-html-documents",
+    "href": "Homework/homework.html#a-note-about-rendering-your-html-documents",
+    "title": "Overview",
+    "section": "A Note About Rendering Your HTML documents",
+    "text": "A Note About Rendering Your HTML documents\nYou need to include embed-resources: true in your YAML header in order for your HTML documents to include any plot output when you upload them to Canvas. It should look something like the following:\n\nYou can read more about this option here but basically, whenever you render a .qmd file to HTML, all output created goes into a separate, associated folder, which is referenced when displaying the page in your web browser. However, when you upload the HTML file separately from that folder (e.g. to Canvas or through email), it doesn’t have the specific output images to reference, so they won’t appear. When you specify in your YAML header that you want to embed resources, you’re explicitly adding the output created by your code to the HTML file so that a separate output folder is longer created and you can send your HTML file with all its output as one entity.",
+    "crumbs": [
+      "Homework",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "Homework/homework.html#assignment-due-dates",
+    "href": "Homework/homework.html#assignment-due-dates",
+    "title": "Overview",
+    "section": "Assignment Due Dates",
+    "text": "Assignment Due Dates\n\n\n\n\n\n\n\n\n#\nHomework Due\nPeer Review Due\n\n\n\n\n1\n08 October\n13 October\n\n\n2\n15 October\n20 October\n\n\n3\n22 October\n27 October\n\n\n4\n29 October\n03 November\n\n\n5\n05 November\n10 November\n\n\n6\n12 November\n17 November\n\n\n7\n19 November\n24 November\n\n\n8\n26 November\n01 December\n\n\n9\n03 December\n08 December",
+    "crumbs": [
+      "Homework",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "Homework/CSSS508_HW1_Template.html",
+    "href": "Homework/CSSS508_HW1_Template.html",
+    "title": "Homework 1",
+    "section": "",
+    "text": "This basic R markdown file has some text, inline code, and code chunks!"
+  },
+  {
+    "objectID": "Homework/CSSS508_HW1_Template.html#code-chunks",
+    "href": "Homework/CSSS508_HW1_Template.html#code-chunks",
+    "title": "Homework 1",
+    "section": "Code Chunks",
+    "text": "Code Chunks\n\nset.seed(1)\nnorm &lt;- rnorm(100)\nhist(x = norm, \n     xlab = \"X Axis Name\", \n     ylab = \"Count\", \n     main = \"Histogram of 100 observations from a Standard Normal\")\n\n\n\n\n\n\n\n\nUnless you include the chunk option #| echo: false, your code chunk will be displayed in your final document."
+  },
+  {
+    "objectID": "Homework/CSSS508_HW1_Template.html#text-and-inline-text",
+    "href": "Homework/CSSS508_HW1_Template.html#text-and-inline-text",
+    "title": "Homework 1",
+    "section": "Text and Inline Text",
+    "text": "Text and Inline Text\nThe sample mean of the data plotted above (rounded to 3 decimal points) is 0.109 and the variance is 0.807.\nWhat’s the relationship between standard deviation and variance?\n\\[ \\text{Standard Deviation}(X) = \\sqrt{\\text{Variance}(X)} \\]\nThe standard deviation of the data plotted above is 0.898."
+  },
+  {
+    "objectID": "Homework/homework8.html",
+    "href": "Homework/homework8.html",
+    "title": "Homework 8",
+    "section": "",
+    "text": "Homework 8 has been posted on Canvas; you can download the qmd file there. I’ve also posted the instructions here.\nInstructions from HW 6 still apply here; refer back to those if needed. You can read more about joins here if you’d like an additional reference/guide.\nTo start, set up a folder somewhere on your computer called “HW8” and create a subfolder (a folder within HW8) called “Data”. Create an R project using the HW8 folder; this should make a file called “HW8.Rproj” within your HW8 folder. Then in Finder or File Explorer (however you navigate your computer’s folders and files outside of RStudio), double-click HW8.Rproj to open your R project in RStudio.\nCheck that your working directory is your HW8 folder:\n\ngetwd()\n\nIf you have tips or questions about any of that process, please share them on Ed Discussion!",
+    "crumbs": [
+      "Homework",
+      "Homework 8"
+    ]
+  },
+  {
+    "objectID": "Homework/homework8.html#problem-1-data-inputoutput",
+    "href": "Homework/homework8.html#problem-1-data-inputoutput",
+    "title": "Homework 8",
+    "section": "Problem 1: Data input/output",
+    "text": "Problem 1: Data input/output\nLet’s start by making some small example datasets to practice with. Run this code to make these four datasets:\n\nstates = data.frame(\n  state = c(\"CA\", \"ID\", \"OR\", \"WA\", \"WY\"),\n  state_name = c(\"California\", \"Idaho\", \"Oregon\", \"Washington\", \"Wyoming\")\n)\n\ncities = data.frame(\n  city = c(\"Bozeman\", \"Eugene\", \"Olympia\", \"Portland\", \"Sacramento\", \"San Francisco\", \"Seattle\"),\n  state = c(\"MO\", \"OR\", \"WA\", \"OR\", \"CA\", \"CA\", \"WA\")\n)\n\nstates2 = data.frame(\n  code = c(\"CA\", \"ID\", \"OR\", \"WA\", \"WY\"),\n  name = c(\"California\", \"Idaho\", \"Oregon\", \"Washington\", \"Wyoming\")\n)\n\ncities2 = data.frame(\n  name = c(\"Bozeman\", \"Eugene\", \"Olympia\", \"Portland\", \"Sacramento\", \"San Francisco\", \"Seattle\"),\n  state = c(\"MO\", \"OR\", \"WA\", \"OR\", \"CA\", \"CA\", \"WA\")\n)\n\ncities3 = data.frame(\n  name = rep(c(\"Bozeman\", \"Eugene\", \"Olympia\", \"Portland\", \"Sacramento\", \"San Francisco\", \"Seattle\"), 2),\n  state = rep(c(\"MO\", \"OR\", \"WA\", \"OR\", \"CA\", \"CA\", \"WA\"), 2),\n  year = c(rep(2000, 7), rep(2010, 7)),\n  population = c(28210, 139142, 43099, 529897, 408762, 777340, 564109,\n                 37321, 156516, 47083, 585476, 467246, 805519, 610654)\n)\n\nThen write and run some code below to write each dataset to a different file in your Data subfolder:\n\n# write states to a file called \"states.csv\" in the Data subfolder\n\n# write states2 to a file called \"states2.csv\" in the Data subfolder\n\n# write cities to a file called \"cities.csv\" in the Data subfolder\n\n# write cities2 to a file called \"cities2.csv\" in the Data subfolder\n\n# write cities3 to a file called \"cities3.csv\" in the Data subfolder\n\nNow check that you can read the five data files back into RStudio using read_csv:\n\n# read in states.csv as states, states2.csv as states2, etc.",
+    "crumbs": [
+      "Homework",
+      "Homework 8"
+    ]
+  },
+  {
+    "objectID": "Homework/homework8.html#problem-2-joining-two-datasets",
+    "href": "Homework/homework8.html#problem-2-joining-two-datasets",
+    "title": "Homework 8",
+    "section": "Problem 2: Joining two datasets",
+    "text": "Problem 2: Joining two datasets\n\nPart 1: states and cities\nLet’s try different ways of joining the states and cities datasets. First, let’s orient ourselves to the data. What variables does each of these two datasets have? How many rows, and what do the rows represent? How (by what variable or variables) do you think it would be most natural to join or match these two datasets?\nIn the first example here (below), the “left” dataset is states; go ahead and run this line of code.\n\nleft_join(states, cities)\n\nRemember that by default, R will join by whatever variable name or set of variable names appear in both datasets, and it will tell you what it joins by in the output (“Joining with…”). What variable does the output say R used to join these two datasets? How many rows and columns do you end up with in the joined dataset? In what rows and columns do you end up with NAs (if you end up with any), and why? The states dataset has 5 rows and the cities dataset has 7 rows, so why does the resulting joined dataset have 8 rows?\nNow let’s switch the order of the datasets, so that the “left” dataset is cities. Run this code. Why does the resulting dataset have 7 rows?\n\nleft_join(cities, states)\n\nLooking at the results of both previous joins (left_join(states, cities) and left_join(cities, states)), what determines the order in which the columns appear in the resulting joined dataset?\n\n\nPart 2: states2 and cities2\nLet’s orient ourselves to the data first. What variables does each of these two datasets have? How many rows, and what do the rows represent? How (by what variable or variables) do you think it would be most natural to join or match these two datasets?\nWhat variable does the code below join by, and why does that not make sense for these datasets? How many rows and columns does this code give you, and why is the state column all NA?\n\nleft_join(states2, cities2)\n\nThis modified code gets us the desired join (try it out):\n\nleft_join(states2, cities2, by = join_by(code == state))\n\nHowever, it names the resulting columns code, name.x, and name.y. Read the documentation in ?left_join and provide a brief explanation of why these “.x” and “.y” appear. There are many ways we can handle this: some possible approaches are (1) we can rename the name columns in the two datasets before joining, (2) we can rename the columns after joining if we remember which dataset corresponds to “.x” and which to “.y”, or (3) we can set the suffix argument in the join so that the names make more sense. Try one of these or find another approach. Whatever you decide on, write the code in a code chunk below and write a brief explanation in the text above or below that.\n\n\nPart 3: states2 (same as before) and cities3\nLet’s orient ourselves to the data first. What variables does each of these two datasets have? How many rows, and what do the rows represent? Note that the rows cities3 are no longer uniquely defined, identified or represented by a single variable but by two variables: which two? How (by what variable or variables) do you think it would be most natural to join or match these two datasets?\nThen join states2 and cities3 in a reasonable way. Show your code and explain why you handled it this way.\n\n\nBonus (if you have time)\nWrite code here to make two simple datasets of your own for someone else to join, and point out some questions they will have to consider when joining them. If you like, you can also demonstrate how you would join them, or you can leave it as a question for someone else to solve!",
+    "crumbs": [
+      "Homework",
+      "Homework 8"
+    ]
   },
   {
     "objectID": "syllabus.html",
@@ -914,7 +958,7 @@
     "href": "Lectures/lec9_regression.html#get-regression-output-beyond-a-plot",
     "title": "Lecture 9: Regression in R",
     "section": "Get regression output beyond a plot",
-    "text": "Get regression output beyond a plot\nSo let’s see what is happening under the hood when ggplot gives us those curves above. Let’s start by estimating parameters for the following model (note that multiplication is implied between \\(\\beta_1\\) and hp):\n\\[\\text{mpg} = \\beta_0 + \\beta_1 \\text{hp} + \\epsilon\\]\n\\[\\epsilon \\sim N(0, \\sigma^2)\\]\nThe first equation above is the formula for a line. You might remember lines as \\(y = mx + b\\), and this is the same, we’re just calling the slope \\(\\beta_1\\) instead of \\(m\\) and the intercept \\(\\beta_0\\) instead of \\(b\\). (If you’re interested, we can chat about how \\(\\epsilon\\) fits into this.) The second “equation” above (a math statement more generally, not really an equation) is saying that that extra term \\(\\epsilon\\) is normally distributed with a mean of zero and a variance of \\(sigma^2\\). Note that actually both statements are required to state your model; by convention, we often make assumptions about what “\\(+ \\epsilon\\)” means, but without stating somewhere what we’re assuming about that \\(\\epsilon\\), it’s just some undefined variable.\nThe data here are mpg and hp, and the parameters we’re going to estimate are the intercept \\(\\beta_0\\), the slope or the hp effect \\(\\beta_1\\), and the noise variance \\(\\sigma^2\\). Estimating these parameters means picking values for them that are somehow “best-fit” values. Otherwise, \\(\\beta_0\\), \\(\\beta_1\\), and \\(\\sigma^2\\) are just placeholders for any three numbers, and with different choices of numbers we would get various lines. For example, here are a few possible choices that are probably not the best fit:\n\nggplot(mtcars, aes(x = hp, y = mpg)) + \n  geom_point() + \n  geom_abline(slope = 1/10, intercept = 0, \n              color = \"maroon\", linetype = \"dashed\", linewidth = 1.2) +\n  geom_abline(slope = 0, intercept = 20, \n              color = \"darkblue\", linetype = \"dotted\", linewidth = 1.2) +\n  geom_abline(slope = 0.13, intercept = 9.2, \n              color = \"orange\", linetype = \"twodash\", linewidth = 1.2) +\n  ylim(c(5, 35)) +\n  theme_bw()\n\n\n\n\n\n\n\n\n\nlm(mpg ~ hp, data = mtcars)\n\nWe can store the resulting model results like this:\n\nmodel1 = lm(mpg ~ hp, data = mtcars)\n\nNote: is model1 a good object name here? It might be if you’re going to try a few different models and you have a clear definition somewhere of each model, as I’d argue we’ll have here. Otherwise it might be better to name it in some way that better reminds you what it represents.\nYou can extract just the best-fit coefficients or parameter estimates like this:\n\ncoef(model1)\n\nThis is handy sometimes, but in my experience the most useful data is typically in the summary of the model object:\n\nsummary(model1)\n\nTherefore I’m actually going to store the summary as its own object (in fact, I often only store the summary, not the direct result of lm):\n\nmodel1_summary = summary(model1)\n\nFor example, you can get the coefficient estimates as well as their standard errors and significance like this:\n\nmodel1_summary$coefficients\n\n\n\n\n\n\n\nYour Turn\n\n\n\nDon’t worry about getting the full answer to these questions, but think of this as a time to explore amongst yourselves before we go through this together.\nWhat kind of R object is model1_summary: a vector, a list, a data frame? How can you tell?\nHow many elements does model1_summary have, and what are their names? (Tip: type the first few letters of the object name, like mod, then autocomplete the name of the object to model1_summary, then type a $ and you should get a pop-up menu. These are the elements of model1_summary.) What type or format is each element, and what kind of information do you think it contains?",
+    "text": "Get regression output beyond a plot\nSo let’s see what is happening under the hood when ggplot gives us those curves above. Let’s start by estimating parameters for the following model (note that multiplication is implied between \\(\\beta_1\\) and hp):\n\\[\\text{mpg} = \\beta_0 + \\beta_1 \\text{hp} + \\epsilon\\]\n\\[\\epsilon \\sim N(0, \\sigma^2)\\]\nThe first equation above is the formula for a line. You might remember lines as \\(y = mx + b\\), and this is the same, we’re just calling the slope \\(\\beta_1\\) instead of \\(m\\) and the intercept \\(\\beta_0\\) instead of \\(b\\). (If you’re interested, we can chat about how \\(\\epsilon\\) fits into this.) The second “equation” above (a math statement more generally, not really an equation) is saying that that extra term \\(\\epsilon\\) is normally distributed with a mean of zero and a variance of \\(\\sigma^2\\). Note that actually both statements are required to state your model; by convention, we often make assumptions about what “\\(+ \\epsilon\\)” means, but without stating somewhere what we’re assuming about that \\(\\epsilon\\), it’s just some undefined variable.\nThe data here are mpg and hp, and the parameters we’re going to estimate are the intercept \\(\\beta_0\\), the slope or the hp effect \\(\\beta_1\\), and the noise variance \\(\\sigma^2\\). Estimating these parameters means picking values for them that are somehow “best-fit” values. Otherwise, \\(\\beta_0\\), \\(\\beta_1\\), and \\(\\sigma^2\\) are just placeholders for any three numbers, and with different choices of numbers we would get various lines. For example, here are a few possible choices that are probably not the best fit:\n\nggplot(mtcars, aes(x = hp, y = mpg)) + \n  geom_point() + \n  geom_abline(slope = 1/10, intercept = 0, \n              color = \"maroon\", linetype = \"dashed\", linewidth = 1.2) +\n  geom_abline(slope = 0, intercept = 20, \n              color = \"darkblue\", linetype = \"dotted\", linewidth = 1.2) +\n  geom_abline(slope = 0.13, intercept = 9.2, \n              color = \"orange\", linetype = \"twodash\", linewidth = 1.2) +\n  ylim(c(5, 35)) +\n  theme_bw()\n\n\n\n\n\n\n\n\n\nlm(mpg ~ hp, data = mtcars)\n\nWe can store the resulting model results like this:\n\nmodel1 = lm(mpg ~ hp, data = mtcars)\n\nNote: is model1 a good object name here? It might be if you’re going to try a few different models and you have a clear definition somewhere of each model, as I’d argue we’ll have here. Otherwise it might be better to name it in some way that better reminds you what it represents.\nYou can extract just the best-fit coefficients or parameter estimates like this:\n\ncoef(model1)\n\nThis is handy sometimes, but in my experience the most useful data is typically in the summary of the model object:\n\nsummary(model1)\n\nTherefore I’m actually going to store the summary as its own object (in fact, I often only store the summary, not the direct result of lm):\n\nmodel1_summary = summary(model1)\n\nFor example, you can get the coefficient estimates as well as their standard errors and significance like this:\n\nmodel1_summary$coefficients\n\n\n\n\n\n\n\nYour Turn\n\n\n\nDon’t worry about getting the full answer to these questions, but think of this as a time to explore amongst yourselves before we go through this together.\nWhat kind of R object is model1_summary: a vector, a list, a data frame? How can you tell?\nHow many elements does model1_summary have, and what are their names? (Tip: type the first few letters of the object name, like mod, then autocomplete the name of the object to model1_summary, then type a $ and you should get a pop-up menu. These are the elements of model1_summary.) What type or format is each element, and what kind of information do you think it contains?",
     "crumbs": [
       "Lectures",
       "Lecture 9: Regression in R"
