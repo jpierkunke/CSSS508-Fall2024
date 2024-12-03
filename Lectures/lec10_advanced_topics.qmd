@@ -1,0 +1,411 @@
+---
+title: "Lecture 10: Iteration, writing functions, and beyond"
+subtitle: "CSSS 508"
+author: "Jess Kunke"
+date: "Tue 3 Dec 2024"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number_sections: false
+    embed-resources: true
+execute:
+  eval: false
+  message: false
+  warning: false
+lightbox: true
+---
+
+```{r}
+#| include: false
+#| eval: true
+library(beepr)
+library(knitr)
+library(tidyverse)
+```
+
+!["Linear Regression" by xkcd.](https://imgs.xkcd.com/comics/linear_regression.png){fig-align="left"}
+
+# Updates and reminders
+
+Wow, it's already coming up on the end of the term!
+
+- No more lectures and homework assignments
+- Last peer review (of HW9) due this Sun Dec 8th
+- All submissions for grades are due Tue Dec 10th at the latest
+- Please complete the course evaluation! Your feedback makes a difference
+- Class is credit/no credit; you receive credit if you earn 60% or more of the total points
+    - 3 points per homework and 1 point per peer review for a total of 36 possible points this term
+    - You need at least 22 points total to pass
+    - I have graded everything I have seen submitted, so please check if there is something you already completed that I missed
+    - If you missed a peer review and completing it would make the difference between passing or not for you, please let me know and I can assign you to review someone’s homework for that assignment
+- Please reach out sooner rather than later if you have any concerns
+
+
+# Outline for today
+
+- Text manipulation with the **stringr** package
+- Iterating with for-loops
+- Have your computer speak to you as part of your code! (actually useful)
+- Writing your own functions
+- Github and version control
+- Resources for building upon what you've learned
+
+
+
+
+# Extracting metadata from filenames!
+
+Download the gapminder zip file ("gapminder_multifile.zip") from Canvas, unzip it, and take a look. You'll see a bunch of files, each one containing data for just a particular continent and year. What we might like to do is read in this data and join it together into one dataset for analysis. We can automate this process!
+
+## List all files in a directory
+
+If you're following along, create a new R project for today, make a folder within it called "Data", and move the "gapminder" folder you unzipped into "Data" so that gapminder is a subfolder of Data which is a subfolder of your R project folder.
+
+To start, in R we can list the names of files within a given directory:
+
+```{r}
+list.files("Data/gapminder")
+```
+
+If we just want the csv files:
+
+```{r}
+list.files("Data/gapminder", pattern = ".csv")
+```
+
+Let's store that list in our environment as an R object called `filenames`:
+
+```{r}
+filenames = list.files("Data/gapminder", pattern = ".csv")
+```
+
+## Start by looking at a couple individual files
+
+To make sense of things, let's start by taking a look at a couple of individual files and filenames.
+
+```{r}
+file1 = filenames[1]
+file1
+dataset1 = read_csv(paste0("Data/gapminder/", file1))
+str(dataset1)
+View(dataset1)
+
+file50 = filenames[50]
+file50
+dataset50 = read_csv(paste0("Data/gapminder/", file50))
+str(dataset50)
+View(dataset50)
+```
+
+What will we need in order to combine these datasets?
+
+## Extracting parts of text strings
+
+For one thing, we probably want to get the metadata (continent and year in this case) from the filename and add it to the dataset as new columns. To do that, first we have to figure out how to split the text of the filename and extract the information we want. We call this "string splitting" (strings are sequences of characters or text). There is a base-R function called strsplit, or we can use functions from the handy **stringr** package. Let's explore the functions `str_split` and `str_split_1` from the **stringr** package:
+
+```{r}
+str_split(file1, pattern = "_")
+str_split(file1, pattern = "Africa")
+str_split(file1, pattern = ".")
+str_split(file1, pattern = "[.]")
+str_split(file1, pattern = "[_.]")
+str_split_1(file1, pattern = "[_.]")
+```
+
+We can use this to extract just the info we want from the filename:
+
+```{r}
+res = str_split_1(file1, pattern = "[_.]")[2:3]
+continent = res[1]
+year = res[2]
+continent; year
+```
+
+## More string manipulation
+
+The **stringr** package has lots of functions that allow us to do very powerful things with strings! Here are some examples, and you can [see more here](https://stringr.tidyverse.org/). These functions for manipulating and formatting text are helpful tools for data processing and also for formatting our plots, tables, and inline code.
+
+Run these one by one so you can take a look at what each line does. I recommend copying and pasting this code chunk into a script, then run the lines one by one from the script using command-return or control-return.
+
+```{r}
+# for a single string
+x = "population"
+str_length(x)
+toupper(x) # base R
+str_to_upper(x) # same but in stringr (tidyverse)
+tolower(x) # base R
+str_to_lower(x) # same but in stringr (tidyverse)
+str_to_title(x)
+
+# ?str_to_title:
+# str_to_upper() converts to upper case.
+# str_to_lower() converts to lower case.
+# str_to_title() converts to title case, where only the first letter of each word is capitalized.
+# str_to_sentence() convert to sentence case, where only the first letter of sentence is capitalized.
+
+# for a vector of strings
+str_length(filenames) 
+str_c(filenames, collapse = ", ")
+str_c(filenames, collapse = " and ")
+str_sub(filenames, 1, 10)
+str_sub(filenames, 11, 20)
+str_subset(filenames, "Oceania")
+str_subset(filenames, "[Oceania]")
+str_count(filenames, "a")
+str_count(filenames, "[aA]")
+
+```
+
+## Combining multiple datasets
+
+Ok, let's come back to combining the gapminder datasets.
+
+```{r}
+# get a list of data files
+filenames = list.files("Data/gapminder", pattern = ".csv")
+
+# pick the first filename and extract metadata from it
+file1 = filenames[1]
+res = str_split_1(file1, pattern = "[_.]")[2:3]
+continent = res[1]
+year = res[2]
+
+# read in the first file and add the metadata
+dataset1 = read_csv(paste0("Data/gapminder/", file1)) %>%
+  mutate(continent = continent, year = year)
+
+# do the same for the 2nd file...
+# (copy and paste the above code, and change file1 to file2, filenames[1] to filenames[2], etc)
+
+# then combine them together...
+combined = rbind(dataset1, dataset2)
+```
+
+We will see later how to use something called **for-loops** to automate this across all the files in the folder! Very fast and efficient, and no copying and pasting!
+
+
+# Iterating with for-loops
+
+First let's see some simple examples of for-loops:
+
+```{r}
+for(i in 1:10){
+  print(i)
+}
+
+for(yummy_item in c("payaya", "bubble tea", "honeycrisp apple", "bread and butter")){
+  print(yummy_item)
+}
+```
+
+Now let's apply this to our gapminder data example:
+
+```{r}
+# get a list of data files
+filenames = list.files("Data/gapminder", pattern = ".csv")
+
+combined = data.frame()
+
+for(file in filenames){
+  # extract metadata from the filename
+  res = str_split_1(file, pattern = "[_.]")[2:3]
+  continent = res[1]
+  year = res[2]
+  
+  # read in the first file and add the metadata
+  this_dataset = read_csv(paste0("Data/gapminder/", file),
+                          show_col_types = FALSE,
+                          name_repair = "unique_quiet") %>%
+    mutate(continent = continent, year = year)
+  
+  combined = rbind(combined, this_dataset)
+}
+```
+
+We can improve upon the above code by adding some print or cat statements to show us progress. Here's one way:
+
+```{r}
+# get a list of data files
+filenames = list.files("Data/gapminder", pattern = ".csv")
+
+combined = data.frame()
+
+for(file in filenames){
+  cat(paste("Processing file", file), fill = TRUE)
+  # extract metadata from the filename
+  res = str_split_1(file, pattern = "[_.]")[2:3]
+  continent = res[1]
+  year = res[2]
+  
+  # read in the first file and add the metadata
+  this_dataset = read_csv(paste0("Data/gapminder/", file),
+                          show_col_types = FALSE,
+                          name_repair = "unique_quiet") %>%
+    mutate(continent = continent, year = year)
+  
+  combined = rbind(combined, this_dataset)
+}
+```
+
+Here's another:
+
+```{r}
+# get a list of data files
+filenames = list.files("Data/gapminder", pattern = ".csv")
+
+combined = data.frame()
+
+for(file_index in 1:length(filenames)){
+  cat(paste("Processing file", file_index, "of", length(filenames)))
+  # extract metadata from the filename
+  res = str_split_1(file, pattern = "[_.]")[2:3]
+  continent = res[1]
+  year = res[2]
+  
+  # read in the first file and add the metadata
+  this_dataset = read_csv(paste0("Data/gapminder/", file),
+                          show_col_types = FALSE,
+                          name_repair = "unique_quiet") %>%
+    mutate(continent = continent, year = year)
+  
+  combined = rbind(combined, this_dataset)
+}
+```
+
+
+
+
+# Have your computer speak to you with **beepr** or `system`!
+
+When your code takes more than a few seconds, it's nice to be able to work on other tasks or take a stretch break and let your computer notify you when it's done. You can do that using **beepr** which works across platforms (Mac, Linux, PC)!
+
+```{r}
+# get a list of data files
+filenames = list.files("Data/gapminder", pattern = ".csv")
+
+combined = data.frame()
+
+for(file_index in 1:length(filenames)){
+  cat(paste("Processing file", file_index, "of", length(filenames)))
+  # extract metadata from the filename
+  res = str_split_1(file, pattern = "[_.]")[2:3]
+  continent = res[1]
+  year = res[2]
+  
+  # read in the first file and add the metadata
+  this_dataset = read_csv(paste0("Data/gapminder/", file),
+                          show_col_types = FALSE,
+                          name_repair = "unique_quiet") %>%
+    mutate(continent = continent, year = year)
+  
+  combined = rbind(combined, this_dataset)
+}
+
+beep(3)
+# you can omit the number and get a toaster-like sound (default = 1), 
+# or change the number to get a different sound (2-11)
+```
+
+You can see all the sound options [here](https://github.com/rasmusab/beepr).
+
+On a Mac, another option is to use the `system` function:
+
+```{r}
+system("say 'Jess your code is done'")
+system("say 'Great job'")
+```
+
+
+
+# Writing your own functions
+
+Say you often want to take a filename and split it the same way, for example, as we did above:
+
+```{r}
+res = str_split_1(file, pattern = "[_.]")[2:3]
+continent = res[1]
+year = res[2]
+```
+
+We can write a function that takes arguments and returns an object. To define a function:
+
+```{r}
+my_function_name = function(input1, input2, input_with_default = "default_value"){
+  # put your code here using input1, input2, and input_with_default
+  # return the answer or object
+  return(my_answer)
+}
+```
+
+For example, to write a function that adds two numbers together:
+
+```{r}
+add_two_numbers = function(number1, number2){
+  sum = number1 + number2
+  # return the answer or object
+  return(sum)
+}
+```
+
+Can you write a function that takes a filename, splits it as we did above, and returns the continent name?
+
+Then we'll see how to return an object that contains multiple values like both the continent name and the year.
+
+
+
+
+# Github and version control
+
+We'll do a quick intro to Github and version control. If you'd like to start trying it out, I **highly** recommend this free text online: [Happy Git and GitHub for the useR](https://happygitwithr.com/) by Jennifer Bryan. See also this [Git Illustrated Series](https://openscapes.org/blog/2022-05-27-github-illustrated-series/) for a good conceptual overview of the benefits of version control.
+
+
+# Other topics
+
+A handful of really helpful packages (e.g. [see here](https://allisonhorst.com/r-packages-functions) for some examples)
+
+- **dplyr** for data manipulation: `across`, `case_when`, `relocate`, `rename`, and so much more!
+- **forcats** for working with factor variables
+- **ggrepel** for nice text annotations on plots
+- **naniar** for working with missing data
+- **lubridate** for working with times and dates
+- **stringr** for string/text manipulations (we only just touched on this today, and there's so much more you can do with it!)
+
+Make interactive widgets and apps with Shiny! (R or Python)
+
+- [Main website + tutorial](https://shiny.posit.co/)
+- [Demo some examples](https://shiny.posit.co/r/gallery/)
+
+Remember that you can download a lot of large public datasets directly through R
+
+- If you're using a major dataset/database/data source like the US Census, USGS, EPA, ACS, GSS, etc., google to see if there's an R package because there probably is
+- Download/query data directly without having to download and read in files
+- Tools and functions for working with that specific data source
+- Documentation accessible with `?`
+
+Spatial data
+
+- [Using Spatial Data with R](https://cengel.github.io/R-spatial/) by Claudia A Engel
+- [Spatial Statistics for Data Science: Theory and Practice with R](https://www.paulamoraga.com/book-spatial/) by Paula Moraga
+- [Geospatial Health Data: Modeling and Visualization with R-INLA and Shiny](https://www.paulamoraga.com/book-geospatial/index.html) by Paula Moraga
+- [Spatial Data Science with R and terra](https://rspatial.org/index.html) by RSpatial.org
+
+
+# Resources for building upon what you've learned
+
+Free online texts:
+
+- [R for Data Science](https://r4ds.had.co.nz/) by Hadley Wickham and Garrett Grolemund
+- [Introduction to R](https://rspatial.org/intr/index.html) by RSpatial.org (even though the overall book is for spatial data, this Introduction to R chapter is extensive and a great review/extension of what we've covered in this course)
+- [R for Excel Users](https://rstudio-conf-2020.github.io/r-for-excel/) by Julie Lowndes and Allison Horst
+- [Making sharable documents with Quarto](https://openscapes.github.io/quarto-website-tutorial/) by Openscapes
+- [Documenting Things: openly for future us](https://openscapes.github.io/documenting-things/) by Openscapes
+
+Some more free online texts that are "advanced", but don't let that fool you: even working through the first couple of chapters of each book may prove much more doable that you expect, and quite helpful!
+
+- [Advanced R](https://adv-r.hadley.nz/) by Hadley Wickham
+- [R Packages](https://r-pkgs.org/) by Hadley Wickham and Jennifer Bryan
+
+
+
+

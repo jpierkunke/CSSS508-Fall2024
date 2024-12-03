@@ -49,6 +49,8 @@ website:
           text: "Lecture 8: Working with text in R"
         - file: Lectures/lec9_regression.qmd
           text: "Lecture 9: Regression in R"
+        - file: Lectures/lec10_advanced_topics.qmd
+          text: "Lecture 10: Iteration, writing functions, and beyond"
 
     - title: "Homework"
       contents: 
