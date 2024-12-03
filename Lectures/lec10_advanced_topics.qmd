@@ -24,7 +24,7 @@ library(knitr)
 library(tidyverse)
 ```
 
-!["Linear Regression" by xkcd.](https://imgs.xkcd.com/comics/linear_regression.png){fig-align="left"}
+![One of many awesome things you can do with the **stringr** package, along with an adorable dugong. Illustration by Allison Horst.](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/813129dc-25e9-4ea3-9d03-262401faefba_rw_1920.png?h=ad6ddde1836e0e2a34f85193054234ad){fig-align="left"}
 
 # Updates and reminders
 
