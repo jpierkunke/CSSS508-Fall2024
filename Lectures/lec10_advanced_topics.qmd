@@ -393,6 +393,21 @@ Spatial data
 
 # Resources for building upon what you've learned
 
+On campus
+
+- The Center for Social Science Computation and Research (CSSCR, "Caesar")
+    - [Stats/Data/Publication consulting](https://depts.washington.edu/csscr/consulting/)
+        - Drop-in and by-appointment options
+        - Evening online consulting hours
+        - Topics: statistical/quantitative and qualitative analysis software, data management, data access, scientific publications
+    - [Workshops](https://depts.washington.edu/csscr/courses/)
+    - [Computer labs](https://depts.washington.edu/csscr/labs/)
+- Center for Statistics and Social Sciences (CSSS, "C Triple S")
+    - [Courses](https://csss.uw.edu/academics/courses-offered-academic-year)
+    - [Math Camp](https://csss.uw.edu/academics/math-camp)
+    - [Statistical consulting](https://csss.uw.edu/consulting)
+    - [Weekly seminar](https://csss.uw.edu/seminars)
+
 Free online texts:
 
 - [R for Data Science](https://r4ds.had.co.nz/) by Hadley Wickham and Garrett Grolemund
